@@ -714,6 +714,16 @@
     .rating-cta{display:grid;gap:10px;justify-items:start}
     .rating-cta>span{font-size:11px;color:var(--text-on-dark)}
     .review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+    /* Dark mode: review summary becomes black bg with white content */
+    [data-theme="dark"] .review-summary{background:#000000;color:#ffffff}
+    [data-theme="dark"] .review-summary .rating-big .stars{color:#ffffff}
+    [data-theme="dark"] .review-summary .rating-bar{color:#E2E8EE}
+    [data-theme="dark"] .review-summary .bar{background:#141414}
+    [data-theme="dark"] .review-summary .bar i{background:#ffffff}
+    [data-theme="dark"] .review-summary .rating-bar span:last-child{color:#ffffff}
+    [data-theme="dark"] .review-summary .rating-big span{color:#ffffff}
+    [data-theme="dark"] .review-summary .rating-cta>span{color:#ffffff}
     .review{background:var(--bg-white);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;min-width:0}
     .review-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
     .review .stars{font-size:11px;letter-spacing:1.5px}
