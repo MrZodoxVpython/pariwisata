@@ -3911,8 +3911,15 @@
 
         const header = $('#siteHeader');
         if (header) {
-          const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
+          const hero = $('#top');
+          const onScroll = () => {
+            /* Keep the header transparent while the hero is still behind it.
+               Restore its background once the next section reaches the header. */
+            const limit = hero ? hero.getBoundingClientRect().bottom - header.offsetHeight : 8;
+            header.classList.toggle('scrolled', window.scrollY >= limit);
+          };
           window.addEventListener('scroll', onScroll, { passive: true });
+          window.addEventListener('resize', onScroll, { passive: true });
           onScroll();
         }
 
