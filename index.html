@@ -715,11 +715,11 @@
     .rating-cta>span{font-size:11px;color:var(--ink)}
     .review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 
-    /* Dark mode: review summary becomes black bg with white content */
-    [data-theme="dark"] .review-summary{background:#000000;color:#ffffff}
+    /* Dark mode: review summary matches review cards in review-grid (bg + border), teks putih */
+    [data-theme="dark"] .review-summary{background:var(--bg-white);border:1px solid var(--line);color:#ffffff}
     [data-theme="dark"] .review-summary .rating-big .stars{color:#ffffff}
     [data-theme="dark"] .review-summary .rating-bar{color:#E2E8EE}
-    [data-theme="dark"] .review-summary .bar{background:#141414}
+    [data-theme="dark"] .review-summary .bar{background:rgba(255,255,255,.10)}
     [data-theme="dark"] .review-summary .bar i{background:#ffffff}
     [data-theme="dark"] .review-summary .rating-bar span:last-child{color:#ffffff}
     [data-theme="dark"] .review-summary .rating-big span{color:#ffffff}
