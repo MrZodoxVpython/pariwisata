@@ -201,7 +201,7 @@
           {
             "@type": "Question",
             "name": "How do I confirm and pay?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Send a booking request with your date and group size. We confirm availability within 15 minutes during business hours. You can pay a 25% deposit or choose to pay later by arrangement. Prices are in IDR." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Send a booking request with your date and group size. We confirm availability within 15 minutes during business hours. You can then secure the date with a 25% deposit or pay the full amount by card, bank transfer or QRIS. The checkout on this demo site simulates payment only. Prices are in IDR." }
           },
           {
             "@type": "Question",
@@ -292,13 +292,14 @@
     .topbar-link:hover{color:var(--sky)}
     .site-header{position:sticky;top:0;z-index:50;background:rgba(246,250,253,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(11,42,58,.08);transition:box-shadow .2s ease}
     .site-header.scrolled{box-shadow:0 10px 30px rgba(11,42,58,.07)}
-    .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{display:inline-flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.045em;font-size:19px;line-height:1}
+    .nav{height:90px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:inline-flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.045em;font-size:19px;line-height:1;flex:none}
+    .brand-logo{height:72px;width:auto;max-width:210px;object-fit:contain;border-radius:14px;background:#fff;box-shadow:0 3px 12px rgba(11,42,58,.08);flex:none}
     .brand-mark{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff;display:grid;place-items:center;flex:none}
     .brand-mark svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round}
     .brand em{font-style:normal;color:var(--brand-ink);font-weight:700}
-    .navlinks{display:flex;align-items:center;gap:30px;font-size:13.5px;font-weight:700;color:#41535E}
-    .navlinks a{position:relative;padding:6px 0}
+    .navlinks{display:flex;align-items:center;gap:clamp(12px,1.7vw,26px);font-size:11.5px;font-weight:800;letter-spacing:.055em;text-transform:uppercase;color:#41535E}
+    .navlinks a{position:relative;padding:6px 0;white-space:nowrap}
     .navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--brand-ink);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
     .navlinks a:hover{color:var(--brand-ink)}
     .navlinks a:hover::after{transform:scaleX(1)}
@@ -528,6 +529,7 @@
     .footer-grid{display:grid;grid-template-columns:1.5fr .8fr 1fr .8fr;gap:36px;padding-bottom:40px}
     .footer-brand p{color:#AFBEC8;font-size:12px;max-width:320px;margin:15px 0 16px;line-height:1.6}
     .footer-brand .brand{color:#fff;font-size:18px}
+    .footer-brand .brand-logo{height:58px;background:#fff}
     .footer-rating{display:flex;align-items:center;gap:7px;font-size:11px;color:#C8D6DF;margin-bottom:16px}
     .footer-rating .stars{font-size:10px;letter-spacing:1.5px;color:var(--sky)}
     .socials{display:flex;gap:8px}
@@ -544,6 +546,7 @@
     .footer-bottom{border-top:1px solid rgba(255,255,255,.12);padding-top:20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:#8FA1AC;font-size:10.5px}
     .footer-bottom a{color:#C8D6DF;text-decoration:underline;text-underline-offset:3px}
     .footer-bottom a:hover{color:var(--sky)}
+    .footer-demo{color:#C8D6DF}
 
     /* Mobile sticky bar */
     .mobile-bar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:45;background:rgba(255,255,255,.97);border-top:1px solid var(--line);box-shadow:0 -10px 30px rgba(11,42,58,.10);padding:10px 14px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(16px)}
@@ -709,11 +712,118 @@
     .cookie-banner a{color:var(--brand-dark);text-decoration:underline}
 
     /* Responsive */
+    /* Articles */
+    .article-section{background:var(--paper)}
+    .article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+    .article-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;min-width:0;color:inherit}
+    .article-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:#CBDDE8}
+    .article-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:#D8E6EE}
+    .article-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+    .article-card:hover .article-media img{transform:scale(1.05)}
+    .article-tag{position:absolute;left:13px;top:13px;background:rgba(255,255,255,.94);color:var(--brand-dark);font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:6px 9px;border-radius:999px}
+    .article-body{display:flex;flex-direction:column;flex:1;padding:20px}
+    .article-meta{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+    .article-meta i{width:3px;height:3px;border-radius:50%;background:#99A8B2}
+    .article-body h3{font-size:20px;letter-spacing:-.045em;line-height:1.16;margin:10px 0 8px}
+    .article-body p{font-size:12px;color:var(--muted);line-height:1.58;margin-bottom:16px}
+    .article-more{display:inline-flex;align-items:center;gap:6px;margin-top:auto;font-size:11px;font-weight:800;color:var(--brand-dark)}
+    .article-more .icon{width:14px;height:14px;transition:transform .2s ease}
+    .article-card:hover .article-more .icon{transform:translate(2px,-2px)}
+    .article-dialog{width:min(760px,calc(100% - 24px))}
+    .article-dialog .article-cover{width:100%;aspect-ratio:16/7;object-fit:cover;border-radius:16px;margin:16px 0 20px;background:#D8E6EE}
+    .article-reading{font-size:13px;color:#40535F;line-height:1.75}
+    .article-reading h3{font-size:20px;letter-spacing:-.04em;margin:22px 0 8px;color:var(--ink)}
+    .article-reading p{margin:0 0 12px}
+    .article-reading ul{margin:0 0 14px;padding-left:20px}
+    .article-reading li{margin-bottom:6px}
+    .article-reading strong{color:var(--ink)}
+
+    /* Contact */
+    .contact-section{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .contact-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.76fr);gap:56px;align-items:start}
+    .contact-copy h2{margin:12px 0 14px}
+    .contact-copy>.lead{color:var(--muted);font-size:15px;max-width:520px;margin-bottom:24px}
+    .contact-list{display:grid;gap:10px;margin-bottom:24px}
+    .contact-item{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px}
+    .contact-item .contact-icon{width:38px;height:38px;border-radius:11px;background:#EBF5FB;color:var(--brand-dark);display:grid;place-items:center;flex:none}
+    .contact-item .contact-icon .icon{width:18px;height:18px}
+    .contact-item small{display:block;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1px}
+    .contact-item b,.contact-item a{display:block;font-size:12.5px;line-height:1.4;color:var(--ink);font-weight:700;overflow-wrap:anywhere}
+    .contact-item a:hover{color:var(--brand-dark)}
+    .contact-actions{display:flex;flex-wrap:wrap;gap:9px}
+    .contact-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:var(--shadow-sm)}
+    .contact-card h3{font-size:23px;letter-spacing:-.05em;margin-bottom:4px}
+    .contact-card>p{font-size:11.5px;color:var(--muted);margin-bottom:17px;line-height:1.55}
+    .contact-form{display:grid;gap:12px}
+    .contact-form .btn{width:100%}
+    .form-note{font-size:9.5px;color:var(--muted);line-height:1.5;margin-top:11px;text-align:center}
+
+    /* Payment gateway (demo) */
+    .pay-block{margin-top:16px;padding-top:15px;border-top:1px solid var(--line)}
+    .pay-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+    .pay-head h4{font-size:12.5px;letter-spacing:-.01em;margin:0}
+    .demo-chip{display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#664d03;background:#FFF3CD;border:1px solid #F1D98A;padding:4px 7px;border-radius:999px;white-space:nowrap}
+    .demo-chip .icon{width:10px;height:10px}
+    .pay-plans{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:9px}
+    .pay-option{position:relative;display:flex;align-items:flex-start;gap:9px;border:1px solid #D6E4EC;border-radius:12px;background:#FBFDFE;padding:11px 12px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s;min-width:0}
+    .pay-option:hover{border-color:#BDD2DE;background:#F3F9FD}
+    .pay-option input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+    .pay-radio{width:16px;height:16px;border:2px solid #B9CFDC;border-radius:50%;flex:none;margin-top:1px;display:grid;place-items:center;transition:.2s}
+    .pay-radio::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--brand-dark);transform:scale(0);transition:transform .15s ease}
+    .pay-option.selected{border-color:var(--brand-dark);background:#EBF5FB;box-shadow:0 0 0 2px rgba(0,121,185,.10)}
+    .pay-option.selected .pay-radio{border-color:var(--brand-dark)}
+    .pay-option.selected .pay-radio::after{transform:scale(1)}
+    .pay-option:has(input:focus-visible){outline:3px solid rgba(0,121,185,.5);outline-offset:2px}
+    .pay-option b{display:block;font-size:11px;line-height:1.3;color:var(--ink)}
+    .pay-option small{display:block;font-size:9.5px;color:var(--muted);line-height:1.35;margin-top:2px}
+    .pay-option .pay-icon{width:18px;height:18px;color:var(--brand-dark);flex:none;margin-top:1px}
+    .pay-option-method{align-items:center}
+    .pay-option-method b{font-size:10.5px}
+    .pay-panel[hidden]{display:none}
+    .pay-panel{margin-top:10px}
+    .pay-panel .hint{margin-top:4px}
+    .card-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .card-fields .full{grid-column:1/-1}
+    .card-label-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .demo-fill{border:0;background:none;padding:0;color:var(--brand-dark);font-size:9.5px;font-weight:800;text-decoration:underline;text-underline-offset:2px}
+    .va-box{background:#EBF5FB;border:1px solid #D8E7EF;border-radius:13px;padding:13px 14px}
+    .va-box small{display:block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .va-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+    .va-number{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;font-weight:800;letter-spacing:.08em;color:var(--ink);line-height:1.2}
+    .copy-btn{display:inline-flex;align-items:center;gap:5px;border:1px solid #BDD2DE;background:#fff;color:var(--brand-dark);font-size:9.5px;font-weight:800;padding:6px 9px;border-radius:8px;flex:none}
+    .copy-btn:hover{background:#F3F9FD}
+    .copy-btn .icon{width:12px;height:12px}
+    .va-rows{display:grid;gap:5px;margin-top:9px;padding-top:9px;border-top:1px solid #CEDFE9}
+    .va-rows div{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#51646F}
+    .va-rows b{color:var(--ink);text-align:right}
+    .qris-wrap{display:flex;align-items:center;gap:16px;background:#FAFDFE;border:1px solid var(--line);border-radius:13px;padding:13px}
+    .qris-frame{width:142px;height:142px;flex:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px;display:grid;place-items:center}
+    .qris-frame svg{width:100%;height:100%;display:block}
+    .qris-copy b{display:block;font-size:12px;line-height:1.3;margin-bottom:3px}
+    .qris-copy p{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:7px}
+    .qris-brand{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:800;color:var(--brand-dark);background:#EBF5FB;border-radius:999px;padding:4px 8px;letter-spacing:.05em}
+    .qris-brand .icon{width:11px;height:11px}
+    .pay-total{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--ink);color:#fff;border-radius:13px;padding:13px 15px;margin-top:11px}
+    .pay-total small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#AFBEC8;font-weight:800}
+    .pay-total strong{display:block;font-size:20px;letter-spacing:-.045em;line-height:1.15;margin-top:1px}
+    .pay-total .pay-secure{display:flex;align-items:center;gap:5px;font-size:9px;color:#C8D6DF;white-space:nowrap}
+    .pay-total .pay-secure .icon{width:13px;height:13px;color:var(--sky)}
+    .pay-demo-note{display:flex;gap:7px;align-items:flex-start;font-size:9.5px;line-height:1.5;color:#664d03;background:#FFF9E6;border:1px solid #F3E1A6;border-radius:10px;padding:9px 11px;margin-top:9px}
+    .pay-demo-note .icon{width:13px;height:13px;flex:none;margin-top:1px}
+    .btn.processing{pointer-events:none;opacity:.85}
+    .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:6px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .pay-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:800;color:#0B6B3A;background:#E7F8EE;border:1px solid #BCE7CE;border-radius:999px;padding:4px 9px;text-transform:uppercase;letter-spacing:.05em}
+    .pay-status-pill .icon{width:11px;height:11px}
+
     @media(max-width:1080px){
       .hero-inner{grid-template-columns:minmax(0,1fr) 340px;gap:34px}
       .split,.safety-grid,.faq-layout{gap:40px}
       .footer-grid{grid-template-columns:1.3fr .8fr 1fr}
       .footer-grid>div:last-child{grid-column:2/4}
+      .contact-grid{gap:36px}
+      .article-grid{gap:16px}
     }
     @media(max-width:900px){
       .navlinks{display:none}
@@ -730,6 +840,10 @@
       .trust-grid{grid-template-columns:repeat(2,1fr)}
       .package-grid{grid-template-columns:1fr}
       .split,.safety-grid{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr;gap:28px}
+      .contact-card{max-width:620px}
+      .article-grid{grid-template-columns:1fr 1fr}
+      .article-card:last-child{grid-column:1/-1}
       .media-stack{max-width:620px;margin:auto}
       .why-copy .lead{max-width:none}
       .guide-grid{grid-template-columns:1fr 1fr}
@@ -753,6 +867,18 @@
       .topbar-link{font-size:11px}
       .nav{height:68px}
       .brand{font-size:17px}
+      .brand-logo{height:46px;border-radius:11px}
+      .footer-brand .brand-logo{height:54px}
+      .article-grid{grid-template-columns:1fr}
+      .article-card:last-child{grid-column:auto}
+      .contact-grid{gap:24px}
+      .contact-card{padding:20px}
+      .contact-actions .btn{flex:1;justify-content:center}
+      .pay-plans,.pay-methods,.card-fields{grid-template-columns:1fr}
+      .card-fields .full{grid-column:auto}
+      .qris-wrap{flex-direction:column;align-items:flex-start}
+      .qris-frame{width:150px;height:150px}
+      .pay-total{flex-direction:column;align-items:flex-start;gap:5px}
       .brand-mark{width:36px;height:36px;border-radius:12px}
       .brand-mark svg{width:21px;height:21px}
       .section{padding:72px 0}
@@ -839,6 +965,7 @@
     }
     @media(max-width:380px){
       .brand{font-size:15px;gap:8px}
+      .brand-logo{height:42px}
       .brand-mark{width:33px;height:33px}
       .header-book{padding:9px 11px;font-size:11.5px}
       .mobile-bar .btn{font-size:11.5px;padding:10px 12px}
@@ -880,6 +1007,11 @@
       <symbol id="i-left" viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></symbol>
       <symbol id="i-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
       <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+      <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol>
+      <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9 12 4l9 5M5 9v9M9.5 9v9M14.5 9v9M19 9v9M3 20h18"/></symbol>
+      <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2M14 19h3M19 19h2v2"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
     </defs>
   </svg>
 
@@ -905,15 +1037,15 @@
   <header class="site-header" id="siteHeader">
     <div class="wrap nav">
       <a class="brand" href="#top" aria-label="Canyoning Bali home">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16c3-5 5-5 8 0s5 5 8 0"/><path d="M7 10c2-3.5 3.5-3.5 5.5 0s3.5 3.5 5.5 0" opacity=".55"/></svg></span>
-        <span>CANYONING <em>BALI</em></span>
+        <img class="brand-logo" src="https://canyoningbali.id/wp-content/uploads/2019/03/CANYONING-BALI.png" alt="Canyoning Bali logo" width="1417" height="1417" decoding="async">
       </a>
       <nav class="navlinks" aria-label="Main navigation">
-        <a href="#adventures">Canyons</a>
-        <a href="#why-us">Why us</a>
-        <a href="#safety">Safety</a>
-        <a href="#reviews">Reviews</a>
-        <a href="#faq">FAQ</a>
+        <a href="#top">Home</a>
+        <a href="#adventures">Canyoning Tour</a>
+        <a href="#about">About Us</a>
+        <a href="#faq">FAQ's</a>
+        <a href="#contact">Contact Us</a>
+        <a href="#articles">Articles</a>
       </nav>
       <div class="nav-actions">
         <button class="btn btn-primary header-book" type="button" data-book><span class="hide-mobile">Check availability</span><span class="show-mobile">Book</span> <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
@@ -921,11 +1053,12 @@
       </div>
     </div>
     <div class="mobile-menu" id="mobileMenu">
-      <a href="#adventures">Canyons</a>
-      <a href="#why-us">Why us</a>
-      <a href="#safety">Safety</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#faq">FAQ</a>
+      <a href="#top">Home</a>
+      <a href="#adventures">Canyoning Tour</a>
+      <a href="#about">About Us</a>
+      <a href="#faq">FAQ's</a>
+      <a href="#contact">Contact Us</a>
+      <a href="#articles">Articles</a>
       <button class="btn btn-primary" type="button" data-book>Check availability <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       <a class="mobile-wa" href="https://wa.me/6281234567890" target="_blank" rel="noopener" data-wa-link><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp us</a>
     </div>
@@ -955,7 +1088,7 @@
           <div class="hero-card-head">
             <span class="kicker">Plan your day</span>
             <h2>Check availability</h2>
-            <p>No payment now. We reply within 15 minutes.</p>
+            <p>Deposit or pay in full. Demo checkout.</p>
           </div>
           <form class="quick-form" id="quickForm">
             <div class="field">
@@ -1035,7 +1168,7 @@
       </div>
     </section>
 
-    <section class="section why-us" id="why-us">
+    <section class="section why-us" id="about">
       <div class="wrap split">
         <div class="media-stack" data-reveal>
           <img class="media-main" src="https://images.pexels.com/photos/13038113/pexels-photo-13038113.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" srcset="https://images.pexels.com/photos/13038113/pexels-photo-13038113.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600 600w, https://images.pexels.com/photos/13038113/pexels-photo-13038113.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900 900w, https://images.pexels.com/photos/13038113/pexels-photo-13038113.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200 1200w" sizes="(max-width: 900px) 100vw, 50vw" width="1200" height="900" alt="A dramatic cave waterfall in a lush Balinese canyon" loading="lazy" decoding="async">
@@ -1078,7 +1211,7 @@
         <div class="steps" data-reveal>
           <article class="step"><div class="step-no">01</div><h3>Choose your canyon</h3><p>Compare difficulty, duration and inclusions. Use our 30-second quiz if you are not sure which route fits.</p><small>2 minutes</small></article>
           <article class="step"><div class="step-no">02</div><h3>Check availability</h3><p>Send your date and group size. We reply within 15 minutes during business hours, 08:00–20:00 WITA.</p><small>15-minute reply</small></article>
-          <article class="step"><div class="step-no">03</div><h3>Confirm &amp; go</h3><p>Pay a 25% deposit or choose to pay later. Receive your confirmation, pickup time and packing list.</p><small>Same-day confirmation</small></article>
+          <article class="step"><div class="step-no">03</div><h3>Confirm &amp; go</h3><p>Review your trip, then secure it with a 25% deposit or pay in full. Card, bank transfer and QRIS are available in the demo checkout.</p><small>Demo payment gateway</small></article>
         </div>
       </div>
     </section>
@@ -1154,6 +1287,53 @@
       </div>
     </section>
 
+    <section class="section article-section" id="articles">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <div><span class="kicker">Stories &amp; guides</span><h2>Read before you descend.</h2></div>
+          <p class="head-side">Practical guides, canyon comparisons and honest advice from the people who run these routes every week.</p>
+        </div>
+        <div class="article-grid" id="articleGrid" data-reveal>
+          <a class="article-card" href="#articles" data-article="first-canyon">
+            <div class="article-media">
+              <img src="https://images.pexels.com/photos/7163522/pexels-photo-7163522.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=800" alt="A canyoning group preparing to descend a waterfall" width="800" height="500" loading="lazy" decoding="async">
+              <span class="article-tag">Beginner guide</span>
+            </div>
+            <div class="article-body">
+              <div class="article-meta"><span>12 Nov 2026</span><i></i><span>6 min read</span></div>
+              <h3>Your first canyoning day in Bali: what actually happens</h3>
+              <p>From the safety briefing to your first rappel — a realistic walkthrough of the day, nerves included.</p>
+              <span class="article-more">Read article <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+            </div>
+          </a>
+          <a class="article-card" href="#articles" data-article="choose-canyon">
+            <div class="article-media">
+              <img src="https://images.pexels.com/photos/5741502/pexels-photo-5741502.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=800" alt="A deep canyon with clear water and rock walls" width="800" height="500" loading="lazy" decoding="async">
+              <span class="article-tag">Canyon comparison</span>
+            </div>
+            <div class="article-body">
+              <div class="article-meta"><span>4 Nov 2026</span><i></i><span>8 min read</span></div>
+              <h3>Egar, Maboya or Samba: how to choose your canyon</h3>
+              <p>Difficulty, swims, rappel heights and who each route suits best — a side-by-side comparison.</p>
+              <span class="article-more">Read article <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+            </div>
+          </a>
+          <a class="article-card" href="#articles" data-article="packing-list">
+            <div class="article-media">
+              <img src="https://images.pexels.com/photos/931007/pexels-photo-931007.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=800" alt="Canyoning gear laid out before a trip" width="800" height="500" loading="lazy" decoding="async">
+              <span class="article-tag">Gear &amp; prep</span>
+            </div>
+            <div class="article-body">
+              <div class="article-meta"><span>28 Oct 2026</span><i></i><span>5 min read</span></div>
+              <h3>What to pack for canyoning (and what to leave behind)</h3>
+              <p>The short list that makes a difference, plus the things that are better left at the hotel.</p>
+              <span class="article-more">Read article <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="faq">
       <div class="wrap faq-layout">
         <div class="faq-intro" data-reveal>
@@ -1194,7 +1374,7 @@
           </details>
           <details class="faq-item">
             <summary>How do I confirm and pay?<span class="faq-icon" aria-hidden="true"></span></summary>
-            <div class="faq-answer">Send a booking request with your date and group size. We confirm availability within 15 minutes during business hours. You can pay a 25% deposit or choose to pay later by arrangement. Prices are in IDR.</div>
+            <div class="faq-answer">Send a booking request with your date and group size. We confirm availability within 15 minutes during business hours. You can then secure the date with a 25% deposit or pay the full amount by card, bank transfer or QRIS. The checkout on this demo site simulates payment only. Prices are in IDR.</div>
           </details>
           <details class="faq-item">
             <summary>What is your cancellation policy?<span class="faq-icon" aria-hidden="true"></span></summary>
@@ -1204,6 +1384,58 @@
             <summary>Can I book a private group?<span class="faq-icon" aria-hidden="true"></span></summary>
             <div class="faq-answer">Yes. Private groups are available on all canyons, subject to availability. Contact us on WhatsApp with your preferred date and group size for a private quote.</div>
           </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="wrap contact-grid">
+        <div class="contact-copy" data-reveal>
+          <span class="kicker">Contact us</span>
+          <h2>Talk to a real guide.</h2>
+          <p class="lead">Questions about water levels, private groups, pickup or which canyon fits your family? Message us — we usually reply within 15 minutes during opening hours.</p>
+          <div class="contact-list">
+            <div class="contact-item">
+              <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></span>
+              <div><small>WhatsApp</small><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" data-wa-link data-phone-display>+62 812 3456 7890</a></div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span>
+              <div><small>Email</small><a href="mailto:hello@canyoningbali.com" data-email-display>hello@canyoningbali.com</a></div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span>
+              <div><small>Basecamp</small><b>Pupuan, Tabanan, North Bali</b></div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span>
+              <div><small>Opening hours</small><b>07:00–20:00 WITA, every day</b></div>
+            </div>
+          </div>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="https://wa.me/6281234567890" target="_blank" rel="noopener" data-wa-link>WhatsApp us <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></a>
+            <a class="btn btn-ghost" href="mailto:hello@canyoningbali.com">Send an email <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></a>
+          </div>
+        </div>
+        <div class="contact-card" data-reveal>
+          <h3>Send a quick message</h3>
+          <p>Tell us your date, group size and what you would like to know. This demo form opens WhatsApp with your message ready to send.</p>
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="field">
+              <label for="ctName">Your name <span class="req">*</span></label>
+              <input id="ctName" name="name" type="text" autocomplete="name" placeholder="Full name" required>
+            </div>
+            <div class="field">
+              <label for="ctEmail">Email <span class="req">*</span></label>
+              <input id="ctEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+            <div class="field">
+              <label for="ctMessage">Message <span class="req">*</span></label>
+              <textarea id="ctMessage" name="message" placeholder="Hi, we are 2 adults looking at Egar Canyon around..." required></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">Send via WhatsApp <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></button>
+          </form>
+          <p class="form-note">Demo contact form — no message is stored on this website. Prefer email? Write to <a href="mailto:hello@canyoningbali.com" style="color:var(--brand-dark);text-decoration:underline">hello@canyoningbali.com</a>.</p>
         </div>
       </div>
     </section>
@@ -1219,7 +1451,7 @@
           <div class="final-actions">
             <button class="btn btn-primary" type="button" data-book>Check availability <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
             <a class="btn btn-outline" href="https://wa.me/6281234567890" target="_blank" rel="noopener" data-wa-link><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp us</a>
-            <small>No payment now · Reply within 15 min</small>
+            <small>Deposit or pay in full · Reply within 15 min</small>
           </div>
         </div>
       </div>
@@ -1231,8 +1463,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a class="brand" href="#top" aria-label="Canyoning Bali home">
-            <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16c3-5 5-5 8 0s5 5 8 0"/><path d="M7 10c2-3.5 3.5-3.5 5.5 0s3.5 3.5 5.5 0" opacity=".55"/></svg></span>
-            <span>CANYONING <em>BALI</em></span>
+            <img class="brand-logo" src="https://canyoningbali.id/wp-content/uploads/2019/03/CANYONING-BALI.png" alt="Canyoning Bali logo" width="1417" height="1417" loading="lazy" decoding="async">
           </a>
           <p>Small-group canyoning adventures in North Bali. Local guides, real canyons and unforgettable days.</p>
           <div class="footer-rating"><span class="stars" aria-hidden="true">★★★★★</span><span>4.9/5 · 312 guest reviews</span></div>
@@ -1246,11 +1477,12 @@
         <div>
           <h4>Explore</h4>
           <div class="footer-links">
-            <a href="#adventures">Canyons</a>
-            <a href="#why-us">Why choose us</a>
-            <a href="#safety">Safety</a>
-            <a href="#reviews">Guest stories</a>
-            <a href="#faq">FAQ</a>
+            <a href="#top">Home</a>
+            <a href="#adventures">Canyoning tour</a>
+            <a href="#about">About us</a>
+            <a href="#faq">FAQ's</a>
+            <a href="#contact">Contact us</a>
+            <a href="#articles">Articles</a>
           </div>
         </div>
         <div>
@@ -1276,8 +1508,8 @@
       </div>
       <div class="footer-bottom">
         <span>© <span id="year"></span> Canyoning Bali. All rights reserved.</span>
+        <span class="footer-demo">Demo build · Sample content · Simulated payments</span>
         <span>Prices in IDR · Converted amounts are approximate</span>
-        <span>Local, independently operated in North Bali</span>
       </div>
     </div>
   </footer>
@@ -1298,12 +1530,12 @@
       <div class="dialog-head">
         <span class="kicker">Book your adventure</span>
         <h2 id="bookingTitle">Check availability</h2>
-        <p>No payment now. We confirm availability within 15 minutes, 08:00–20:00 WITA.</p>
+        <p>Demo checkout: card, bank transfer or QRIS. No real charge is made.</p>
       </div>
       <ol class="stepper" aria-label="Booking steps">
         <li class="active" data-step-indicator="1"><span>1</span> Trip</li>
         <li data-step-indicator="2"><span>2</span> Details</li>
-        <li data-step-indicator="3"><span>3</span> Confirm</li>
+        <li data-step-indicator="3"><span>3</span> Payment</li>
       </ol>
       <p id="bookingStepStatus" class="hint" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Step 1 of 3: Trip details</p>
       <form id="bookingForm" novalidate>
@@ -1378,37 +1610,150 @@
         </section>
 
         <section class="booking-step" data-step="3" hidden>
-          <h3>Review your request</h3>
-          <p class="step-sub">Check the details below. Nothing is charged on this website.</p>
+          <h3>Review &amp; payment</h3>
+          <p class="step-sub">Check your trip, choose how much to pay, then complete the demo checkout.</p>
           <div class="summary-card" id="bookingSummary"></div>
-          <div class="field" style="margin-top:14px">
-            <label for="bkPayment">Payment preference</label>
-            <select id="bkPayment" name="payment">
-              <option value="deposit">Pay 25% deposit after confirmation</option>
-              <option value="later">Pay later / confirm by WhatsApp</option>
-            </select>
+
+          <div class="pay-block">
+            <div class="pay-head">
+              <h4>1. Payment amount</h4>
+              <span class="demo-chip"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Demo gateway</span>
+            </div>
+            <div class="pay-plans" role="radiogroup" aria-label="Payment amount">
+              <label class="pay-option selected" data-pay-plan="deposit">
+                <input type="radio" name="payPlan" value="deposit" checked>
+                <span class="pay-radio" aria-hidden="true"></span>
+                <span><b>25% deposit</b><small id="depositPlanAmount">—</small></span>
+              </label>
+              <label class="pay-option" data-pay-plan="full">
+                <input type="radio" name="payPlan" value="full">
+                <span class="pay-radio" aria-hidden="true"></span>
+                <span><b>Pay in full</b><small id="fullPlanAmount">—</small></span>
+              </label>
+            </div>
+
+            <div class="pay-head" style="margin-top:14px">
+              <h4>2. Payment method</h4>
+              <span class="hint">Charged in IDR</span>
+            </div>
+            <div class="pay-methods" role="radiogroup" aria-label="Payment method">
+              <label class="pay-option pay-option-method selected" data-pay-method="card">
+                <input type="radio" name="payMethod" value="card" checked>
+                <span class="pay-radio" aria-hidden="true"></span>
+                <svg class="icon pay-icon" aria-hidden="true"><use href="#i-card"/></svg>
+                <b>Credit / debit card</b>
+              </label>
+              <label class="pay-option pay-option-method" data-pay-method="bank">
+                <input type="radio" name="payMethod" value="bank">
+                <span class="pay-radio" aria-hidden="true"></span>
+                <svg class="icon pay-icon" aria-hidden="true"><use href="#i-bank"/></svg>
+                <b>Bank Bersama</b>
+              </label>
+              <label class="pay-option pay-option-method" data-pay-method="qris">
+                <input type="radio" name="payMethod" value="qris">
+                <span class="pay-radio" aria-hidden="true"></span>
+                <svg class="icon pay-icon" aria-hidden="true"><use href="#i-qr"/></svg>
+                <b>QRIS</b>
+              </label>
+            </div>
+
+            <div class="pay-panel" data-panel="card">
+              <div class="form-grid card-fields">
+                <div class="field full">
+                  <div class="card-label-row">
+                    <label for="bkCardNumber">Card number <span class="req">*</span></label>
+                    <button class="demo-fill" id="demoCardFill" type="button">Use demo card</button>
+                  </div>
+                  <input id="bkCardNumber" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="4242 4242 4242 4242" maxlength="23">
+                  <span class="hint">Demo only — never enter a real card. Try 4242 4242 4242 4242.</span>
+                </div>
+                <div class="field full">
+                  <label for="bkCardName">Name on card <span class="req">*</span></label>
+                  <input id="bkCardName" name="cardName" type="text" autocomplete="cc-name" placeholder="Demo Guest">
+                </div>
+                <div class="field">
+                  <label for="bkCardExpiry">Expiry (MM/YY) <span class="req">*</span></label>
+                  <input id="bkCardExpiry" name="cardExpiry" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="12/30" maxlength="5">
+                </div>
+                <div class="field">
+                  <label for="bkCardCvc">CVV <span class="req">*</span></label>
+                  <input id="bkCardCvc" name="cardCvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4">
+                </div>
+              </div>
+            </div>
+
+            <div class="pay-panel" data-panel="bank" hidden>
+              <div class="va-box">
+                <small>Bank Bersama · Virtual account</small>
+                <div class="va-row">
+                  <span class="va-number" id="vaNumber">—</span>
+                  <button class="copy-btn" id="copyVa" type="button"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> Copy</button>
+                </div>
+                <div class="va-rows">
+                  <div><span>Account name</span><b>Canyoning Bali</b></div>
+                  <div><span>Amount</span><b id="vaAmount">—</b></div>
+                  <div><span>Reference</span><b id="vaRef">—</b></div>
+                </div>
+              </div>
+              <p class="hint">Simulated virtual account. In production the number would be issued by the payment provider and expire after a set time.</p>
+            </div>
+
+            <div class="pay-panel" data-panel="qris" hidden>
+              <div class="qris-wrap">
+                <div class="qris-frame" id="qrisCode"></div>
+                <div class="qris-copy">
+                  <b>Scan with any QRIS app</b>
+                  <p>Open your bank or e-wallet app, scan this demo QR and confirm. Nothing is charged.</p>
+                  <span class="qris-brand"><svg class="icon" aria-hidden="true"><use href="#i-qr"/></svg> QRIS · Demo</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pay-total">
+              <div><small>Pay now</small><strong id="payAmount">—</strong></div>
+              <span class="pay-secure"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Secure demo checkout</span>
+            </div>
+            <div class="pay-demo-note"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Demonstration gateway only. No real payment is processed. Card details stay in this browser and are never stored or sent.</span></div>
           </div>
+
           <label class="checkline"><input id="bkPolicy" name="policy" type="checkbox" required> <span>I understand the <a href="#" data-policy="cancellation">cancellation and weather policy</a>. <span class="req">*</span></span></label>
           <div class="dialog-actions">
             <button class="btn btn-ghost" type="button" data-back>Back</button>
-            <button class="btn btn-primary" type="submit">Send booking request <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></button>
+            <button class="btn btn-primary" type="submit" id="paySubmitBtn">Pay deposit (demo)</button>
           </div>
-          <p class="dialog-note">You will be redirected to WhatsApp with your details ready to send. Prefer email? You can send the same request by email on the next screen.</p>
+          <p class="dialog-note">After the simulated payment you will receive a demo reference and the option to send your booking details by WhatsApp or email.</p>
         </section>
 
         <section class="booking-step success" data-step="4" hidden>
           <div class="success-icon" aria-hidden="true">✓</div>
-          <h3>Your request is ready</h3>
-          <p>Your reference is <strong id="bookingRef">—</strong>. Send it by WhatsApp or email and we will confirm availability within 15 minutes.</p>
+          <h3>Booking confirmed <span class="hint">(demo)</span></h3>
+          <p>Demo payment approved. Your reference is <strong id="bookingRef">—</strong>. Send your confirmation by WhatsApp or email so the team can lock in the date and pickup time.</p>
           <div class="summary-card" id="successSummary"></div>
           <div class="dialog-actions">
-            <a class="btn btn-primary" id="waLink" href="#" target="_blank" rel="noopener" data-wa-send>Open WhatsApp <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></a>
+            <a class="btn btn-primary" id="waLink" href="#" target="_blank" rel="noopener" data-wa-send>Send on WhatsApp <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></a>
             <a class="btn btn-ghost" id="emailLink" href="#" data-email-send>Send by email</a>
           </div>
           <button class="btn btn-link" type="button" id="calendarBtn"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> Add to calendar</button>
-          <p class="dialog-note">If WhatsApp does not open, use the email option or message us at <a href="mailto:hello@canyoningbali.com" style="color:var(--brand-dark);text-decoration:underline">hello@canyoningbali.com</a>.</p>
+          <p class="dialog-note">This was a simulated payment — no money was charged. If WhatsApp does not open, email us at <a href="mailto:hello@canyoningbali.com" style="color:var(--brand-dark);text-decoration:underline">hello@canyoningbali.com</a>.</p>
         </section>
       </form>
+    </div>
+  </dialog>
+
+  <dialog id="articleDialog" class="article-dialog" aria-labelledby="articleTitle">
+    <div class="dialog-card">
+      <button class="dialog-close" type="button" data-close-dialog aria-label="Close article"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <div class="dialog-head">
+        <span class="kicker" id="articleKicker">Article</span>
+        <h2 id="articleTitle">Article</h2>
+        <p id="articleMeta">—</p>
+      </div>
+      <img class="article-cover" id="articleCover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='330'%3E%3Crect width='100%25' height='100%25' fill='%23D8E6EE'/%3E%3C/svg%3E" alt="" width="760" height="330">
+      <div class="article-reading" id="articleBody"></div>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" type="button" data-close-dialog>Close</button>
+        <button class="btn btn-primary" type="button" data-book>Check availability <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </div>
     </div>
   </dialog>
 
@@ -1445,7 +1790,7 @@
           <small>per person · pickup available</small>
           <button class="btn btn-primary" type="button" id="tourBookBtn">Check availability <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           <a class="btn btn-ghost" id="tourWaBtn" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg> Ask a question</a>
-          <div class="tour-aside-note">No payment now · Free cancellation 48h</div>
+          <div class="tour-aside-note">Deposit or pay in full · Free cancellation 48h</div>
         </aside>
       </div>
     </div>
@@ -1755,7 +2100,7 @@
             <h3>Booking requests</h3>
             <p>A booking request is not a confirmed booking. We confirm availability by WhatsApp or email, then send payment and pickup details. Prices are in Indonesian rupiah (IDR); converted amounts on this website are approximate.</p>
             <h3>Payment</h3>
-            <p>A 25% deposit secures your date. The balance is payable before departure or on the day, as agreed in your confirmation. Payment methods and cancellation terms are included in your confirmation message.</p>
+            <p>A 25% deposit secures your date, or you can pay the full amount. This demo site offers card, Bank Bersama transfer and QRIS in a simulated checkout; no real payment is processed. In production, the balance would be payable before departure or on the day, as agreed in your confirmation. Payment methods and cancellation terms are included in your confirmation message.</p>
             <h3>Safety & suitability</h3>
             <p>Canyoning is an outdoor adventure activity with inherent risks. You must follow your guide's instructions, disclose relevant medical conditions and meet the age, fitness, swimming and weight requirements for your chosen canyon.</p>
             <h3>Insurance</h3>
@@ -1839,6 +2184,89 @@
       };
 
       const savedCurrency = store.get('cb_currency', SITE.currency);
+      const ARTICLES = {
+        'first-canyon': {
+          kicker: 'Beginner guide',
+          title: 'Your first canyoning day in Bali: what actually happens',
+          meta: '12 November 2026 · 6 min read · By the Canyoning Bali team',
+          imageId: 7163522,
+          body: `
+            <p>Canyoning is one of those activities that looks effortless in photos and feels very different when you are standing at the top of your first rappel. That is normal. The good news is that a beginner canyon day is built around small, manageable steps — not one giant leap into the unknown.</p>
+            <h3>Before you leave the basecamp</h3>
+            <p>Your morning starts with a gear check and a safety briefing. Your guide will fit your harness and helmet, explain the hand signals and show you how the rope system works. Tell them about any injury, medication or fear of heights. Nobody is judging you; the guide uses that information to adapt the day.</p>
+            <h3>Practice before the real thing</h3>
+            <p>Most beginner routes include a short practice rappel on a low wall. You learn how to sit into the harness, control your speed and keep your feet planted. By the time you reach the first waterfall, the movement already feels familiar.</p>
+            <h3>Your first waterfall rappel</h3>
+            <p>Your guide sets the rope, checks your setup and stays close. You step back over the edge, keep your weight in the harness and walk down the rock as the water passes beside you. It is loud, cool and over faster than you expect. Then you look up and realise you want to do it again.</p>
+            <h3>The rest of the day</h3>
+            <p>Beginner canyons mix rappels with natural slides, short swims and walking through the jungle. Optional jumps usually have a bypass. Lunch is normally a simple packed meal in a dry section of the canyon, followed by a few more obstacles before the exit.</p>
+            <h3>How fit do you need to be?</h3>
+            <p>You should be comfortable walking on uneven ground and happy in water. You do not need upper-body strength or previous climbing experience. If you can manage a moderate hike and follow instructions, you can usually enjoy a beginner canyon.</p>
+            <p>The best preparation is mental: expect to feel nervous at the first edge, trust the guide, and give yourself a few minutes to settle in. Almost everyone does.</p>`
+        },
+        'choose-canyon': {
+          kicker: 'Canyon comparison',
+          title: 'Egar, Maboya or Samba: how to choose your canyon',
+          meta: '4 November 2026 · 8 min read · By the Canyoning Bali team',
+          imageId: 5741502,
+          body: `
+            <p>All three canyons are in North Bali and all three are guided by local teams. The difference is not just difficulty — it is the shape of the day, the water, the height of the rappels and how much adventure you want to feel.</p>
+            <h3>Egar Canyon — the welcoming introduction</h3>
+            <p>Egar is the easiest entry point. Expect shorter rappels, fun natural slides and plenty of time to enjoy the scenery. It suits first-timers, families with older children and anyone who wants a full day out without feeling pushed.</p>
+            <ul>
+              <li><strong>Best for:</strong> first-time canyoners, mixed-ability groups</li>
+              <li><strong>Feel:</strong> playful, green, approachable</li>
+              <li><strong>Watch out for:</strong> it is still a real canyon — you will get wet and you will be active</li>
+            </ul>
+            <h3>Maboya Canyon — the balanced adventure</h3>
+            <p>Maboya adds bigger rappels and a more remote atmosphere without demanding technical experience. It is a good step up if you have done something adventurous before and want a little more exposure and water.</p>
+            <ul>
+              <li><strong>Best for:</strong> reasonably fit beginners ready for a bigger day</li>
+              <li><strong>Feel:</strong> wilder, deeper, more varied</li>
+              <li><strong>Watch out for:</strong> you should be comfortable with heights and swimming</li>
+            </ul>
+            <h3>Samba Canyon — the step up</h3>
+            <p>Samba is longer, deeper and more demanding. The rappels are bigger, the swims are more active and the canyon feels more remote. You do not need technical canyoning skills, but you do need confidence in the water and a head for heights.</p>
+            <ul>
+              <li><strong>Best for:</strong> confident swimmers and repeat adventurers</li>
+              <li><strong>Feel:</strong> committing, dramatic, full-day</li>
+              <li><strong>Watch out for:</strong> minimum age and fitness requirements are stricter</li>
+            </ul>
+            <h3>A simple rule of thumb</h3>
+            <p>If it is your first time, choose Egar. If you want a bigger day and you are comfortable in water, look at Maboya. If you already know you love this kind of adventure, Samba is waiting. When in doubt, message us with your group's ages, swimming ability and nerves — we will point you to the right route.</p>`
+        },
+        'packing-list': {
+          kicker: 'Gear & prep',
+          title: 'What to pack for canyoning (and what to leave behind)',
+          meta: '28 October 2026 · 5 min read · By the Canyoning Bali team',
+          imageId: 931007,
+          body: `
+            <p>You do not need much for a canyoning day, and most technical gear is provided. The goal is to arrive with a small bag of things that dry quickly and leave the rest at your hotel.</p>
+            <h3>Bring these</h3>
+            <ul>
+              <li><strong>Swimwear</strong> — worn underneath your clothes before you arrive.</li>
+              <li><strong>Quick-dry shorts and top</strong> — avoid cotton, which stays heavy and cold.</li>
+              <li><strong>Water shoes or old trainers</strong> — something with grip that can get wet.</li>
+              <li><strong>Towel and a full change of clothes</strong> — for after the canyon.</li>
+              <li><strong>Reef-safe sunscreen</strong> — apply before and after, not right before a rappel.</li>
+              <li><strong>Personal medication</strong> — tell your guide where it is and how to use it.</li>
+              <li><strong>A dry bag for small valuables</strong> — or simply leave them at the basecamp.</li>
+            </ul>
+            <h3>Leave these behind</h3>
+            <ul>
+              <li>Jewellery, rings and loose accessories.</li>
+              <li>Expensive cameras or phones without waterproof protection.</li>
+              <li>Cotton jeans, heavy hoodies and flip-flops.</li>
+              <li>Anything you would be upset to lose in the water.</li>
+            </ul>
+            <h3>What we provide</h3>
+            <p>Your booking includes the canyoning harness, helmet, wetsuit and rope equipment, plus a guide, safety briefing, lunch and drinking water. Photos are usually included on our standard tours.</p>
+            <h3>A note on shoes</h3>
+            <p>Grip matters more than style. Trainers with a decent tread are fine; dedicated water shoes are better. If you only have smooth-soled shoes, tell us before the trip and we will see what we can arrange.</p>
+            <p>Pack light, arrive early and keep your bag organised. The canyon does the rest.</p>`
+        }
+      };
+
       const state = {
         currency: RATES[savedCurrency] ? savedCurrency : 'IDR',
         step: 1,
@@ -1853,7 +2281,15 @@
           phone: '',
           country: '',
           notes: '',
-          payment: 'deposit',
+          paymentPlan: 'deposit',
+          paymentMethod: 'card',
+          cardName: '',
+          cardLast4: '',
+          cardBrand: '',
+          payStatus: '',
+          payRef: '',
+          paidAmount: 0,
+          processing: false,
           consent: false,
           policy: false,
           ref: ''
@@ -2058,12 +2494,21 @@
           <div class="price-row"><span>Pickup — ${escapeHtml(pickupName)}</span><span>${c.pickup.fee ? money(c.pickup.fee) : 'Included'}</span></div>
           <div class="price-row total"><span>Estimated total <span class="muted">${c.people} ${c.people === 1 ? 'guest' : 'guests'}</span></span><strong>${money(c.total)}</strong></div>
           <div class="price-row"><span>25% deposit to confirm</span><span>${money(c.deposit)}</span></div>
-          <p class="currency-note">Prices are charged in IDR. Converted amounts are approximate. No payment is taken on this website.</p>`;
+          <p class="currency-note">Prices are charged in IDR. Converted amounts are approximate. Checkout on this demo site simulates payment only.</p>`;
+      }
+
+      function payMethodLabel(method = state.booking.paymentMethod) {
+        return { card: 'Credit / debit card', bank: 'Bank Bersama transfer', qris: 'QRIS' }[method] || 'Card';
+      }
+
+      function paymentAmount(c = calc()) {
+        return state.booking.paymentPlan === 'full' ? c.total : c.deposit;
       }
 
       function buildSummaryHTML(includeContact = false) {
         const b = state.booking;
         const c = calc();
+        const payNow = paymentAmount(c);
         return `
           <div class="summary-tour">
             <img src="${px(c.tour.imageId, 300)}" alt="" width="58" height="58">
@@ -2073,18 +2518,22 @@
           <div class="summary-line"><span>Guests</span><b>${c.people} ${c.people === 1 ? 'guest' : 'guests'}</b></div>
           <div class="summary-line"><span>Pickup</span><b>${escapeHtml(c.pickup.label.split('—')[0].trim())}</b></div>
           <div class="summary-line"><span>Estimated total</span><b>${money(c.total)}</b></div>
-          <div class="summary-line"><span>Deposit (25%)</span><b>${money(c.deposit)}</b></div>
+          <div class="summary-line"><span>${b.paymentPlan === 'full' ? 'Paying in full' : 'Deposit (25%)'}</span><b>${money(payNow)}</b></div>
+          ${b.paymentPlan === 'deposit' ? `<div class="summary-line"><span>Balance on the day</span><b>${money(c.total - c.deposit)}</b></div>` : ''}
           ${includeContact ? `
             <div class="summary-line"><span>Name</span><b>${escapeHtml(b.name)}</b></div>
             <div class="summary-line"><span>Email</span><b>${escapeHtml(b.email)}</b></div>
             <div class="summary-line"><span>WhatsApp</span><b>${escapeHtml(b.phone)}</b></div>
+            <div class="summary-line"><span>Payment method</span><b>${escapeHtml(payMethodLabel())}${b.paymentMethod === 'card' && b.cardLast4 ? ` •••• ${escapeHtml(b.cardLast4)}` : ''}</b></div>
+            <div class="summary-line"><span>Payment status</span><b>Approved (demo)</b></div>
+            <div class="summary-line"><span>Demo transaction</span><b>${escapeHtml(b.payRef || '—')}</b></div>
             <div class="summary-line"><span>Reference</span><b>${escapeHtml(b.ref)}</b></div>` : ''}`;
       }
 
       function buildBookingMessage(ref, c = calc()) {
         const b = state.booking;
         const lines = [
-          `Hi ${SITE.name}, I'd like to request a booking.`,
+          `Hi ${SITE.name}, I'd like to confirm my booking.`,
           '',
           `Reference: ${ref}`,
           `Canyon: ${c.tour.name} (${c.tour.level})`,
@@ -2097,13 +2546,16 @@
         ];
         if (b.country) lines.push(`Country: ${b.country}`);
         if (b.notes) lines.push(`Notes: ${b.notes}`);
+        const method = payMethodLabel() + (b.paymentMethod === 'card' && b.cardLast4 ? ` ending ${b.cardLast4}` : '');
         lines.push(
           '',
           `Estimated total: ${money(c.total)}`,
-          `Deposit (25%): ${money(c.deposit)}`,
-          `Payment preference: ${b.payment === 'deposit' ? '25% deposit after confirmation' : 'Confirm by WhatsApp / pay later'}`,
+          `Payment plan: ${b.paymentPlan === 'full' ? 'Pay in full' : '25% deposit'}`,
+          `Amount paid (demo): ${money(b.paidAmount || paymentAmount(c))}`,
+          `Payment method: ${method}`,
+          `Demo transaction: ${b.payRef || '—'}`,
           '',
-          'Please confirm availability. Thank you!'
+          'The payment above was simulated in demo mode. Please confirm availability and send the real payment link. Thank you!'
         );
         return lines.join('\n');
       }
@@ -2163,7 +2615,109 @@
         if ($('#bkDate')) b.date = $('#bkDate').value;
         if ($('#bkPeople')) b.people = Number($('#bkPeople').value) || 1;
         if ($('#bkPickup')) b.pickup = $('#bkPickup').value;
-        if ($('#bkPayment')) b.payment = $('#bkPayment').value;
+        const plan = document.querySelector('input[name="payPlan"]:checked');
+        if (plan) b.paymentPlan = plan.value;
+        const method = document.querySelector('input[name="payMethod"]:checked');
+        if (method) b.paymentMethod = method.value;
+        if ($('#bkCardName')) b.cardName = $('#bkCardName').value.trim();
+        const pan = $('#bkCardNumber') ? $('#bkCardNumber').value.replace(/\D/g, '') : '';
+        b.cardLast4 = pan.slice(-4);
+        b.cardBrand = detectCardBrand(pan);
+      }
+
+      function detectCardBrand(digits) {
+        if (/^4/.test(digits)) return 'Visa';
+        if (/^5[1-5]/.test(digits) || /^2[2-7]/.test(digits)) return 'Mastercard';
+        if (/^3[47]/.test(digits)) return 'Amex';
+        return digits ? 'Card' : '';
+      }
+
+      function makePayRef() {
+        const stamp = Date.now().toString(36).toUpperCase().slice(-5);
+        return `DEMO-${stamp}${Math.floor(Math.random() * 900 + 100)}`;
+      }
+
+      function formatCardNumber(value) {
+        return value.replace(/\D/g, '').slice(0, 19).replace(/(.{4})/g, '$1 ').trim();
+      }
+
+      function formatExpiry(value) {
+        const digits = value.replace(/\D/g, '').slice(0, 4);
+        return digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+      }
+
+      function demoVirtualAccount(seed) {
+        let hash = 0;
+        for (let i = 0; i < seed.length; i += 1) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+        let digits = '';
+        for (let i = 0; i < 12; i += 1) {
+          hash = (hash * 1664525 + 1013904223) >>> 0;
+          digits += String(hash % 10);
+        }
+        return `8808 ${digits.slice(0, 4)} ${digits.slice(4, 8)} ${digits.slice(8, 12)}`;
+      }
+
+      function qrisSvg(seed) {
+        const modules = 29;
+        const quiet = 2;
+        const total = modules + quiet * 2;
+        const cell = 4;
+        const size = total * cell;
+        let hash = 0;
+        for (let i = 0; i < seed.length; i += 1) hash = (hash * 33 + seed.charCodeAt(i)) >>> 0;
+        const rand = () => {
+          hash = (hash * 1664525 + 1013904223) >>> 0;
+          return hash / 4294967296;
+        };
+        const inFinder = (x, y) => (
+          (x < 7 && y < 7) || (x >= modules - 7 && y < 7) || (x < 7 && y >= modules - 7)
+        );
+        let rects = '';
+        for (let y = 0; y < modules; y += 1) {
+          for (let x = 0; x < modules; x += 1) {
+            if (inFinder(x, y)) continue;
+            if (rand() > 0.54) {
+              rects += `<rect x="${(x + quiet) * cell}" y="${(y + quiet) * cell}" width="${cell}" height="${cell}" fill="#1D2C35"/>`;
+            }
+          }
+        }
+        const finder = (fx, fy) => {
+          const ox = (fx + quiet) * cell;
+          const oy = (fy + quiet) * cell;
+          return `<rect x="${ox}" y="${oy}" width="${cell * 7}" height="${cell * 7}" fill="#1D2C35"/>` +
+            `<rect x="${ox + cell}" y="${oy + cell}" width="${cell * 5}" height="${cell * 5}" fill="#fff"/>` +
+            `<rect x="${ox + cell * 2}" y="${oy + cell * 2}" width="${cell * 3}" height="${cell * 3}" fill="#1D2C35"/>`;
+        };
+        return `<svg viewBox="0 0 ${size} ${size}" role="img" aria-label="Demo QRIS code"><rect width="${size}" height="${size}" fill="#fff"/>${finder(0, 0)}${finder(modules - 7, 0)}${finder(0, modules - 7)}${rects}<rect x="${size / 2 - 15}" y="${size / 2 - 9}" width="30" height="18" rx="4" fill="#fff"/><text x="${size / 2}" y="${size / 2 + 4}" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8.5" font-weight="800" fill="#006C9F">QRIS</text></svg>`;
+      }
+
+      function updatePaymentUI() {
+        const b = state.booking;
+        const c = calc();
+        const payNow = paymentAmount(c);
+        const idr = (amount) => money(amount, 'IDR');
+        const depositEl = $('#depositPlanAmount');
+        if (depositEl) depositEl.textContent = `${idr(c.deposit)} now`;
+        const fullEl = $('#fullPlanAmount');
+        if (fullEl) fullEl.textContent = `${idr(c.total)} now`;
+        $$('[data-pay-plan]').forEach((el) => el.classList.toggle('selected', el.dataset.payPlan === b.paymentPlan));
+        $$('[data-pay-method]').forEach((el) => el.classList.toggle('selected', el.dataset.payMethod === b.paymentMethod));
+        $$('.pay-panel').forEach((panel) => { panel.hidden = panel.dataset.panel !== b.paymentMethod; });
+        if (!b.payRef) b.payRef = makePayRef();
+        const amountEl = $('#payAmount');
+        if (amountEl) amountEl.textContent = idr(payNow);
+        const vaNumber = $('#vaNumber');
+        if (vaNumber) vaNumber.textContent = demoVirtualAccount(b.payRef);
+        const vaAmount = $('#vaAmount');
+        if (vaAmount) vaAmount.textContent = idr(payNow);
+        const vaRef = $('#vaRef');
+        if (vaRef) vaRef.textContent = b.payRef;
+        const qris = $('#qrisCode');
+        if (qris) qris.innerHTML = qrisSvg(b.payRef);
+        const btn = $('#paySubmitBtn');
+        if (btn && !b.processing) {
+          btn.textContent = `Pay ${idr(payNow)} (demo)`;
+        }
       }
 
       function clearErrors() {
@@ -2200,7 +2754,7 @@
         let firstBad = null;
         const fail = (input, message) => {
           setFieldError(input, message);
-          if (!firstBad) firstBad = input;
+          if (!firstBad && input) firstBad = input;
         };
 
         if (step === 1) {
@@ -2237,10 +2791,43 @@
           }
         }
 
-        if (step === 3 && !$('#bkPolicy').checked) {
-          showToast('Please confirm that you understand the cancellation and weather policy.');
-          $('#bkPolicy').focus();
-          firstBad = $('#bkPolicy');
+        if (step === 3) {
+          syncBookingFromForm();
+          const b = state.booking;
+          if (!['deposit', 'full'].includes(b.paymentPlan)) fail(null, 'Please choose a payment amount.');
+          if (!['card', 'bank', 'qris'].includes(b.paymentMethod)) fail(null, 'Please choose a payment method.');
+
+          if (b.paymentMethod === 'card') {
+            const number = $('#bkCardNumber');
+            const name = $('#bkCardName');
+            const expiry = $('#bkCardExpiry');
+            const cvc = $('#bkCardCvc');
+            const digits = number.value.replace(/\D/g, '');
+            if (!/^\d{13,19}$/.test(digits)) fail(number, 'Enter a demo card number (13–19 digits).');
+            if (name.value.trim().length < 2) fail(name, 'Please enter the name on the card.');
+            const exp = expiry.value.replace(/\D/g, '');
+            let expOk = /^\d{4}$/.test(exp);
+            if (expOk) {
+              const mm = Number(exp.slice(0, 2));
+              const yy = Number(exp.slice(2));
+              const now = new Date();
+              const currentYY = now.getFullYear() % 100;
+              const currentMM = now.getMonth() + 1;
+              if (mm < 1 || mm > 12) expOk = false;
+              else if (yy < currentYY || (yy === currentYY && mm < currentMM)) expOk = false;
+            }
+            if (!expOk) fail(expiry, 'Enter a valid future expiry date as MM/YY.');
+            if (!/^\d{3,4}$/.test(cvc.value.replace(/\D/g, ''))) fail(cvc, 'Enter a 3 or 4 digit CVV.');
+          }
+
+          const policy = $('#bkPolicy');
+          if (!policy.checked) {
+            if (!firstBad) {
+              showToast('Please confirm that you understand the cancellation and weather policy.');
+              policy.focus();
+            }
+            firstBad = firstBad || policy;
+          }
         }
 
         if (firstBad) {
@@ -2262,20 +2849,27 @@
         });
         const stepper = $('.stepper');
         if (stepper) stepper.style.display = step === 4 ? 'none' : '';
-        const labels = { 1: 'Trip details', 2: 'Your details', 3: 'Review and confirm', 4: 'Request ready' };
+        const labels = { 1: 'Trip details', 2: 'Your details', 3: 'Review and payment', 4: 'Payment approved' };
         const status = $('#bookingStepStatus');
-        if (status) status.textContent = step === 4 ? 'Booking request ready to send' : `Step ${step} of 3: ${labels[step]}`;
+        if (status) status.textContent = step === 4 ? 'Demo payment approved and booking request ready to send' : `Step ${step} of 3: ${labels[step]}`;
         const card = $('#bookingDialog .dialog-card');
         if (card) card.scrollTop = 0;
         if (step === 3) {
           syncBookingFromForm();
           const summary = $('#bookingSummary');
           if (summary) summary.innerHTML = buildSummaryHTML(false);
+          updatePaymentUI();
         }
       }
 
       function openBooking(tourId) {
         const b = state.booking;
+        if (b.payStatus === 'approved') {
+          b.payStatus = '';
+          b.payRef = '';
+          b.paidAmount = 0;
+          b.ref = '';
+        }
         if (tourId && TOURS.some((t) => t.id === tourId)) b.tourId = tourId;
         if (!b.date || b.date < localISO()) b.date = addDays(localISO(), 1);
         if (!b.people) b.people = 2;
@@ -2299,19 +2893,86 @@
         syncBookingFromForm();
         const c = calc();
         const b = state.booking;
-        b.ref = makeRef();
+        if (b.processing) return;
+        b.processing = true;
+        const amount = paymentAmount(c);
+        const btn = $('#paySubmitBtn');
+        if (btn) {
+          btn.disabled = true;
+          btn.classList.add('processing');
+          btn.innerHTML = '<span class="spinner"></span> Processing demo payment…';
+        }
+        track('add_payment_info', {
+          tour_id: c.tour.id,
+          value: amount,
+          currency: 'IDR',
+          guests: c.people,
+          payment_plan: b.paymentPlan,
+          payment_method: b.paymentMethod
+        });
+        window.setTimeout(() => {
+          b.processing = false;
+          b.payStatus = 'approved';
+          if (!b.payRef) b.payRef = makePayRef();
+          b.paidAmount = amount;
+          b.ref = makeRef();
+          completeBooking(c);
+          if (btn) {
+            btn.disabled = false;
+            btn.classList.remove('processing');
+            updatePaymentUI();
+          }
+        }, 1400);
+      }
+
+      function completeBooking(c) {
+        const b = state.booking;
         const message = buildBookingMessage(b.ref, c);
         const wa = $('#waLink');
         const mail = $('#emailLink');
         if (wa) wa.href = waLink(message);
-        if (mail) mail.href = mailtoLink(`Booking request ${b.ref} — ${c.tour.name}, ${fmtDate(b.date)}`, message);
+        if (mail) mail.href = mailtoLink(`Booking confirmation ${b.ref} — ${c.tour.name}, ${fmtDate(b.date)}`, message);
         const refEl = $('#bookingRef');
         if (refEl) refEl.textContent = b.ref;
         const success = $('#successSummary');
         if (success) success.innerHTML = buildSummaryHTML(true);
         goStep(4);
-        track('generate_lead', { tour_id: c.tour.id, value: c.total, currency: 'IDR', guests: c.people, ref: b.ref, payment: b.payment });
+        track('purchase', {
+          tour_id: c.tour.id,
+          value: b.paidAmount,
+          currency: 'IDR',
+          guests: c.people,
+          ref: b.ref,
+          payment_plan: b.paymentPlan,
+          payment_method: b.paymentMethod,
+          payment_status: 'demo_approved'
+        });
         store.set('cb_last_ref', b.ref);
+      }
+
+      /* ============================================================
+         Articles
+         ============================================================ */
+      function openArticle(id) {
+        const a = ARTICLES[id];
+        if (!a) return;
+        const kicker = $('#articleKicker');
+        if (kicker) kicker.textContent = a.kicker;
+        const title = $('#articleTitle');
+        if (title) title.textContent = a.title;
+        const meta = $('#articleMeta');
+        if (meta) meta.textContent = a.meta;
+        const cover = $('#articleCover');
+        if (cover) {
+          cover.src = px(a.imageId, 1400);
+          cover.alt = a.title;
+        }
+        const body = $('#articleBody');
+        if (body) body.innerHTML = a.body;
+        const card = $('#articleDialog .dialog-card');
+        if (card) card.scrollTop = 0;
+        openDialog($('#articleDialog'));
+        track('view_article', { article_id: id });
       }
 
       /* ============================================================
@@ -2673,6 +3334,13 @@
           return;
         }
 
+        const articleLink = target.closest('[data-article]');
+        if (articleLink) {
+          event.preventDefault();
+          openArticle(articleLink.dataset.article);
+          return;
+        }
+
         const bookTour = target.closest('[data-book-tour]');
         if (bookTour) {
           event.preventDefault();
@@ -2731,12 +3399,13 @@
           if (state.step === 3) {
             const summary = $('#bookingSummary');
             if (summary) summary.innerHTML = buildSummaryHTML(false);
+            updatePaymentUI();
           }
           track('currency_change', { currency: state.currency });
           return;
         }
 
-        const bookingField = target.closest('#bkTour, #bkDate, #bkPeople, #bkPickup, #bkPayment');
+        const bookingField = target.closest('#bkTour, #bkDate, #bkPeople, #bkPickup');
         if (bookingField) {
           syncBookingFromForm();
           clearFieldError(bookingField);
@@ -2817,6 +3486,104 @@
           state.booking.people = Number($('#quickPeople')?.value) || 2;
           openBooking(state.booking.tourId);
         });
+
+        $$('input[name="payPlan"]').forEach((input) => {
+          input.addEventListener('change', () => {
+            syncBookingFromForm();
+            const summary = $('#bookingSummary');
+            if (summary) summary.innerHTML = buildSummaryHTML(false);
+            updatePaymentUI();
+            track('select_payment_plan', { payment_plan: state.booking.paymentPlan });
+          });
+        });
+        $$('input[name="payMethod"]').forEach((input) => {
+          input.addEventListener('change', () => {
+            syncBookingFromForm();
+            updatePaymentUI();
+            track('select_payment_method', { payment_method: state.booking.paymentMethod });
+          });
+        });
+        $('#bkCardNumber')?.addEventListener('input', (event) => {
+          event.target.value = formatCardNumber(event.target.value);
+          clearFieldError(event.target);
+        });
+        $('#bkCardName')?.addEventListener('input', (event) => clearFieldError(event.target));
+        $('#bkCardExpiry')?.addEventListener('input', (event) => {
+          event.target.value = formatExpiry(event.target.value);
+          clearFieldError(event.target);
+        });
+        $('#bkCardCvc')?.addEventListener('input', (event) => {
+          event.target.value = event.target.value.replace(/\D/g, '').slice(0, 4);
+          clearFieldError(event.target);
+        });
+        $('#demoCardFill')?.addEventListener('click', () => {
+          const now = new Date();
+          const expiry = `${String(now.getMonth() + 1).padStart(2, '0')}/${String((now.getFullYear() + 3) % 100).padStart(2, '0')}`;
+          const fields = [
+            ['#bkCardNumber', '4242 4242 4242 4242'],
+            ['#bkCardName', 'Demo Guest'],
+            ['#bkCardExpiry', expiry],
+            ['#bkCardCvc', '123']
+          ];
+          fields.forEach(([selector, value]) => {
+            const el = $(selector);
+            if (!el) return;
+            el.value = value;
+            clearFieldError(el);
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          });
+          showToast('Demo card filled in. Nothing will be charged.');
+        });
+        $('#copyVa')?.addEventListener('click', async () => {
+          const va = $('#vaNumber');
+          const value = (va?.textContent || '').replace(/\s+/g, '');
+          if (!value || value === '—') return;
+          try {
+            if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+            await navigator.clipboard.writeText(value);
+            showToast('Virtual account copied.');
+          } catch (error) {
+            showToast(`Copy manually: ${value}`);
+          }
+        });
+
+        $('#contactForm')?.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const name = $('#ctName');
+          const email = $('#ctEmail');
+          const message = $('#ctMessage');
+          [name, email, message].forEach((el) => clearFieldError(el));
+          let bad = false;
+          if (!name || name.value.trim().length < 2) {
+            setFieldError(name, 'Please enter your name.');
+            bad = true;
+          }
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())) {
+            setFieldError(email, 'Please enter a valid email address.');
+            bad = true;
+          }
+          if (!message || message.value.trim().length < 5) {
+            setFieldError(message, 'Please tell us a little about your trip.');
+            bad = true;
+          }
+          if (bad) {
+            const firstError = document.querySelector('.contact-form .field.has-error input, .contact-form .field.has-error textarea');
+            firstError?.focus();
+            return;
+          }
+          const text = [
+            `Hi ${SITE.name}, I have a question.`,
+            '',
+            `Name: ${name.value.trim()}`,
+            `Email: ${email.value.trim()}`,
+            '',
+            message.value.trim()
+          ].join('\n');
+          track('contact_whatsapp', { source: 'contact_form' });
+          window.open(waLink(text), '_blank', 'noopener');
+          showToast('WhatsApp opened with your message.');
+        });
+
         $('#bookingForm')?.addEventListener('submit', (event) => {
           event.preventDefault();
           if (state.step === 4) return;
