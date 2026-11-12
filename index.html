@@ -228,7 +228,39 @@
       --gold:#B87916; --danger:#b42318;
       --shadow:0 22px 70px rgba(11,42,58,.13); --shadow-sm:0 10px 30px rgba(11,42,58,.08);
       --radius:24px; --radius-sm:16px; --max:1180px;
+      --bg-img-opacity:1;
     }
+    [data-theme="dark"]{
+      --ink:#F5F7FA; --ink-2:#E2E8EE; --brand:#3CB3FF; --brand-ink:#6FA8DC;
+      --brand-dark:#4D9FD8; --brand-cta:#5FB4FF;
+      --sky:#0A2A3A; --sky-2:#123A4F; --paper:#0B161E; --cream:#0F1A24;
+      --sand:#16232D; --line:#1E2E3A; --muted:#9FB3C2; --white:#0B161E;
+      --gold:#D9A441; --danger:#E57363;
+      --shadow:0 22px 70px rgba(0,0,0,.4); --shadow-sm:0 10px 30px rgba(0,0,0,.25);
+      --bg-img-opacity:.55;
+    }
+    .theme-toggle{
+      position:relative;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--cream);color:var(--ink);display:grid;place-items:center;transition:.2s;flex:none
+    }
+    .theme-toggle:hover{background:var(--sand);border-color:var(--brand)}
+    .theme-toggle .icon{width:18px;height:18px}
+    .theme-toggle [href="#i-sun"]{display:none}
+    [data-theme="dark"] .theme-toggle [href="#i-moon"]{display:none}
+    [data-theme="dark"] .theme-toggle [href="#i-sun"]{display:block}
+    /* Dark mode image dimming */
+    [data-theme="dark"] .hero-bg{opacity:var(--bg-img-opacity);transition:opacity .3s}
+    /* Dark mode component overrides */
+    [data-theme="dark"] .guide-card,[data-theme="dark"] .step,[data-theme="dark"] .safety-card,[data-theme="dark"] .dialog-card{background:#121C24;border-color:#1E2E3A}
+    [data-theme="dark"] .safety{background:#0F1A24;border-top-color:#1E2E3A;border-bottom-color:#1E2E3A}
+    [data-theme="dark"] .final-cta{background:linear-gradient(90deg,rgba(7,28,42,.98),rgba(7,28,42,.85)),url('https://images.pexels.com/photos/931007/pexels-photo-931007.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover}
+    [data-theme="dark"] .mobile-bar{background:rgba(11,22,30,.97);border-top-color:#1E2E3A}
+    [data-theme="dark"] .mobile-bar .wa-mini{background:#121C24;border-color:#1E2E3A;color:var(--ink)}
+    [data-theme="dark"] .dialog-close{background:#1E2E3A;border-color:#1E2E3A;color:var(--ink)}
+    [data-theme="dark"] .dialog-close:hover{background:#2A3B48}
+    [data-theme="dark"] .stepper li span{background:#1E2E3A;color:var(--ink)}
+    [data-theme="dark"] .benefit-icon{background:#16232D;color:var(--brand-dark)}
+    [data-theme="dark"] .promise-row span{background:#16232D;color:var(--brand-dark)}
+    [data-theme="dark"] .guide-langs span{background:#16232D;color:var(--brand-dark)}
     *,*::before,*::after{box-sizing:border-box}
     html{scroll-behavior:smooth;scroll-padding-top:100px}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:'Manrope',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -1012,6 +1044,8 @@
       <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2M14 19h3M19 19h2v2"/></symbol>
       <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/></symbol>
       <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 6 6 0 0 0-9-9"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></symbol>
     </defs>
   </svg>
 
@@ -1049,6 +1083,7 @@
       </nav>
       <div class="nav-actions">
         <button class="btn btn-primary header-book" type="button" data-book><span class="hide-mobile">Check availability</span><span class="show-mobile">Book</span> <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></button>
         <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
       </div>
     </div>
@@ -3622,6 +3657,47 @@
       /* ============================================================
          Init
          ============================================================ */
+      /* ============================================================
+         Dark mode
+         ============================================================ */
+      const THEME_KEY = 'cb_theme';
+      const themeToggle = $('#themeToggle');
+      const htmlEl = document.documentElement;
+      const colorSchemeMeta = $('meta[name="color-scheme"]');
+      const themeColorMeta = $('meta[name="theme-color"]');
+
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          htmlEl.setAttribute('data-theme', 'dark');
+          if (themeToggle) { themeToggle.setAttribute('aria-pressed', 'true'); }
+          if (colorSchemeMeta) colorSchemeMeta.setAttribute('content', 'dark');
+          if (themeColorMeta) themeColorMeta.setAttribute('content', '#0B161E');
+        } else {
+          htmlEl.removeAttribute('data-theme');
+          if (themeToggle) { themeToggle.setAttribute('aria-pressed', 'false'); }
+          if (colorSchemeMeta) colorSchemeMeta.setAttribute('content', 'light');
+          if (themeColorMeta) themeColorMeta.setAttribute('content', '#0093DD');
+        }
+        store.set(THEME_KEY, theme);
+      }
+
+      function toggleTheme() {
+        const current = htmlEl.getAttribute('data-theme');
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+
+      /* Restore saved theme or follow system preference */
+      const savedTheme = store.get(THEME_KEY, null);
+      if (savedTheme) {
+        applyTheme(savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyTheme('dark');
+      }
+
       function init() {
         document.documentElement.classList.add('js');
         const year = $('#year');
