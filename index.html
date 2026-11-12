@@ -240,13 +240,15 @@
       --bg-img-opacity:.55;
     }
     .theme-toggle{
-      position:relative;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--cream);color:var(--ink);display:grid;place-items:center;transition:.2s;flex:none
+      position:relative;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--cream);color:var(--ink);display:flex;align-items:center;justify-content:center;transition:.2s;flex:none;overflow:hidden
     }
-    .theme-toggle:hover{background:var(--sand);border-color:var(--brand)}
-    .theme-toggle .icon{width:18px;height:18px}
-    .theme-toggle [href="#i-sun"]{display:none}
-    [data-theme="dark"] .theme-toggle [href="#i-moon"]{display:none}
-    [data-theme="dark"] .theme-toggle [href="#i-sun"]{display:block}
+    .theme-toggle:hover{background:var(--sand);border-color:var(--brand);transform:rotate(-10deg)}
+    .theme-toggle .icon{width:18px;height:18px;display:block}
+    .theme-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:opacity .2s ease, transform .2s ease}
+    .theme-icon-moon{opacity:1;transform:translate(-50%,-50%) scale(1)}
+    .theme-icon-sun{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+    [data-theme="dark"] .theme-icon-moon{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+    [data-theme="dark"] .theme-icon-sun{opacity:1;transform:translate(-50%,-50%) scale(1)}
     /* Dark mode image dimming */
     [data-theme="dark"] .hero-bg{opacity:var(--bg-img-opacity);transition:opacity .3s}
     /* Dark mode component overrides */
@@ -261,9 +263,43 @@
     [data-theme="dark"] .benefit-icon{background:#16232D;color:var(--brand-dark)}
     [data-theme="dark"] .promise-row span{background:#16232D;color:var(--brand-dark)}
     [data-theme="dark"] .guide-langs span{background:#16232D;color:var(--brand-dark)}
+    /* More dark mode overrides for hardcoded colors */
+    [data-theme="dark"] .btn-ghost{background:#121C24;color:var(--ink)}
+    [data-theme="dark"] .brand-logo{background:#121C24}
+    [data-theme="dark"] .menu-btn{background:#121C24}
+    [data-theme="dark"] .trust-grid{background:#0F1A24;border-color:#1E2E3A}
+    [data-theme="dark"] .trust-icon{background:#16232D}
+    [data-theme="dark"] .chip{background:#121C24;border-color:#1E2E3A;color:#C9D6DF}
+    [data-theme="dark"] .chip:hover{background:#1A2832;border-color:#2A3B48}
+    [data-theme="dark"] .package{background:#121C24;border-color:#1E2E3A}
+    [data-theme="dark"] .package:hover{border-color:#2A3B48}
+    [data-theme="dark"] .package-media{background:#16232D}
+    [data-theme="dark"] .compare-wrap{background:#0F1A24;border-color:#1E2E3A}
+    [data-theme="dark"] .article-card{background:#121C24;border-color:#1E2E3A}
+    [data-theme="dark"] .article-media{background:#16232D}
+    [data-theme="dark"] .contact-item{background:#121C24;border-color:#1E2E3A}
+    [data-theme="dark"] .contact-item .contact-icon{background:#16232D}
+    [data-theme="dark"] .contact-card{background:#121C24;border-color:#1E2E3A}
+    [data-theme="dark"] .demo-chip{background:#2A2210;border-color:#4A3A1E;color:#D9A441}
+    [data-theme="dark"] .copy-btn{background:#121C24;border-color:#1E2E3A;color:var(--brand-dark)}
+    [data-theme="dark"] .qris-wrap{background:#0F1A24;border-color:#1E2E3A}
+    [data-theme="dark"] .qris-frame{background:#121C24;border-color:#1E2E3A}
+    [data-theme="dark"] .pay-demo-note{background:#2A2210;border-color:#4A3A1E;color:#D9A441}
+    [data-theme="dark"] .field input,[data-theme="dark"] .field select,[data-theme="dark"] .field textarea{background:#121C24;border-color:#1E2E3A;color:var(--ink)}
+    [data-theme="dark"] .field input::placeholder,[data-theme="dark"] .field textarea::placeholder{color:#6B7D87}
+    [data-theme="dark"] .price-box{background:#0F1A24;border-color:#1E2E3A}
+    [data-theme="dark"] .price-row.total{color:var(--ink);border-top-color:#1E2E3A}
+    [data-theme="dark"] .tour-note{background:#0F1A24;border-color:#1E2E3A;color:#9FB3C2}
+    [data-theme="dark"] .tour-aside{background:#0F1A24;border-color:#1E2E3A}
+    [data-theme="dark"] .pay-option{background:#121C24;border-color:#1E2E3A}
+    [data-theme="dark"] .pay-option:hover{border-color:#2A3B48;background:#1A2832}
+    [data-theme="dark"] .va-box{background:#0F1A24;border-color:#1E2E3A}
+    [data-theme="dark"] .pay-status-pill{background:#16321E;border-color:#2A543E;color:#8FCEA3}
+    [data-theme="dark"] .safety-stats>div{background:rgba(255,255,255,.08);border-color:#1E2E3A}
+    [data-theme="dark"] .mobile-menu{background:#0B161E;border-bottom-color:#1E2E3A}
     *,*::before,*::after{box-sizing:border-box}
     html{scroll-behavior:smooth;scroll-padding-top:100px}
-    body{margin:0;background:var(--paper);color:var(--ink);font-family:'Manrope',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:'Manrope',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;transition:background-color .3s ease,color .3s ease}
     body.modal-open{overflow:hidden}
     img{max-width:100%;display:block}
     a{color:inherit;text-decoration:none}
@@ -1083,7 +1119,7 @@
       </nav>
       <div class="nav-actions">
         <button class="btn btn-primary header-book" type="button" data-book><span class="hide-mobile">Check availability</span><span class="show-mobile">Book</span> <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false" title="Mode Gelap"><span class="theme-icon theme-icon-moon"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span><span class="theme-icon theme-icon-sun"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span></button>
         <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
       </div>
     </div>
