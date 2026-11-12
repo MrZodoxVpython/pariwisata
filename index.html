@@ -458,7 +458,7 @@
       --bg-inverse:#0B161E;
       --text-inverse:#ffffff;
     }
-    [data-theme="dark"] .site-header{background:transparent !important;border-bottom-color:transparent;backdrop-filter:none}
+    [data-theme="dark"] .site-header{background:transparent !important;border-bottom-color:transparent;backdrop-filter:none;background-image:url('https://images.pexels.com/photos/34997124/pexels-photo-34997124.jpeg?auto=compress&cs=tinysrgb&w=1920');background-size:cover;background-position:center}
     [data-theme="dark"] .site-header.scrolled{background:rgba(11,22,30,.94) !important;backdrop-filter:blur(16px);border-bottom-color:var(--border-main)}
     .theme-toggle{
       position:relative;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--cream);color:var(--ink);display:flex;align-items:center;justify-content:center;transition:.2s;flex:none;overflow:hidden
@@ -520,7 +520,7 @@
 
     /* Top bar and header */
     :root{--topbar-h:36px}
-    .topbar{position:fixed;top:0;left:0;right:0;z-index:51;height:var(--topbar-h);background:var(--bg-inverse);color:var(--text-inverse);font-size:12px;padding:9px 0;transition:background .3s ease}
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:51;height:var(--topbar-h);color:var(--text-inverse);font-size:12px;padding:9px 0;transition:background .3s ease;background-color:var(--bg-inverse);background-image:url('https://images.pexels.com/photos/34997124/pexels-photo-34997124.jpeg?auto=compress&cs=tinysrgb&w=1920');background-size:cover;background-position:center}
     .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
     .topbar-note{display:flex;align-items:center;gap:9px;letter-spacing:.02em}
     .pulse{width:7px;height:7px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 4px rgba(0,147,221,.18);flex:none}
@@ -543,10 +543,10 @@
     [data-theme="dark"] .topbar-link:hover{color:#ffffff}
     [data-theme="dark"] .topbar-note{color:var(--brand)}
     [data-theme="dark"] .eyebrow{color:var(--brand-ink)}
-    .site-header{position:fixed;top:var(--topbar-h);left:0;right:0;z-index:50;width:100%;background:transparent !important;backdrop-filter:none;border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease,box-shadow .2s ease}
+    .site-header{position:fixed;top:var(--topbar-h);left:0;right:0;z-index:50;width:100%;background:transparent !important;background-image:url('https://images.pexels.com/photos/34997124/pexels-photo-34997124.jpeg?auto=compress&cs=tinysrgb&w=1920');background-size:cover;background-position:center;backdrop-filter:none;border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease,box-shadow .2s ease}
     .site-header.scrolled{background:rgba(246,250,253,.94) !important;backdrop-filter:blur(16px);border-bottom-color:var(--border-main);box-shadow:0 10px 30px rgba(11,42,58,.07)}
     .nav{height:90px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-    .brand{display:inline-flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.045em;font-size:19px;line-height:1;flex:none}
+    .brand{display:inline-flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.045em;font-size:19px;line-height:1;flex:none;text-shadow:0 2px 8px rgba(0,0,0,.55)}
     .brand-logo{height:72px;width:auto;max-width:210px;object-fit:contain;border-radius:14px;background:var(--bg-white);box-shadow:0 3px 12px rgba(11,42,58,.08);flex:none}
     .brand-mark{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:var(--brand-mark-text);display:grid;place-items:center;flex:none}
     .brand-mark svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round}
@@ -557,7 +557,7 @@
     .navlinks a:hover{color:var(--brand-ink)}
     .navlinks a:hover::after{transform:scaleX(1)}
     /* Transparent header over hero: nav text stays light */
-    .site-header .navlinks{color:#ffffff}
+    .site-header .navlinks{color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,.55)}
     .site-header .navlinks a:hover{color:#ffffff}
     .site-header.scrolled .navlinks{color:var(--text-hard)}
     .site-header.scrolled .navlinks a:hover{color:var(--brand-ink)}
