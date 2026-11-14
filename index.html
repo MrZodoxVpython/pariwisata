@@ -585,13 +585,6 @@
     .nav-actions{display:flex;align-items:center;gap:10px}
     .header-book{min-height:44px;padding:11px 19px;font-size:13px}
     .show-mobile{display:none}
-    .menu-btn{display:none;width:44px;height:44px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--bg-white);color:var(--ink);place-items:center}
-    .menu-btn .icon{width:20px;height:20px}
-    .mobile-menu{display:none;background:var(--paper);border-bottom:1px solid var(--line);padding:18px 20px 22px}
-    .mobile-menu.open{display:block}
-    .mobile-menu a{display:block;padding:12px 4px;font-weight:700;border-bottom:1px solid var(--line);font-size:15px}
-    .mobile-menu .btn{width:100%;margin-top:16px}
-    .mobile-menu .mobile-wa{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:13px;color:var(--brand-dark);border:0}
 
     /* Hero slideshow */
     .hero-media{position:absolute;inset:0;width:100%;height:100%;z-index:-2;overflow:hidden}
@@ -861,6 +854,21 @@
     .mobile-bar .btn{min-height:44px;padding:11px 17px;font-size:12.5px;flex:none}
     .mobile-bar .wa-mini{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg-white);color:var(--brand-dark);display:grid;place-items:center;flex:none}
     .mobile-bar .wa-mini .icon{width:19px;height:19px}
+
+    /* Mobile bottom navigation */
+    :root{--bottom-nav-h:60px}
+    .bottom-nav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:46;background:var(--mobile-bar-bg);border-top:1px solid var(--line);box-shadow:0 -10px 30px rgba(11,42,58,.10);backdrop-filter:blur(16px);padding:6px 8px calc(5px + env(safe-area-inset-bottom))}
+    .bottom-nav-inner{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;max-width:560px;margin:auto}
+    .bottom-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:48px;padding:4px 2px;border:0;border-radius:12px;background:transparent;color:var(--muted);font-size:10px;font-weight:800;line-height:1.1;letter-spacing:.01em;text-align:center;transition:color .2s ease,background .2s ease}
+    .bottom-nav-item .bn-icon{display:grid;place-items:center;width:34px;height:24px;border-radius:999px;transition:background .2s ease,color .2s ease}
+    .bottom-nav-item .icon{width:19px;height:19px}
+    .bottom-nav-item.active{color:var(--brand-dark)}
+    .bottom-nav-item.active .bn-icon{background:var(--bg-alt);color:var(--brand-dark)}
+    @media(hover:hover){
+      .bottom-nav-item:hover{color:var(--brand-dark);background:var(--bg-alt)}
+      .bottom-nav-item:hover .bn-icon{background:var(--bg-qa)}
+    }
+    .modal-open .bottom-nav{display:none}
 
     /* Dialogs */
     dialog{border:0;padding:0;background:transparent;color:var(--ink);width:min(720px,calc(100% - 24px));max-width:100%;max-height:calc(100% - 24px);margin:auto;border-radius:24px;overflow:visible}
@@ -1135,7 +1143,8 @@
       .header-book{min-height:40px;padding:10px 14px;font-size:12px}
       .hide-mobile{display:none}
       .show-mobile{display:inline}
-      .menu-btn{display:grid}
+      .bottom-nav{display:block}
+      body{padding-bottom:calc(var(--bottom-nav-h) + env(safe-area-inset-bottom))}
       .topbar-note{display:none}
       .topbar-inner{justify-content:space-between}
       .hero{min-height:auto}
@@ -1244,8 +1253,8 @@
       .footer-brand{grid-column:1/-1}
       .footer-grid>div:last-child{grid-column:auto}
       .footer-bottom{display:grid;gap:7px}
-      .mobile-bar{display:block}
-      body{padding-bottom:76px}
+      .mobile-bar{display:block;bottom:calc(var(--bottom-nav-h) + env(safe-area-inset-bottom));padding:10px 14px}
+      body{padding-bottom:calc(var(--bottom-nav-h) + 76px + env(safe-area-inset-bottom))}
       .form-grid,.tour-cols{grid-template-columns:1fr}
       .form-grid .full{grid-column:auto}
       .booking-dialog,.tour-dialog,.policy-dialog,.quiz-dialog{width:calc(100% - 16px)}
@@ -1263,11 +1272,11 @@
       .dialog-actions .btn{width:100%}
       .dialog-actions .btn-ghost{width:100%}
       .lightbox-nav{width:36px;height:36px}
-      .cookie-banner{left:10px;right:10px;bottom:82px;flex-direction:column;align-items:flex-start;padding:13px 14px;gap:10px}
+      .cookie-banner{left:10px;right:10px;bottom:calc(var(--bottom-nav-h) + 82px + env(safe-area-inset-bottom));flex-direction:column;align-items:flex-start;padding:13px 14px;gap:10px}
       .cookie-banner .cookie-actions{width:100%}
       .cookie-banner .cookie-actions .btn{flex:1}
       .header-book .icon{display:none}
-      .toast{bottom:86px}
+      .toast{bottom:calc(var(--bottom-nav-h) + 86px + env(safe-area-inset-bottom))}
     }
     @media(max-width:380px){
       .brand{font-size:15px;gap:8px}
@@ -1303,12 +1312,14 @@
       <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
       <symbol id="i-wa" viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.6-4A8 8 0 1 1 20 11.5Z"/><path d="M9 8.5c.5 2.5 2 4 4.5 4.5l1-1.5 2 1c-.5 1.5-1.5 2-3 1.5-2.5-.8-4.7-3-5.5-5.5-.5-1.5 0-2.5 1.5-3l1 2-1.5 1Z"/></symbol>
       <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></symbol>
-      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
       <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
       <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
       <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c8 0 14-5 14-13-8 0-14 5-14 13Z"/><path d="M5 19c3-4 6-6 10-8"/></symbol>
       <symbol id="i-water" viewBox="0 0 24 24"><path d="M3 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 13c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></symbol>
       <symbol id="i-mountain" viewBox="0 0 24 24"><path d="M3 20 10 6l4 8 2-4 5 10H3Z"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-5h4v5"/></symbol>
+      <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-.9.6-1.5 1.2-1.5 2.3"/><circle cx="12" cy="17" r=".9" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-article" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
       <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
       <symbol id="i-left" viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></symbol>
       <symbol id="i-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -1358,18 +1369,7 @@
       <div class="nav-actions">
         <button class="btn btn-primary header-book" type="button" data-book><span class="hide-mobile">Check availability</span><span class="show-mobile">Book</span> <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false" title="Mode Gelap"><span class="theme-icon theme-icon-moon"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span><span class="theme-icon theme-icon-sun"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span></button>
-        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
       </div>
-    </div>
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#top">Home</a>
-      <a href="#adventures">Canyoning Tour</a>
-      <a href="#about">About Us</a>
-      <a href="#faq">FAQ's</a>
-      <a href="#contact">Contact Us</a>
-      <a href="#articles">Articles</a>
-      <button class="btn btn-primary" type="button" data-book>Check availability <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-      <a class="mobile-wa" href="https://wa.me/6281234567890" target="_blank" rel="noopener" data-wa-link><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp us</a>
     </div>
   </header>
 
@@ -1867,6 +1867,17 @@
       <button class="btn btn-primary" type="button" data-book>Check availability</button>
     </div>
   </div>
+
+  <nav class="bottom-nav" aria-label="Mobile navigation">
+    <div class="bottom-nav-inner">
+      <a class="bottom-nav-item active" href="#top" data-nav-section="top" aria-current="page"><span class="bn-icon"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span><span>Home</span></a>
+      <a class="bottom-nav-item" href="#adventures" data-nav-section="adventures"><span class="bn-icon"><svg class="icon" aria-hidden="true"><use href="#i-mountain"/></svg></span><span>Tours</span></a>
+      <a class="bottom-nav-item" href="#about" data-nav-section="about"><span class="bn-icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span><span>About</span></a>
+      <a class="bottom-nav-item" href="#faq" data-nav-section="faq"><span class="bn-icon"><svg class="icon" aria-hidden="true"><use href="#i-help"/></svg></span><span>FAQ</span></a>
+      <a class="bottom-nav-item" href="#contact" data-nav-section="contact"><span class="bn-icon"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span><span>Contact</span></a>
+      <a class="bottom-nav-item" href="#articles" data-nav-section="articles"><span class="bn-icon"><svg class="icon" aria-hidden="true"><use href="#i-article"/></svg></span><span>Articles</span></a>
+    </div>
+  </nav>
   <dialog id="bookingDialog" class="booking-dialog" aria-labelledby="bookingTitle">
     <div class="dialog-card">
       <button class="dialog-close" type="button" data-close-dialog aria-label="Close booking form"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
@@ -3579,14 +3590,6 @@
       /* ============================================================
          Navigation and reveal
          ============================================================ */
-      function closeMobileMenu() {
-        const menu = $('#mobileMenu');
-        const button = $('#menuBtn');
-        if (!menu) return;
-        menu.classList.remove('open');
-        button?.setAttribute('aria-expanded', 'false');
-      }
-
       let revealObserver = null;
       function initReveal() {
         const elements = $$('[data-reveal]:not(.is-visible)');
@@ -3705,7 +3708,6 @@
         const book = target.closest('[data-book]');
         if (book) {
           event.preventDefault();
-          closeMobileMenu();
           closeAllDialogs();
           openBooking(state.booking.tourId);
           return;
@@ -3794,16 +3796,30 @@
       }
 
       function bindEvents() {
-        const menuBtn = $('#menuBtn');
-        const mobileMenu = $('#mobileMenu');
-        menuBtn?.addEventListener('click', () => {
-          if (!mobileMenu) return;
-          const isOpen = mobileMenu.classList.toggle('open');
-          menuBtn.setAttribute('aria-expanded', String(isOpen));
-        });
-        mobileMenu?.addEventListener('click', (event) => {
-          if (event.target.closest('a')) closeMobileMenu();
-        });
+        const bottomNavItems = $$('.bottom-nav-item[data-nav-section]');
+        if (bottomNavItems.length) {
+          const navSections = bottomNavItems
+            .map((item) => ({ item, section: document.getElementById(item.dataset.navSection) }))
+            .filter((entry) => entry.section);
+
+          const setActiveNavItem = () => {
+            const marker = window.scrollY + Math.min(window.innerHeight * 0.35, 220);
+            let active = navSections[0];
+            navSections.forEach((entry) => {
+              if (entry.section.offsetTop <= marker) active = entry;
+            });
+            navSections.forEach(({ item }) => {
+              const isActive = item === active?.item;
+              item.classList.toggle('active', isActive);
+              if (isActive) item.setAttribute('aria-current', 'page');
+              else item.removeAttribute('aria-current');
+            });
+          };
+
+          window.addEventListener('scroll', setActiveNavItem, { passive: true });
+          window.addEventListener('resize', setActiveNavItem, { passive: true });
+          setActiveNavItem();
+        }
 
         $('#quizBtn')?.addEventListener('click', openQuiz);
         $('#quickTour')?.addEventListener('change', updateQuickPrice);
