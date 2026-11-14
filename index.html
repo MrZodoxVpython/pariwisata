@@ -520,8 +520,9 @@
     .btn-link:hover{transform:none;color:var(--brand-ink)}
 
     /* Top bar and header */
-    :root{--topbar-h:36px}
-    .topbar{position:fixed;top:0;left:0;right:0;z-index:51;height:var(--topbar-h);background:var(--bg-inverse);color:var(--text-inverse);font-size:12px;padding:9px 0;transition:background .3s ease}
+    :root{--topbar-h:44px}
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:51;height:var(--topbar-h);background:var(--bg-inverse);color:var(--text-inverse);font-size:12px;padding:9px 0;transition:background .3s ease,transform .3s ease,opacity .3s ease}
+    body.topbar-hidden .topbar{transform:translateY(-100%);opacity:0;pointer-events:none}
     .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
     .topbar-note{display:flex;align-items:center;gap:9px;letter-spacing:.02em}
     .pulse{width:7px;height:7px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 4px rgba(0,147,221,.18);flex:none}
@@ -544,7 +545,8 @@
     [data-theme="dark"] .topbar-link:hover{color:#ffffff}
     [data-theme="dark"] .topbar-note{color:var(--brand)}
     [data-theme="dark"] .eyebrow{color:var(--brand-ink)}
-    .site-header{position:fixed;top:var(--topbar-h);left:0;right:0;z-index:50;width:100%;background:transparent !important;backdrop-filter:none;border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease,box-shadow .2s ease}
+    .site-header{position:fixed;top:var(--topbar-h);left:0;right:0;z-index:50;width:100%;background:transparent !important;backdrop-filter:none;border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease,box-shadow .2s ease,top .3s ease}
+    body.topbar-hidden .site-header{top:0}
     .site-header.scrolled{background:rgba(246,250,253,.94) !important;backdrop-filter:blur(16px);border-bottom-color:var(--border-main);box-shadow:0 10px 30px rgba(11,42,58,.07)}
     .nav{height:90px;display:flex;align-items:center;justify-content:space-between;gap:20px}
     .brand{display:inline-flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.045em;font-size:19px;line-height:1;flex:none}
@@ -1136,7 +1138,7 @@
       .tour-aside-note{grid-column:1/-1}
     }
     @media(max-width:680px){
-      :root{--header-h:68px;--topbar-h:26px}
+      :root{--header-h:68px;--topbar-h:40px}
       .wrap{width:calc(100% - 28px)}
       .topbar{padding:7px 0}
       .topbar-note,.topbar-rating span:not(.stars),.currency-wrap label{display:none}
@@ -3927,6 +3929,8 @@
                Restore its background once the next section reaches the header. */
             const limit = hero ? hero.getBoundingClientRect().bottom - header.offsetHeight : 8;
             header.classList.toggle('scrolled', window.scrollY >= limit);
+            /* Hide the top bar as soon as the page scrolls; show it again only at the very top. */
+            document.body.classList.toggle('topbar-hidden', window.scrollY > 0);
           };
           window.addEventListener('scroll', onScroll, { passive: true });
           window.addEventListener('resize', onScroll, { passive: true });
