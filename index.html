@@ -413,8 +413,8 @@
       --btn-ghost-bg:var(--bg-white);
       --btn-ghost-text:var(--ink);
       --skip-link-text:#0B161E;
-      /* Top bar - dark surface with light text in dark mode */
-      --topbar-bg:#0B161E;
+      /* Top bar - translucent dark surface matching the bottom nav in dark mode */
+      --topbar-bg:rgba(11,22,30,.75);
       --topbar-text:#ffffff;
       --topbar-note:#3CB3FF;
       --topbar-rating-strong:#ffffff;
@@ -560,6 +560,7 @@
     .topbar-link{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--topbar-accent);white-space:nowrap}
     .topbar-link:hover{color:var(--topbar-accent-hover)}
     [data-theme="dark"] .currency-select option{background:#0B161E;color:#ffffff}
+    [data-theme="dark"] .topbar{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
     [data-theme="dark"] .eyebrow{color:var(--brand-ink)}
     .site-header{position:fixed;top:var(--topbar-h);left:0;right:0;z-index:50;width:100%;background:transparent !important;backdrop-filter:none;border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease,box-shadow .2s ease,top .3s ease}
     body.topbar-hidden .site-header{top:0}
