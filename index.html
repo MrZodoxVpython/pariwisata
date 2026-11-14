@@ -470,8 +470,9 @@
     .theme-icon-sun{opacity:0;transform:translate(-50%,-50%) scale(.6)}
     [data-theme="dark"] .theme-icon-moon{opacity:0;transform:translate(-50%,-50%) scale(.6)}
     [data-theme="dark"] .theme-icon-sun{opacity:1;transform:translate(-50%,-50%) scale(1)}
-    /* Dark mode image dimming */
-    [data-theme="dark"] .hero-slide{opacity:var(--bg-img-opacity);transition:opacity .3s}
+    /* Dark mode image dimming — only the active slide, so hidden slides stay hidden */
+    [data-theme="dark"] .hero-slide{opacity:0}
+    [data-theme="dark"] .hero-slide.current{opacity:var(--bg-img-opacity)}
     /* Dark mode component overrides */
     *,*::before,*::after{box-sizing:border-box}
     html{scroll-behavior:smooth;scroll-padding-top:100px}
