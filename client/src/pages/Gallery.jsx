@@ -1,28 +1,41 @@
 import { useApp } from '../context/AppContext';
 import { photoUrl } from '../lib/format';
 
+const FALLBACK_GALLERY = [
+  { id: '34997124', caption: 'Into the canyon', alt: 'A group canyoning through a rocky canyon with ropes and guides' },
+  { id: '7163522', caption: 'Waterfall rappel', alt: 'A canyoning guide rappelling down a lush waterfall' },
+  { id: '5741502', caption: 'Jungle pools', alt: 'A hidden waterfall and pool surrounded by dense jungle' },
+  { id: '34997046', caption: 'Cave sections', alt: 'A canyoning guide descending a rope in a dramatic cave waterfall' },
+  { id: '5272925', caption: 'Rope work', alt: 'A canyoning guide on a rope beside a waterfall' },
+  { id: '4534200', caption: 'The descent', alt: 'A canyoning guide rappelling down a waterfall in a tropical canyon' },
+];
+
 export default function Gallery() {
-  const { content } = useApp();
+  const { content, openLightbox } = useApp();
+  const gallery = content.gallery.length ? content.gallery : FALLBACK_GALLERY;
 
   return (
-    <section className="section" aria-labelledby="gallery-h2">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12 data-reveal">
-          <div className="kicker"><span className="icon">📸</span>Gallery</div>
-          <h2 id="gallery-h2">Canyon moments</h2>
-          <p className="lead mx-auto">Photos from real tours with our guests and guides across North Bali&apos;s canyons.</p>
+    <>
+      <section className="page-hero">
+        <div className="wrap">
+          <span className="kicker">Postcards from the canyon</span>
+          <h1>This is what you came for.</h1>
+          <p>Waterfalls, jungle pools, rope work and the faces of a very good day out.</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {content.gallery.map((image) => (
-            <figure key={image.id} className="relative aspect-square rounded-xl overflow-hidden shadow-sm group border border-solid m-0" style={{ borderColor: 'var(--line)' }}>
-              <img src={photoUrl(image.id, 800)} alt={image.alt || image.caption} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-              <figcaption className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
-                <span className="text-sm font-bold text-white">{image.caption}</span>
-              </figcaption>
-            </figure>
-          ))}
+      </section>
+
+      <section className="page-section">
+        <div className="wrap">
+          <div className="gallery-grid">
+            {gallery.map((image, index) => (
+              <button className="gallery-item" key={image.id} type="button" onClick={() => openLightbox(index)} aria-label={`Open photo: ${image.caption}`}>
+                <img src={photoUrl(image.id, 800)} width="800" height="600" alt={image.alt} loading="lazy" decoding="async" />
+                <span>{image.caption}</span>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -41,7 +41,7 @@ export const POLICIES = {
       <h3>Changes</h3>
       <p>Date changes are subject to availability and should be requested as early as possible. If you are unwell, contact us before the trip and we will do our best to find a fair solution.</p>
       <h3>Contact</h3>
-      <p>For cancellations or changes, WhatsApp <strong>+62 812-3456-7890</strong> or email <strong>hello@canyoningbali.com</strong> with your booking reference.</p>`
+      <p>For cancellations or changes, WhatsApp <strong>+62 813 3957 8001</strong> or email <strong>hello@canyoningbali.com</strong> with your booking reference.</p>`
   },
   privacy: {
     title: 'Privacy policy',
@@ -136,27 +136,43 @@ export const ARTICLES = {
 
 export const FAQ = [
   {
-    q: 'Do I need canyoning experience?',
-    a: 'No. Beginner routes like Egar and Maboya are designed for first-timers. Your guide will teach you everything before you enter the water.'
+    q: 'Do I need canyoning experience to join?',
+    a: 'No. Egar and Maboya are beginner-friendly and include a full safety briefing. Samba and Aling are better suited to guests with some outdoor experience and comfortable swimming ability.'
   },
   {
-    q: 'What is the minimum age?',
-    a: 'Egar and Maboya accept ages 8+, Samba accepts ages 10+, and Aling accepts ages 12+.'
+    q: 'Is canyoning safe?',
+    a: 'Canyoning is an adventure activity with inherent risks. We use checked equipment, trained local guides, safety briefings and water-level checks. We adjust or cancel routes when conditions are unsafe. Tell us about relevant medical conditions before booking.'
   },
   {
-    q: 'Is swimming required?',
-    a: 'Swimming is optional on Egar and Maboya, but required on Samba and Aling. You should always be comfortable in water.'
+    q: 'Can I join if I cannot swim?',
+    a: 'Egar and Maboya can be suitable for non-confident swimmers because swimming is optional on those routes. Samba and Aling require comfortable swimming ability. Please tell us honestly about your comfort in water when booking.'
+  },
+  {
+    q: 'What happens if it rains?',
+    a: 'We monitor weather and water levels. If conditions are unsafe, we reschedule your trip or offer a full refund. Light rain alone does not always cancel a trip; your guide will make the final call.'
   },
   {
     q: 'What is included in the price?',
-    a: 'Local guide, harness, helmet, wetsuit, safety briefing, lunch, drinking water, edited photos and pickup from Ubud.'
+    a: 'Prices include a local guide, canyoning equipment, safety briefing, lunch and drinking water. Most tours include edited photos and pickup from Ubud. Check each canyon for exact inclusions.'
   },
   {
-    q: 'What is the cancellation policy?',
-    a: 'Free cancellation up to 48 hours before departure. Weather-related cancellations can be rescheduled or refunded in full.'
+    q: 'Do you offer hotel pickup?',
+    a: 'Yes. Pickup is available from Ubud and selected areas of South Bali. Pickup outside Ubud may carry a surcharge. Confirm your area when booking and we will send the exact pickup time.'
   },
   {
-    q: 'How do I pay?',
-    a: 'A 25% deposit secures your date. Payment methods are confirmed via WhatsApp or email after availability is checked.'
+    q: 'What should I bring and wear?',
+    a: 'Bring swimwear, quick-dry clothes, water shoes or trainers, sunscreen, a towel and a change of clothes. We provide the canyoning harness, helmet and wetsuit.'
+  },
+  {
+    q: 'How do I confirm and pay?',
+    a: 'Send a booking request with your date and group size. We confirm availability within 15 minutes during business hours. You can then secure the date with a 25% deposit or pay the full amount by card, bank transfer or QRIS. The checkout on this demo site simulates payment only. Prices are in IDR.'
+  },
+  {
+    q: 'What is your cancellation policy?',
+    a: 'Free cancellation up to 48 hours before departure. Cancellations within 24–48 hours may incur a 50% charge. No-shows are charged in full. Weather cancellations are rescheduled or refunded. Read the full cancellation policy.'
+  },
+  {
+    q: 'Can I book a private group?',
+    a: 'Yes. Private groups are available on all canyons, subject to availability. Contact us on WhatsApp with your preferred date and group size for a private quote.'
   }
 ];

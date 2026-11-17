@@ -62,13 +62,13 @@ async function seed() {
         SITE.name,
         SITE.url,
         SITE.phone,
-        '6281234567890',
+        '6281339578001',
         SITE.email,
-        'Desa Sambangan, Sukasada, Buleleng, Bali',
-        'Daily 06:00 – 18:00 WITA',
+        'Pupuan, Tabanan, North Bali',
+        '07:00–20:00 WITA, every day',
         'https://instagram.com/canyoningbali',
         'https://facebook.com/canyoningbali',
-        'https://wa.me/6281234567890',
+        'https://wa.me/6281339578001',
         SITE.currency || 'IDR',
       ]
     );

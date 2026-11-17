@@ -1,7 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import Icon from '../components/Icon';
 import { useApp } from '../context/AppContext';
 import { articleImage } from '../lib/format';
+
+function metaParts(meta = '') {
+  const [date = '', read = '', author = ''] = meta.split('·').map((part) => part.trim());
+  return { date, read, author };
+}
 
 export default function ArticleDetail() {
   const { slug } = useParams();
@@ -10,58 +15,91 @@ export default function ArticleDetail() {
 
   if (!article) {
     return (
-      <section className="section">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-2xl font-bold mb-3">Article not found</h1>
-          <p className="mb-6" style={{ color: 'var(--muted)' }}>The article you are looking for does not exist.</p>
-          <Link to="/articles" className="btn-primary no-underline">Back to articles</Link>
+      <section className="page-section">
+        <div className="wrap not-found">
+          <div>
+            <h1 style={{ fontSize: 48 }}>Article not found</h1>
+            <p className="muted" style={{ marginBottom: 20 }}>The story you are looking for does not exist or has moved.</p>
+            <Link className="btn btn-primary" to="/articles">Back to articles</Link>
+          </div>
         </div>
       </section>
     );
   }
 
+  const { date, read, author } = metaParts(article.meta);
   const more = content.articles.filter((item) => item.slug !== slug).slice(0, 3);
+  const intro = (article.body || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140);
 
   return (
-    <section className="section">
-      <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto">
-          <Link to="/articles" className="inline-flex items-center gap-2 text-sm font-bold text-[#0093DD] no-underline mb-6">
-            <ArrowLeft size={16} /> Back to articles
-          </Link>
+    <>
+      <section className="page-hero">
+        <div className="wrap">
+          <div className="breadcrumb" style={{ color: 'var(--text-on-dark)' }}>
+            <Link to="/" style={{ color: '#9BDCFF' }}>Home</Link><span>/</span>
+            <Link to="/articles" style={{ color: '#9BDCFF' }}>Articles</Link><span>/</span>
+            <span>{article.kicker}</span>
+          </div>
+          <span className="kicker">{article.kicker}</span>
+          <h1 style={{ maxWidth: 900 }}>{article.title}</h1>
+          <p>{intro}…</p>
+          <div className="article-meta" style={{ color: 'rgba(255,255,255,.78)', marginTop: 18 }}>
+            <span>{date}</span>
+            {read ? <><i style={{ background: 'rgba(255,255,255,.6)' }}></i><span>{read}</span></> : null}
+            {author ? <><i style={{ background: 'rgba(255,255,255,.6)' }}></i><span>{author}</span></> : null}
+          </div>
+        </div>
+      </section>
 
-          <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-6 shadow">
-            <img src={articleImage(article, 1200)} alt={article.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,.72), transparent)' }} />
-            <div className="absolute bottom-0 left-0 p-6">
-              <span className="inline-block px-3 py-1 bg-white/15 backdrop-blur border border-white/25 rounded-full text-xs font-bold text-white mb-2">{article.kicker}</span>
-              <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight m-0">{article.title}</h1>
+      <section className="page-section">
+        <div className="wrap" style={{ maxWidth: 880 }}>
+          <img
+            className="article-cover"
+            src={articleImage(article, 1400)}
+            width="1400"
+            height="700"
+            alt={article.title}
+            style={{ width: '100%', objectFit: 'cover', aspectRatio: '16/8', borderRadius: 22, marginBottom: 28 }}
+          />
+          <div className="article-reading" dangerouslySetInnerHTML={{ __html: article.body }} />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 32 }}>
+            <Link className="btn btn-primary" to="/packages">Explore the canyons <Icon name="arrow" /></Link>
+            <Link className="btn btn-ghost" to="/articles">All articles</Link>
+          </div>
+        </div>
+      </section>
+
+      {more.length > 0 && (
+        <section className="page-section alt">
+          <div className="wrap">
+            <div className="section-head compact">
+              <div><span className="kicker">Keep reading</span><h2>More from the journal.</h2></div>
+              <Link className="btn btn-ghost" to="/articles">View all <Icon name="arrow" /></Link>
+            </div>
+            <div className="article-grid">
+              {more.map((item) => {
+                const parts = metaParts(item.meta);
+                return (
+                  <Link className="article-card" to={`/articles/${item.slug}`} key={item.slug}>
+                    <div className="article-media">
+                      <img src={articleImage(item, 800)} width="800" height="500" alt={item.title} loading="lazy" decoding="async" />
+                      <span className="article-tag">{item.kicker}</span>
+                    </div>
+                    <div className="article-body">
+                      <div className="article-meta">
+                        <span>{parts.date}</span>
+                        {parts.read ? <><i></i><span>{parts.read}</span></> : null}
+                      </div>
+                      <h3>{item.title}</h3>
+                      <span className="article-more">Read article <Icon name="arrow" /></span>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
-
-          <div className="text-xs mb-8" style={{ color: 'var(--muted)' }}>{article.meta}</div>
-          <div className="prose" dangerouslySetInnerHTML={{ __html: article.body }} />
-
-          {more.length > 0 && (
-            <div className="mt-14 border-t border-solid pt-10" style={{ borderColor: 'var(--line)' }}>
-              <h2 className="text-xl font-bold mb-5">More articles</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {more.map((item) => (
-                  <Link
-                    key={item.slug}
-                    to={`/articles/${item.slug}`}
-                    className="block p-4 rounded-xl border border-solid hover:border-[#0093DD] transition-colors no-underline"
-                    style={{ borderColor: 'var(--line)', background: '#fff' }}
-                  >
-                    <h3 className="font-bold text-sm mb-1" style={{ color: 'var(--brand-dark)' }}>{item.title}</h3>
-                    <span className="text-xs" style={{ color: 'var(--muted)' }}>{item.kicker}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
+        </section>
+      )}
+    </>
   );
 }

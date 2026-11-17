@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'Canyoning Bali',
   url: 'https://canyoningbali.com/',
-  phone: '+62 812-3456-7890',
+  phone: '+62 813 3957 8001',
   email: 'hello@canyoningbali.com',
   currency: 'IDR',
 };

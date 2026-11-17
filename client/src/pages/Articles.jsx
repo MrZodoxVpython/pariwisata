@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Icon from '../components/Icon';
 import { useApp } from '../context/AppContext';
-import { articleImage } from '../lib/format';
+import { articleDate, articleExcerpt, articleImage } from '../lib/format';
+
+function metaParts(meta = '') {
+  const [, read = ''] = meta.split('·').map((part) => part.trim());
+  return { read };
+}
 
 export default function Articles() {
   const { content } = useApp();
@@ -12,55 +18,83 @@ export default function Articles() {
     (article) =>
       !query ||
       article.title.toLowerCase().includes(query) ||
-      (article.kicker || '').toLowerCase().includes(query)
+      (article.kicker || '').toLowerCase().includes(query) ||
+      (article.meta || '').toLowerCase().includes(query)
   );
 
   return (
-    <section className="section" aria-labelledby="articles-h2">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-10 data-reveal">
-          <div className="kicker"><span className="icon">📝</span>Journal</div>
-          <h2 id="articles-h2">Articles &amp; guides</h2>
-          <p className="lead mx-auto">Tips, comparisons and preparation guides for your first canyoning day in Bali.</p>
-        </div>
-
-        <div className="max-w-md mx-auto mb-10 data-reveal">
-          <label htmlFor="article-search" className="sr-only">Search articles</label>
-          <div className="relative">
-            <input
-              id="article-search"
-              type="search"
-              placeholder="Search articles…"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-solid bg-white focus:outline-none focus:border-[#0093DD] transition-colors text-sm"
-              style={{ borderColor: 'var(--line)', color: 'var(--brand-ink)' }}
-            />
-            <span className="absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true">🔍</span>
+    <>
+      <section className="page-hero">
+        <div className="wrap">
+          <div className="breadcrumb" style={{ color: 'var(--text-on-dark)' }}>
+            <Link to="/" style={{ color: '#9BDCFF' }}>Home</Link><span>/</span><span>Articles</span>
           </div>
+          <span className="kicker">Stories &amp; guides</span>
+          <h1>Read before you descend.</h1>
+          <p>Practical guides, canyon comparisons and honest advice from the people who run these routes every week.</p>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
-            <article key={article.slug} className="bg-white rounded-2xl border border-solid overflow-hidden shadow-sm flex flex-col" style={{ borderColor: 'var(--line)' }}>
-              <Link to={`/articles/${article.slug}`} className="relative h-48 overflow-hidden block no-underline">
-                <img src={articleImage(article, 800)} alt={article.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
-                <span className="absolute top-3 left-3 badge light">{article.kicker}</span>
-              </Link>
-              <div className="p-5 flex flex-col flex-1">
-                <span className="text-xs mb-2" style={{ color: 'var(--muted)' }}>{article.meta}</span>
-                <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--brand-dark)' }}>{article.title}</h3>
-                <Link to={`/articles/${article.slug}`} className="mt-auto btn-link text-sm no-underline">Read article →</Link>
-              </div>
-            </article>
-          ))}
+      <section className="page-section">
+        <div className="wrap">
+          <div className="section-head compact" data-reveal>
+            <div>
+              <span className="kicker">The journal</span>
+              <h2>Every story from the canyon.</h2>
+            </div>
+            <div className="field" style={{ width: 'min(320px, 100%)' }}>
+              <label htmlFor="article-search">Search articles</label>
+              <input
+                id="article-search"
+                type="search"
+                placeholder="Search by topic or title..."
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="article-grid">
+            {articles.map((article) => {
+              const { read } = metaParts(article.meta);
+              return (
+                <Link className="article-card" to={`/articles/${article.slug}`} key={article.slug}>
+                  <div className="article-media">
+                    <img
+                      src={articleImage(article, 800)}
+                      width="800"
+                      height="500"
+                      alt={article.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span className="article-tag">{article.kicker}</span>
+                  </div>
+                  <div className="article-body">
+                    <div className="article-meta">
+                      <span>{articleDate(article.meta)}</span>
+                      {read ? <><i></i><span>{read}</span></> : null}
+                    </div>
+                    <h3>{article.title}</h3>
+                    <p>{articleExcerpt(article)}</p>
+                    <span className="article-more">Read article <Icon name="arrow" /></span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
           {articles.length === 0 && (
-            <div className="col-span-full text-center py-20">
-              <p style={{ color: 'var(--muted)' }}>No articles found matching your search.</p>
+            <div className="not-found" style={{ minHeight: '30vh' }}>
+              <div>
+                <h2 style={{ fontSize: 28 }}>No articles found</h2>
+                <p className="muted" style={{ marginBottom: 18 }}>Try a different keyword, or browse every story below.</p>
+                <button className="btn btn-primary" type="button" onClick={() => setSearch('')}>Clear search</button>
+              </div>
             </div>
           )}
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

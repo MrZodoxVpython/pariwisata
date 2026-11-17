@@ -1,98 +1,104 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Check, Mountain, Users, Clock, Droplets } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import Icon from '../components/Icon';
 import { useApp } from '../context/AppContext';
-import { formatIDR, tourImage } from '../lib/format';
-
-const filters = [
-  { id: 'all', label: 'All canyons' },
-  { id: 'beginner', label: 'Beginner' },
-  { id: 'intermediate', label: 'Intermediate' },
-];
+import { formatMoney, tourImage } from '../lib/format';
 
 export default function Packages() {
-  const { content, openBooking } = useApp();
+  const { content, currency, openBooking, openTourDetail, openQuiz } = useApp();
   const [filter, setFilter] = useState('all');
-
-  const tours = content.tours.filter((tour) => filter === 'all' || tour.levelKey === filter);
+  const tours = content.tours;
+  const list = useMemo(
+    () => tours.filter((tour) => filter === 'all' || tour.levelKey === filter),
+    [tours, filter]
+  );
 
   return (
-    <section className="section" aria-labelledby="packages-h2">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-10 data-reveal">
-          <div className="kicker"><span className="icon">⛰️</span>Packages</div>
-          <h2>Canyoning packages</h2>
-          <p className="lead mx-auto">Select your adventure level. All prices are per person in IDR and include gear, guide, lunch and photos.</p>
+    <>
+      <section className="page-hero">
+        <div className="wrap">
+          <span className="kicker">Canyoning tours</span>
+          <h1>Four canyons. One unforgettable day.</h1>
+          <p>From your first rappel to a full-day technical descent, choose the route that matches your confidence and experience.</p>
+          <div className="hero-actions">
+            <button className="btn btn-primary" type="button" onClick={() => openBooking()}>Check availability <Icon name="arrow" /></button>
+            <button className="btn btn-outline" type="button" onClick={openQuiz}>Find my canyon <Icon name="arrow" /></button>
+          </div>
         </div>
+      </section>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-10 data-reveal">
-          {filters.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setFilter(item.id)}
-              className={`px-4 py-2 rounded-full text-xs font-bold border border-solid transition-colors ${filter === item.id ? 'bg-[#0093DD] text-white border-[#0093DD]' : 'bg-white text-[#112e3c] hover:border-[#0093DD]'}`}
-              style={{ borderColor: filter === item.id ? '#0093DD' : 'var(--line)' }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-
-        {tours.length === 0 ? (
-          <p className="text-center text-sm" style={{ color: 'var(--muted)' }}>No canyons in this category.</p>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {tours.map((tour) => (
-              <article key={tour.id} className="bg-white rounded-2xl border border-solid overflow-hidden shadow-sm flex flex-col" style={{ borderColor: 'var(--line)' }}>
-                <Link to={`/packages/${tour.id}`} className="relative h-60 overflow-hidden block no-underline">
-                  <img src={tourImage(tour, 1200)} alt={tour.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
-                  <span className="absolute top-4 left-4 badge light" style={{ background: 'rgba(255,255,255,.92)', color: '#0f6b9e' }}>{tour.badge || tour.level}</span>
-                  <span className="absolute bottom-4 left-4 badge light" style={{ background: 'rgba(255,255,255,.92)', color: '#0f6b9e' }}>{formatIDR(tour.price)} / person</span>
-                </Link>
-                <div className="p-6 flex flex-col flex-1">
-                  <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--brand-dark)' }}>{tour.name}</h2>
-                  <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>{tour.short}</p>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5 text-xs">
-                    {[
-                      [Clock, 'Duration', tour.duration],
-                      [Users, 'Group', tour.group],
-                      [Mountain, 'Min age', `${tour.minAge}+`],
-                      [Droplets, 'Swimming', tour.swim],
-                    ].map(([Icon, label, value]) => (
-                      <div key={label} className="flex flex-col gap-1">
-                        <span className="font-bold uppercase tracking-wider flex items-center gap-1" style={{ color: 'var(--muted)' }}>
-                          <Icon size={12} /> {label}
-                        </span>
-                        <span className="text-sm" style={{ color: 'var(--brand-dark)' }}>{value}</span>
-                      </div>
-                    ))}
+      <section className="page-section">
+        <div className="wrap">
+          <div className="filters" role="group" aria-label="Filter canyons by level">
+            <button className={`chip${filter === 'all' ? ' active' : ''}`} type="button" onClick={() => setFilter('all')}>All canyons</button>
+            <button className={`chip${filter === 'beginner' ? ' active' : ''}`} type="button" onClick={() => setFilter('beginner')}>Beginner</button>
+            <button className={`chip${filter === 'intermediate' ? ' active' : ''}`} type="button" onClick={() => setFilter('intermediate')}>Intermediate</button>
+          </div>
+          <div className="package-grid">
+            {list.map((tour) => (
+              <article className="package" key={tour.id}>
+                <div className="package-media">
+                  <img src={tourImage(tour, 1200)} width="1200" height="760" alt={`${tour.name} canyoning adventure in Bali — ${tour.level}`} loading="lazy" decoding="async" />
+                  <div className="package-badges">
+                    <span className={`badge ${tour.badgeClass || 'light'}`}>{tour.badge}</span>
+                    <span className="badge light">{tour.level}</span>
                   </div>
-
-                  <p className="text-sm mb-4" style={{ color: 'var(--muted)' }}>{tour.bestFor}</p>
-
-                  <h3 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--muted)' }}>Includes</h3>
-                  <ul className="flex flex-wrap gap-2 mb-6 list-none p-0 m-0">
-                    {tour.inclusions.slice(0, 5).map((item) => (
-                      <li key={item} className="px-3 py-1.5 rounded bg-[#eef6fb] text-[#0f6b9e] text-xs font-bold flex items-center gap-1">
-                        <Check size={11} /> {item}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-auto flex gap-2">
-                    <Link to={`/packages/${tour.id}`} className="btn-ghost flex-1 text-center no-underline text-sm">View details</Link>
-                    <button type="button" onClick={() => openBooking(tour.id)} className="btn-primary flex-1 text-sm">
-                      Book <ArrowRight size={16} />
-                    </button>
+                </div>
+                <div className="package-body">
+                  <div className="package-title-row"><h3>{tour.name}</h3></div>
+                  <p className="desc">{tour.short}</p>
+                  <div className="package-meta">
+                    <span><Icon name="clock" /> {tour.duration}</span>
+                    <span><Icon name="users" /> {tour.group}</span>
+                    <span><Icon name="shield" /> Min age {tour.minAge}</span>
+                    <span><Icon name="water" /> Swim: {tour.swim}</span>
+                  </div>
+                  <div className="feature-chips">{tour.inclusions.slice(0, 4).map((item) => <span key={item}>{item}</span>)}</div>
+                  <div className="package-foot">
+                    <div className="price">
+                      <small>From / person</small>
+                      <strong>{formatMoney(tour.price, currency)}</strong>
+                      <span className="converted">{currency === 'IDR' ? 'Billed in IDR' : `≈ ${formatMoney(tour.price, 'IDR')}`}</span>
+                    </div>
+                    <div className="package-actions">
+                      <button className="btn btn-ghost btn-sm" type="button" onClick={() => openTourDetail(tour.id)}>Details</button>
+                      <button className="btn btn-primary btn-sm" type="button" onClick={() => openBooking(tour.id)}>Check availability</button>
+                    </div>
                   </div>
                 </div>
               </article>
             ))}
           </div>
-        )}
-      </div>
-    </section>
+        </div>
+      </section>
+
+      <section className="page-section alt">
+        <div className="wrap">
+          <div className="section-head">
+            <div><span className="kicker">Compare at a glance</span><h2>Which canyon is right for you?</h2></div>
+            <p>Swipe to compare on mobile →</p>
+          </div>
+          <div className="compare-wrap">
+            <table className="compare-table">
+              <thead><tr><th scope="col">Canyon</th>{tours.map((tour) => <th scope="col" key={tour.id}>{tour.name.replace(' Canyon', '')}</th>)}</tr></thead>
+              <tbody>
+                {[
+                  ['Level', (tour) => tour.level],
+                  ['Duration', (tour) => tour.duration],
+                  ['Minimum age', (tour) => `${tour.minAge}+`],
+                  ['Swimming', (tour) => tour.swim],
+                  ['Jumps', (tour) => tour.jumps],
+                  ['Natural slides', (tour) => tour.slides],
+                  ['Group size', (tour) => tour.group],
+                  ['Best for', (tour) => tour.bestFor],
+                  ['Price / person', (tour) => <span className="price-cell">{formatMoney(tour.price, currency)}</span>],
+                ].map(([label, render]) => (
+                  <tr key={label}><th scope="row">{label}</th>{tours.map((tour) => <td key={tour.id}>{render(tour)}</td>)}</tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

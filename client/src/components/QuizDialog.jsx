@@ -1,131 +1,110 @@
 import { useEffect, useState } from 'react';
-import { X, ArrowRight } from 'lucide-react';
+import Dialog from './Dialog';
+import Icon from './Icon';
 import { useApp } from '../context/AppContext';
-import { formatIDR } from '../lib/format';
+import { formatMoney, tourImage } from '../lib/format';
+
+const FALLBACK_QUIZ = [
+  {
+    q: 'How much adventure do you want?',
+    key: 'thrill',
+    options: [
+      { label: 'A gentle introduction', value: 'low', desc: 'Rappels, slides and plenty of time to enjoy the scenery.' },
+      { label: 'A good challenge', value: 'mid', desc: 'Bigger drops, more action, still guided every step.' },
+      { label: 'Full-on adventure', value: 'high', desc: 'Technical descents, big rappels and a full day out.' },
+    ],
+  },
+  {
+    q: 'How comfortable are you in water?',
+    key: 'swim',
+    options: [
+      { label: 'Confident swimmer', value: 'yes', desc: 'I am happy swimming in deep water.' },
+      { label: 'I can swim, but not far', value: 'maybe', desc: 'I prefer to know where the exit is.' },
+      { label: 'Not confident', value: 'no', desc: 'I would rather keep swimming optional.' },
+    ],
+  },
+  {
+    q: 'Who are you coming with?',
+    key: 'group',
+    options: [
+      { label: 'Solo or a couple', value: 'couple', desc: 'A shared adventure for two.' },
+      { label: 'Family with teens', value: 'family', desc: 'Fun, but safety and comfort first.' },
+      { label: 'Friends / private group', value: 'friends', desc: 'We want our own crew and a private guide.' },
+    ],
+  },
+];
 
 export default function QuizDialog() {
-  const { quizOpen, closeQuiz, content, openBooking } = useApp();
-  const [step, setStep] = useState(0);
+  const { quizOpen, closeQuiz, content, currency, openBooking, openTourDetail } = useApp();
+  const quiz = content.quiz?.length ? content.quiz : FALLBACK_QUIZ;
+  const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const quiz = content.quiz;
 
   useEffect(() => {
     if (quizOpen) {
-      setStep(0);
+      setIndex(0);
       setAnswers({});
     }
   }, [quizOpen]);
 
-  useEffect(() => {
-    if (!quizOpen) return undefined;
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') closeQuiz();
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [quizOpen, closeQuiz]);
+  const completed = quiz.length > 0 && index >= quiz.length;
+  const current = quiz[index];
 
-  if (!quizOpen || !quiz.length) return null;
+  const recommend = () => {
+    let id = 'egar';
+    if (answers.thrill === 'high') id = answers.swim === 'yes' ? 'aling' : 'samba';
+    else if (answers.thrill === 'mid') id = answers.swim === 'no' ? 'maboya' : 'samba';
+    else id = answers.group === 'friends' ? 'maboya' : 'egar';
+    if (answers.group === 'family' && (id === 'aling' || id === 'samba')) id = 'maboya';
+    if (answers.swim === 'no' && id === 'samba') id = 'maboya';
+    return content.tours.find((tour) => tour.id === id) || content.tours[0];
+  };
 
-  const current = quiz[step];
-  const completed = step >= quiz.length;
-
-  let recommendation = null;
-  if (completed) {
-    const { thrill, swim } = answers;
-    if (thrill === 'low' || swim === 'no') recommendation = content.tours.find((tour) => tour.id === 'egar');
-    else if (thrill === 'high' && swim === 'yes') recommendation = content.tours.find((tour) => tour.id === 'samba');
-    else if (thrill === 'mid') recommendation = content.tours.find((tour) => tour.id === 'maboya');
-    recommendation = recommendation || content.tours[0];
-  }
+  const tour = completed ? recommend() : null;
+  const progress = quiz.length ? Math.round((index / quiz.length) * 100) : 0;
 
   return (
-    <div
-      className="dialog-overlay"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="quiz-title"
-      onClick={(event) => event.target === event.currentTarget && closeQuiz()}
-    >
-      <div className="dialog-card relative">
-        <button type="button" onClick={closeQuiz} className="dialog-close" aria-label="Close quiz">
-          <X size={20} />
-        </button>
-        <div className="dialog-head">
-          {completed ? (
-            <>
-              <div className="kicker">Your recommendation</div>
-              <h2 id="quiz-title">{recommendation?.name || 'Egar Canyon'}</h2>
-              <p>{recommendation?.short || 'Start with our beginner-friendly Egar Canyon.'}</p>
-            </>
+    <Dialog open={quizOpen} onClose={closeQuiz} className="quiz-dialog" labelledBy="quizTitle">
+      <div className="dialog-card">
+        <button className="dialog-close" type="button" onClick={closeQuiz} aria-label="Close canyon quiz"><Icon name="close" /></button>
+        <span className="kicker">30-second quiz</span>
+        <h2 id="quizTitle" style={{ marginTop: 6 }}>Find your canyon.</h2>
+        <div className="quiz-progress" aria-hidden="true"><i style={{ width: `${completed ? 100 : progress}%` }} /></div>
+        <div id="quizBody">
+          {!quiz.length ? null : completed ? (
+            <div className="quiz-result">
+              <img src={tourImage(tour, 900)} alt={`${tour?.name} in Bali`} width="900" height="450" />
+              <span className="badge lime">Your best match</span>
+              <h3>{tour?.name}</h3>
+              <p>{tour?.short}</p>
+              <div className="price">{formatMoney(tour?.price || 0, currency)} <span className="muted" style={{ fontSize: 11, fontWeight: 600 }}>/ person</span></div>
+              <button className="btn btn-primary" type="button" onClick={() => { closeQuiz(); openBooking(tour?.id); }}>Check availability <Icon name="arrow" /></button>
+              <button className="btn btn-ghost" type="button" onClick={() => { closeQuiz(); openTourDetail(tour?.id); }}>See full details</button>
+              <button className="btn btn-link" type="button" onClick={() => { setIndex(0); setAnswers({}); }}>Retake the quiz</button>
+            </div>
           ) : (
             <>
-              <div className="kicker">Canyon matcher · {step + 1}/{quiz.length}</div>
-              <h2 id="quiz-title">{current.q}</h2>
+              <p className="hint" style={{ marginBottom: 6 }}>Question {index + 1} of {quiz.length}</p>
+              <h3 className="quiz-q">{current.q}</h3>
+              <div className="quiz-options">
+                {current.options.map((option) => (
+                  <button
+                    className="quiz-opt"
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      setAnswers((prev) => ({ ...prev, [current.key]: option.value }));
+                      setIndex((prev) => prev + 1);
+                    }}
+                  >
+                    <b>{option.label}</b><span>{option.desc}</span>
+                  </button>
+                ))}
+              </div>
             </>
           )}
         </div>
-
-        {completed ? (
-          <div className="p-4 space-y-4">
-            <div className="rounded-xl p-4 border border-solid" style={{ borderColor: 'var(--line)', background: 'var(--cream)' }}>
-              <h3 className="font-bold text-lg mb-1">{recommendation?.name}</h3>
-              <p className="text-sm mb-3" style={{ color: 'var(--muted)' }}>{recommendation?.short}</p>
-              <div className="flex justify-between text-sm font-bold">
-                <span>Price per person</span>
-                <span>{formatIDR(recommendation?.price || 0)}</span>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                closeQuiz();
-                openBooking(recommendation?.id || '');
-              }}
-              className="w-full btn-primary"
-            >
-              Book this canyon <ArrowRight size={16} />
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="stepper px-6">
-              {quiz.map((question, index) => (
-                <li key={question.key} className={index < step ? 'done' : index === step ? 'active' : ''}>
-                  <span>{index < step ? '✓' : index + 1}</span>
-                  <span>{question.key}</span>
-                </li>
-              ))}
-            </div>
-            <div className="space-y-3 p-4">
-              {current.options.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => {
-                    setAnswers({ ...answers, [current.key]: option.value });
-                    setStep(step + 1);
-                  }}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl border border-solid text-left transition-colors hover:bg-[#0093DD]/5 hover:border-[#0093DD]"
-                  style={{ borderColor: 'var(--line)', background: '#fff' }}
-                >
-                  <div className="flex-1">
-                    <div className="font-bold text-sm" style={{ color: 'var(--brand-dark)' }}>{option.label}</div>
-                    <div className="text-xs" style={{ color: 'var(--muted)' }}>{option.desc}</div>
-                  </div>
-                  <span className="text-sm font-bold text-[#0093DD]" aria-hidden="true">
-                    {option.value === 'high' || option.value === 'yes' ? '★★★' : option.value === 'mid' || option.value === 'maybe' ? '★★☆' : '★☆☆'}
-                  </span>
-                </button>
-              ))}
-            </div>
-            <div className="dialog-actions">
-              <button type="button" onClick={() => setStep(step - 1)} disabled={step === 0} className="btn-ghost text-sm disabled:opacity-50">← Back</button>
-              <button type="button" onClick={closeQuiz} className="btn-ghost text-sm">Cancel</button>
-            </div>
-          </>
-        )}
       </div>
-    </div>
+    </Dialog>
   );
 }
