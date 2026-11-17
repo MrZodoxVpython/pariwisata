@@ -420,6 +420,7 @@ Harus mengembalikan `{"status":"ok","database":"connected",...}`.
 | `connect ECONNREFUSED 127.0.0.1:5432` | `DATABASE_URL` tidak terbaca saat runtime. Tambahkan env di Vercel, centang environment **Production** (dan **Preview** jika memakai preview URL), lalu **Redeploy**. |
 | `/api/health` → `database: "not_configured"` | Sama seperti di atas — env belum masuk ke deployment. Environment variable baru hanya berlaku setelah redeploy. |
 | `/api/health` → `database: "unavailable"` | URL ada tetapi koneksi gagal. Pastikan memakai host pooler IPv4, user `postgres.<project-ref>`, dan tanpa `?sslmode=require`. |
+| `/api/*` → 503 `Admin login is disabled` | `ADMIN_JWT_SECRET` belum di-set di Vercel. Tambahkan di **Settings → Environment Variables** (Production), lalu **Redeploy**. Tanpa ini admin panel tidak bisa login. |
 | `/api/*` → 404 (`NOT_FOUND` dari Vercel, bukan JSON) | Route API dengan ≥2 segmen tidak sampai ke function. Vercel hanya memetakan catch-all `api/[...path].js` ke satu segmen, jadi `vercel.json` memakai rewrite `/api/:path*` → `/api/index` + file `api/index.js`. Jangan hapus rewrite tersebut. |
 | `/api/*` → 500 `FUNCTION_INVOCATION_FAILED` | Function crash saat load. Cek log function di Vercel; penyebab yang pernah terjadi di repo ini adalah `ERR_REQUIRE_ESM` dari `sanitize-html` (lihat catatan pin versi di atas). |
 | `/api/*` → 500 `API failed to start` | Pesan `message` pada response menunjukkan penyebab persisnya (mis. `Cannot find module 'x'` atau `ERR_REQUIRE_ESM`). Perbaiki dependency lalu redeploy. |
