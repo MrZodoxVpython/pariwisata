@@ -365,11 +365,10 @@ Schedule di atas **harian**, karena plan Hobby Vercel tidak mengizinkan cron leb
 sekali per hari. Untuk pengiriman notifikasi tiap 15 menit, pakai penjadwal gratis
 **cron-job.org** — lihat bagian **Notifikasi** di atas.
 
-> Penting: dependency runtime API (`express`, `pg`, dst.) **wajib ada di `package.json` root**.
-> Vercel mem-bundle function `api/*` berdasarkan dependency di root project, jadi
-> `server/node_modules` saja tidak cukup — akibatnya `/api/*` gagal dengan
-> `FUNCTION_INVOCATION_FAILED` (500). Daftar dependency di root harus sama dengan
-> `server/package.json`.
+> Catatan dependency: `sanitize-html` sengaja dipin ke **2.17.1**. Mulai 2.17.2 package
+> itu bergantung pada `htmlparser2` v10+/v12 yang **ESM-only**, padahal `sanitize-html`
+> masih CommonJS — akibatnya terjadi `ERR_REQUIRE_ESM` dan `/api/*` gagal dengan
+> `FUNCTION_INVOCATION_FAILED`. Jangan naikkan versinya sebelum upstream memperbaiki ini.
 
 ### Environment variables yang wajib di-set di Vercel
 
@@ -413,8 +412,8 @@ Harus mengembalikan `{"status":"ok","database":"connected",...}`.
 | `/api/health` → `database: "not_configured"` | Sama seperti di atas — env belum masuk ke deployment. Environment variable baru hanya berlaku setelah redeploy. |
 | `/api/health` → `database: "unavailable"` | URL ada tetapi koneksi gagal. Pastikan memakai host pooler IPv4, user `postgres.<project-ref>`, dan tanpa `?sslmode=require`. |
 | `/api/*` → 404 | Pastikan folder `api/[...path].js` ikut ter-push dan redeploy dari commit terbaru. |
-| `/api/*` → 500 `FUNCTION_INVOCATION_FAILED` | Function crash saat load, biasanya dependency tidak ter-bundle. Pastikan `installCommand` menjalankan `npm install` di root dan dependency API ada di `package.json` root (bukan hanya `server/package.json`). |
-| `/api/*` → 500 `API failed to start` | Pesan `message` pada response menunjukkan penyebab persisnya (mis. `Cannot find module 'x'`). Perbaiki dependency lalu redeploy. |
+| `/api/*` → 500 `FUNCTION_INVOCATION_FAILED` | Function crash saat load. Cek log function di Vercel; penyebab yang pernah terjadi di repo ini adalah `ERR_REQUIRE_ESM` dari `sanitize-html` (lihat catatan pin versi di atas). |
+| `/api/*` → 500 `API failed to start` | Pesan `message` pada response menunjukkan penyebab persisnya (mis. `Cannot find module 'x'` atau `ERR_REQUIRE_ESM`). Perbaiki dependency lalu redeploy. |
 
 Server juga menerima env bawaan integrasi Supabase/Vercel (`POSTGRES_URL`, `POSTGRES_PRISMA_URL`,
 `SUPABASE_DB_URL`, atau kombinasi `POSTGRES_HOST`/`POSTGRES_USER`/`POSTGRES_PASSWORD`), tetapi
