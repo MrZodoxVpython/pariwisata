@@ -51,6 +51,9 @@ export async function loadContent() {
           facebook: siteRow.facebook,
           whatsapp: siteRow.whatsapp,
           currency: siteRow.currency,
+          announcement: siteRow.announcement,
+          announcementActive: siteRow.announcement_active,
+          mapUrl: siteRow.map_url,
         }
       : null,
     tours: tours.rows.map(serializeTour),

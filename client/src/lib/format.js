@@ -19,10 +19,11 @@ export const formatIDR = (value) => formatMoney(value, 'IDR');
 
 export function photoUrl(id, width = 800) {
   if (!id) return '';
-  if (/^\d+$/.test(String(id))) {
-    return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${width}`;
-  }
   const src = String(id);
+  if (/^https?:\/\//i.test(src) || src.startsWith('data:')) return src;
+  if (/^\d+$/.test(src)) {
+    return `https://images.pexels.com/photos/${src}/pexels-photo-${src}.jpeg?auto=compress&cs=tinysrgb&w=${width}`;
+  }
   return src.startsWith('/') ? src : `/${src}`;
 }
 

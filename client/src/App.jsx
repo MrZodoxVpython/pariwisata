@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -23,6 +23,7 @@ import Toast from './components/Toast';
 import CookieBanner from './components/CookieBanner';
 import { IconSprite } from './components/Icon';
 import { AppProvider, useApp } from './context/AppContext';
+import AdminApp from './admin/AdminApp';
 
 function Splash({ error, onRetry }) {
   return (
@@ -73,6 +74,10 @@ function AppShell() {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const modalOpen = bookingTourId !== null || Boolean(articleSlug) || quizOpen || Boolean(policyKey) || Boolean(tourDetailId) || lightboxIndex !== null;
+  const [announcementHidden, setAnnouncementHidden] = useState(false);
+
+  const announcement =
+    content.site?.announcementActive && content.site?.announcement ? content.site.announcement : '';
 
   useEffect(() => {
     document.body.classList.toggle('modal-open', modalOpen);
@@ -107,6 +112,19 @@ function AppShell() {
     <>
       <IconSprite />
       <Navbar />
+      {announcement && !announcementHidden ? (
+        <div className="site-announcement" role="status">
+          <span className="site-announcement-text">{announcement}</span>
+          <button
+            type="button"
+            className="site-announcement-close"
+            onClick={() => setAnnouncementHidden(true)}
+            aria-label="Dismiss announcement"
+          >
+            ×
+          </button>
+        </div>
+      ) : null}
       <main id="main" className={isHome ? undefined : 'page-main'}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -138,6 +156,15 @@ function AppShell() {
 }
 
 export default function App() {
+  return (
+    <Routes>
+      <Route path="/admin/*" element={<AdminApp />} />
+      <Route path="/*" element={<PublicApp />} />
+    </Routes>
+  );
+}
+
+function PublicApp() {
   return (
     <AppProvider>
       <ScrollManager />

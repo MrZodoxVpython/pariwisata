@@ -17,21 +17,25 @@ Data tours, pickup, review, guide, galeri, artikel, FAQ, kebijakan, dan quiz sek
 pariwisata/
 ├── client/                  # React + Vite
 │   ├── src/
+│   │   ├── admin/           # Admin panel (login, layout, 20 halaman)
 │   │   ├── components/      # Navbar, Hero, dialogs, footer, dll.
 │   │   ├── context/         # AppContext (content + dialog + toast)
 │   │   ├── lib/             # api client, format & image helpers
 │   │   ├── pages/           # Home, Packages, Detail, About, Gallery, Articles, Contact
-│   │   └── styles/index.css
+│   │   └── styles/          # index.css (publik) + admin.css (panel admin)
 │   ├── public/assets/tours/ # foto canyon lokal
 │   └── .env.example
 ├── server/                  # Node.js + Express
 │   ├── db/
 │   │   ├── schema.sql       # skema PostgreSQL + RLS
-│   │   ├── setup.js         # apply schema + seed
+│   │   ├── migrations/      # migrasi bertahap (001_admin.sql = tabel admin)
+│   │   ├── migrate.js       # runner migrasi (idempoten)
+│   │   ├── setup.js         # apply schema + migrasi + seed
 │   │   └── seed-data/       # sumber data awal (dipakai saat seeding)
-│   ├── lib/                 # pg pool, serializer, helper
-│   ├── middleware/          # admin auth, rate limit
+│   ├── lib/                 # pg pool, serializer, auth, storage, notifikasi
+│   ├── middleware/          # admin auth (JWT + legacy token), rate limit
 │   ├── routes/              # content, bookings, contact
+│   │   └── admin/           # seluruh endpoint panel admin
 │   ├── index.js
 │   └── .env.example
 ├── index.html               # file lama (arsip, tidak dipakai aplikasi baru)
@@ -83,8 +87,25 @@ Login pooler memakai user `postgres.<project-ref>`, bukan `postgres`.
 DATABASE_URL=postgresql://postgres.genqdhimsibslhekxkja:PASSWORD@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres
 PORT=3001
 CORS_ORIGIN=http://localhost:5173
-ADMIN_TOKEN=<token-rahasia>
+ADMIN_TOKEN=<token-rahasia-legacy>
 PG_POOL_MAX=10
+
+# --- Panel admin ---
+ADMIN_JWT_SECRET=<string-random-min-16-karakter>   # menandatangani sesi admin (8 jam)
+ADMIN_EMAIL=owner@example.com                      # dipakai sekali oleh db:setup
+ADMIN_PASSWORD=ganti-dengan-min-8-karakter
+ADMIN_NAME=Owner
+
+# --- Upload media (Supabase Storage) — opsional ---
+SUPABASE_URL=https://PROJECT_REF.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_STORAGE_BUCKET=media
+
+# --- Notifikasi (opsional) ---
+RESEND_API_KEY=
+MAIL_FROM=Canyoning Bali <hello@example.com>
+FONNTE_TOKEN=
+CRON_SECRET=<string-random>                        # dipakai Vercel cron untuk dispatch
 ```
 
 ### Env client
@@ -105,8 +126,11 @@ Pertama kali:
 
 ```bash
 npm run install:all
-npm run db:setup        # membuat tabel + mengisi data awal ke Supabase
+npm run db:setup        # membuat tabel + migrasi + mengisi data awal ke Supabase
 ```
+
+`npm run db:setup` akan membuat akun owner pertama dari `ADMIN_EMAIL` / `ADMIN_PASSWORD`
+(kalau belum ada akun admin).
 
 Development (dua terminal):
 
@@ -115,7 +139,8 @@ npm run dev:server      # http://localhost:3001
 npm run dev:client      # http://localhost:5173
 ```
 
-Buka **http://localhost:5173**.
+Buka **http://localhost:5173** untuk situs publik, dan **http://localhost:5173/admin**
+untuk panel admin.
 
 Production (satu service):
 
@@ -124,10 +149,23 @@ npm run build           # build React ke client/dist
 npm start               # Express menyajikan API + client/dist di :3001
 ```
 
-Buka **http://localhost:3001**.
+Buka **http://localhost:3001** (publik) dan **http://localhost:3001/admin** (admin).
 
-`npm run db:setup` aman dijalankan berulang: konten di-upsert/di-reset, sedangkan data
-`booking_requests` dan `contact_messages` **tidak dihapus**.
+`npm run db:setup` aman dijalankan berulang dan **tidak menimpa konten yang sudah diedit
+lewat panel admin**: seed hanya jalan saat tabel `tours` masih kosong. Untuk memaksa reset
+konten ke data awal:
+
+```bash
+npm run db:seed          # = db:setup --force
+```
+
+Data `booking_requests` dan `contact_messages` tidak pernah dihapus oleh seed.
+
+Migrasi skema admin dibungkus terpisah, jadi bisa dijalankan sendiri tanpa seed:
+
+```bash
+npm run db:migrate       # menerapkan server/db/migrations/*.sql (idempoten)
+```
 
 ---
 
@@ -149,6 +187,13 @@ Tabel utama:
 | `quiz_questions` | pertanyaan canyon matcher |
 | `booking_requests` | permintaan booking dari form |
 | `contact_messages` | pesan dari form contact |
+| `admin_users` | akun panel admin (bcrypt + role owner/manager/staff) |
+| `audit_logs` | jejak aksi admin |
+| `tour_availability` | override kapasitas / tanggal tutup per tour |
+| `booking_status_history` | riwayat perubahan status booking |
+| `booking_notes` | catatan internal booking |
+| `media` | pustaka media (Supabase Storage) |
+| `notifications` | outbox notifikasi (email/WhatsApp) |
 
 Semua tabel memakai **RLS enabled** dan akses `anon`/`authenticated` dicabut. Hanya server
 (yang terhubung sebagai user `postgres`) yang bisa membaca/menulis.
@@ -186,9 +231,92 @@ curl http://localhost:3001/api/bookings \
 Harga booking dihitung ulang di server dari harga tour + biaya pickup di database, jadi
 client tidak bisa memanipulasi total.
 
+### API panel admin (`/api/admin/*`)
+
+Semua endpoint admin menerima `Authorization: Bearer <JWT admin>` (dari
+`POST /api/admin/auth/login`). Token legacy `x-admin-token` tetap diterima sebagai owner
+agar script lama tidak rusak.
+
+| Grup | Endpoint |
+| --- | --- |
+| Auth | `POST /auth/login`, `GET /auth/me`, `POST /auth/logout`, `POST /auth/password` |
+| Dashboard | `GET /dashboard` |
+| Bookings | `GET /bookings`, `GET /bookings/:id`, `POST /bookings`, `PATCH /bookings/:id`, `POST /bookings/:id/notes`, `GET /bookings/export.csv` |
+| Availability | `GET /availability`, `PUT /availability/:tourId/:date`, `POST /availability/bulk`, `DELETE /availability/:tourId/:date` |
+| Messages | `GET /messages`, `GET /messages/:id`, `PATCH /messages/:id`, `POST /messages/:id/convert-to-booking` |
+| Konten | `/tours`, `/pickups`, `/reviews`, `/guides`, `/gallery`, `/articles`, `/faqs`, `/policies`, `/quiz`, `/settings` |
+| Media | `GET /media`, `GET /media/config`, `POST /media/sign`, `POST /media`, `PATCH /media/:id`, `DELETE /media/:id` |
+| Laporan | `GET /reports`, `GET /reports/export.csv` |
+| Notifikasi | `GET /notifications`, `POST /notifications/:id/retry`, `POST|GET /notifications/dispatch` |
+| Pengguna | `GET /users`, `POST /users`, `PATCH /users/:id`, `POST /users/:id/reset-password`, `DELETE /users/:id` |
+| Audit | `GET /audit` |
+
+Hak akses per role:
+
+- **staff** — dashboard, bookings, messages.
+- **manager** — staff + konten, availability, reports, settings, notifikasi.
+- **owner** — semuanya + users & audit log.
+
+Endpoint publik `GET /api/availability?tourId=...&date=...` mengembalikan sisa kapasitas
+(tanpa data pribadi) dan dipakai form booking untuk menampilkan ketersediaan.
+
 ---
 
-## 6. Deploy ke Vercel (full-stack)
+## 6. Panel admin
+
+Panel admin berada di `/admin` dan **terpisah dari layout situs publik** (tanpa navbar/footer
+publik). Login memakai email + password akun `admin_users`, JWT berlaku 8 jam dan disimpan di
+`sessionStorage`.
+
+### Fitur
+
+| Halaman | Kegunaan |
+| --- | --- |
+| Dashboard | statistik booking/pendapatan, grafik 30 hari, tour populer, trip terdekat |
+| Bookings | daftar + filter + pencarian, buat booking manual, detail, ubah status, catatan, export CSV |
+| Availability | kalender kapasitas per tour, tutup tanggal, bulk update, override per tanggal |
+| Messages | inbox pesan contact, tandai status, catatan internal, konversi jadi booking |
+| Konten | Tours (+duplicate/reorder), Pickup points, Reviews, Guides, Gallery, Articles, FAQs, Policies, Canyon matcher |
+| Media | pustaka upload (Supabase Storage) + pilih gambar |
+| Reports | ringkasan booking/pendapatan per rentang tanggal + export CSV |
+| Notifications | outbox email/WhatsApp, retry, kirim manual |
+| Site settings | kontak, sosial media, banner pengumuman, tujuan notifikasi |
+| Admin users | kelola akun & role (owner-only) |
+| Audit log | riwayat aksi admin (owner-only) |
+
+Editor artikel & kebijakan memakai textarea HTML tanpa dependency, dan semua HTML disanitasi
+di server (`sanitize-html`) sebelum disimpan.
+
+### Upload media (opsional)
+
+Upload diaktifkan dengan mengisi `SUPABASE_URL` dan `SUPABASE_SERVICE_ROLE_KEY` (bucket
+`media`, harus **public read**). Browser mengompres gambar ke WebP lalu upload lewat signed
+URL. Kalau storage belum dikonfigurasi, tombol upload dinonaktifkan tetapi input gambar tetap
+bisa memakai URL, id Pexels, atau path lokal (`/assets/...`).
+
+### Notifikasi (opsional)
+
+Setiap booking/contact baru serta booking yang di-`confirmed` menulis baris ke tabel
+`notifications` (outbox). Pengiriman:
+
+- **Email** — Resend (`RESEND_API_KEY`, `MAIL_FROM`).
+- **WhatsApp** — Fonnte (`FONNTE_TOKEN`).
+- **Reminder H-1** — otomatis diantre untuk booking `confirmed` yang berangkat besok.
+
+Kirim outbox dari tombol **Send queued now** di halaman Notifications, atau lewat cron:
+
+```
+POST /api/admin/notifications/dispatch
+Header: x-cron-secret: <CRON_SECRET>
+```
+
+`vercel.json` sudah menyertakan cron tiap 15 menit ke endpoint yang sama. Vercel cron
+mengirim header `Authorization: Bearer <CRON_SECRET>`, dan endpoint ini menerima keduanya —
+cukup set env `CRON_SECRET` di Vercel.
+
+---
+
+## 7. Deploy ke Vercel (full-stack)
 
 Repo ini sudah menyertakan `vercel.json` di root agar Vercel:
 
@@ -201,7 +329,10 @@ Repo ini sudah menyertakan `vercel.json` di root agar Vercel:
 {
   "installCommand": "npm --prefix server install && npm --prefix client install",
   "buildCommand": "npm --prefix client run build",
-  "outputDirectory": "client/dist"
+  "outputDirectory": "client/dist",
+  "crons": [
+    { "path": "/api/admin/notifications/dispatch", "schedule": "*/15 * * * *" }
+  ]
 }
 ```
 
@@ -215,8 +346,18 @@ Buka **Project → Settings → Environment Variables**, lalu tambahkan:
 | Name | Value |
 | --- | --- |
 | `DATABASE_URL` | `postgresql://postgres.genqdhimsibslhekxkja:PASSWORD@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres` |
-| `ADMIN_TOKEN` | token rahasia admin (bebas, string panjang) |
+| `ADMIN_TOKEN` | token rahasia admin legacy (bebas, string panjang) |
+| `ADMIN_JWT_SECRET` | string random min 16 karakter untuk sesi admin panel |
 | `CORS_ORIGIN` | `https://domain-vercel-anda.vercel.app` (opsional) |
+| `SUPABASE_URL` | (opsional) untuk upload media |
+| `SUPABASE_SERVICE_ROLE_KEY` | (opsional) untuk upload media |
+| `RESEND_API_KEY` / `MAIL_FROM` | (opsional) notifikasi email |
+| `FONNTE_TOKEN` | (opsional) notifikasi WhatsApp |
+| `CRON_SECRET` | string random untuk mengamankan cron dispatch |
+
+> Akun owner pertama dibuat lewat `npm run db:setup` secara lokal (dari `ADMIN_EMAIL` /
+> `ADMIN_PASSWORD`). Di Vercel tidak perlu `ADMIN_PASSWORD`; login-kan akun yang sudah ada.
+> Jika lupa password, owner bisa mereset dari halaman **Admin users**.
 
 Nilai `DATABASE_URL` harus memakai **pooler IPv4** (host `aws-1-ap-northeast-2.pooler.supabase.com`),
 bukan host `db.*.supabase.co` yang hanya IPv6. Jangan menambahkan `?sslmode=require`.
@@ -250,7 +391,7 @@ Alternatif single-service di VPS/Render: build client lalu jalankan `npm --prefi
 
 ---
 
-## 7. Yang berubah dari versi lama
+## 8. Yang berubah dari versi lama
 
 - Semua konten dipindahkan dari `client/src/data/*` ke tabel Supabase.
 - Form booking tidak lagi menulis langsung dari browser ke Supabase; sekarang melalui API

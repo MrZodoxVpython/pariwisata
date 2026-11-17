@@ -2,7 +2,9 @@ import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { pool, withTransaction } from '../lib/db.js';
+import bcrypt from 'bcryptjs';
+import { pool, query, withTransaction } from '../lib/db.js';
+import { migrate } from './migrate.js';
 import {
   SITE,
   PICKUP,
@@ -22,6 +24,30 @@ async function applySchema() {
   const sql = await readFile(path.join(here, 'schema.sql'), 'utf8');
   await pool.query(sql);
   console.log('✓ schema applied');
+}
+
+async function seedFirstAdmin() {
+  const { rows } = await query('select count(*)::int as count from public.admin_users');
+  if (rows[0].count > 0) return;
+
+  const email = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+  const password = process.env.ADMIN_PASSWORD || '';
+  if (!email || !password) {
+    console.log(
+      '! No admin account yet. Set ADMIN_EMAIL and ADMIN_PASSWORD in server/.env, ' +
+        'then run npm run db:setup again (or create one from the Users page later).'
+    );
+    return;
+  }
+
+  const hash = await bcrypt.hash(password, 12);
+  await query(
+    `insert into public.admin_users (email, password_hash, name, role)
+     values ($1, $2, $3, 'owner')
+     on conflict (email) do nothing`,
+    [email, hash, process.env.ADMIN_NAME || 'Owner']
+  );
+  console.log(`✓ owner account created: ${email}`);
 }
 
 async function seed() {
@@ -226,9 +252,23 @@ async function seed() {
   console.log(`✓ seeded ${TOURS.length} tours, ${REVIEWS.length} reviews, ${Object.keys(ARTICLES).length} articles`);
 }
 
+const forceSeed = process.argv.includes('--force');
+
 try {
   await applySchema();
-  await seed();
+  await migrate();
+
+  const { rows } = await query('select count(*)::int as count from public.tours');
+  if (rows[0].count === 0 || forceSeed) {
+    await seed();
+  } else {
+    console.log(
+      '✓ content already present — seed skipped (existing admin edits are preserved). ' +
+        'Run "npm --prefix server run db:seed -- --force" to reset content.'
+    );
+  }
+
+  await seedFirstAdmin();
   console.log('✓ database ready');
 } catch (error) {
   console.error('Database setup failed:', error.message);

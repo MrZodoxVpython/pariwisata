@@ -10,6 +10,7 @@ import { query, isDatabaseConfigured, databaseUrlSource } from './lib/db.js';
 import contentRoutes from './routes/content.js';
 import bookingRoutes from './routes/bookings.js';
 import contactRoutes from './routes/contact.js';
+import adminRoutes from './routes/admin/index.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(here, '.env') });
@@ -32,12 +33,12 @@ app.use(
 app.use(
   cors({
     origin: allowedOrigins.length ? allowedOrigins : true,
-    methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'x-admin-token'],
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-admin-token', 'x-cron-secret'],
   })
 );
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-app.use(express.json({ limit: '100kb' }));
+app.use(express.json({ limit: '1mb' }));
 
 app.get('/api/health', async (req, res) => {
   if (!isDatabaseConfigured) {
@@ -68,6 +69,7 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+app.use('/api/admin', adminRoutes);
 app.use('/api', contentRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/contact', contactRoutes);

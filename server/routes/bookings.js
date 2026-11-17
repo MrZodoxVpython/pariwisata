@@ -4,6 +4,8 @@ import { asyncHandler, httpError, isEmail, cleanString } from '../lib/http.js';
 import { serializeBooking } from '../lib/serializers.js';
 import { rateLimit } from '../middleware/rateLimit.js';
 import { requireAdmin } from '../middleware/admin.js';
+import { getAvailability } from '../lib/availability.js';
+import { queueNotification } from '../lib/notifications.js';
 
 const router = Router();
 const MAX_PEOPLE = 8;
@@ -60,6 +62,20 @@ router.post(
       const tour = tourResult.rows[0];
       if (!tour) throw httpError(400, 'Validation failed', [{ field: 'tourId', message: 'Unknown tour' }]);
 
+      const availability = await getAvailability(value.tourId, value.date, client.query.bind(client));
+      if (!availability || !availability.available || availability.remaining < value.people) {
+        throw httpError(400, 'Validation failed', [
+          {
+            field: 'date',
+            message: !availability
+              ? 'Unknown tour'
+              : availability.isClosed
+                ? 'That date is not available.'
+                : `Only ${availability.remaining} spot(s) left on that date.`,
+          },
+        ]);
+      }
+
       let pickup = null;
       if (value.pickupId) {
         const pickupResult = await client.query(
@@ -102,10 +118,30 @@ router.post(
       return rows[0];
     });
 
+    const serialized = serializeBooking(booking);
+
+    const settings = await query('select notify_email, notify_whatsapp from public.site_settings where id = 1');
+    if (settings.rows[0]?.notify_email) {
+      await queueNotification({
+        channel: 'email',
+        recipient: settings.rows[0].notify_email,
+        template: 'booking_created',
+        payload: { booking: serialized },
+      });
+    }
+    if (settings.rows[0]?.notify_whatsapp) {
+      await queueNotification({
+        channel: 'whatsapp',
+        recipient: settings.rows[0].notify_whatsapp,
+        template: 'booking_created',
+        payload: { booking: serialized },
+      });
+    }
+
     res.status(201).json({
       success: true,
       message: 'Booking request received. We will confirm availability via WhatsApp.',
-      booking: serializeBooking(booking),
+      booking: serialized,
     });
   })
 );

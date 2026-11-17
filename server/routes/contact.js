@@ -4,6 +4,7 @@ import { asyncHandler, httpError, isEmail, cleanString } from '../lib/http.js';
 import { serializeContactMessage } from '../lib/serializers.js';
 import { rateLimit } from '../middleware/rateLimit.js';
 import { requireAdmin } from '../middleware/admin.js';
+import { queueNotification } from '../lib/notifications.js';
 
 const router = Router();
 
@@ -50,10 +51,30 @@ router.post(
       ]
     );
 
+    const serialized = serializeContactMessage(rows[0]);
+
+    const settings = await query('select notify_email, notify_whatsapp from public.site_settings where id = 1');
+    if (settings.rows[0]?.notify_email) {
+      await queueNotification({
+        channel: 'email',
+        recipient: settings.rows[0].notify_email,
+        template: 'contact_message',
+        payload: { contact: serialized },
+      });
+    }
+    if (settings.rows[0]?.notify_whatsapp) {
+      await queueNotification({
+        channel: 'whatsapp',
+        recipient: settings.rows[0].notify_whatsapp,
+        template: 'contact_message',
+        payload: { contact: serialized },
+      });
+    }
+
     res.status(201).json({
       success: true,
       message: 'Message received. We will get back to you shortly.',
-      contact: serializeContactMessage(rows[0]),
+      contact: serialized,
     });
   })
 );

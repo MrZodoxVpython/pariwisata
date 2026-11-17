@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { query } from '../lib/db.js';
 import { asyncHandler, httpError } from '../lib/http.js';
 import { loadContent } from '../lib/content.js';
+import { getAvailability } from '../lib/availability.js';
 import {
   serializeTour,
   serializePickup,
@@ -98,6 +99,20 @@ router.get(
     );
     if (!rows[0]) throw httpError(404, 'Article not found');
     res.json({ success: true, article: serializeArticle(rows[0]) });
+  })
+);
+
+router.get(
+  '/availability',
+  asyncHandler(async (req, res) => {
+    const tourId = typeof req.query.tourId === 'string' ? req.query.tourId.trim().slice(0, 80) : '';
+    const date = typeof req.query.date === 'string' ? req.query.date.trim().slice(0, 10) : '';
+    if (!tourId || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      throw httpError(400, 'tourId and date (YYYY-MM-DD) are required');
+    }
+    const availability = await getAvailability(tourId, date);
+    if (!availability) throw httpError(404, 'Tour not found');
+    res.json({ success: true, availability });
   })
 );
 
