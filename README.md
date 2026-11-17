@@ -188,7 +188,38 @@ client tidak bisa memanipulasi total.
 
 ---
 
-## 6. Yang berubah dari versi lama
+## 6. Deploy ke Vercel
+
+Repo ini sudah menyertakan `vercel.json` di root agar Vercel meng-install dependency di folder
+`client/` dan mem-build React dengan benar:
+
+```json
+{
+  "installCommand": "npm --prefix client install",
+  "buildCommand": "npm --prefix client run build",
+  "outputDirectory": "client/dist"
+}
+```
+
+Tanpa konfigurasi ini, Vercel hanya menjalankan `npm install` di root (yang tidak punya
+dependency), sehingga `vite: command not found`.
+
+**Penting:** Vercel pada konfigurasi ini hanya menghosting frontend statis. Agar form booking,
+contact, dan konten dinamis berfungsi, deploy folder `server/` ke layanan Node.js (Railway,
+Render, Fly.io, VPS, dsb.), lalu set environment variable di Vercel:
+
+```env
+VITE_API_BASE_URL=https://api-domain-anda.com/api
+```
+
+Setelah menambah/mengubah env di Vercel, lakukan **Redeploy** karena `VITE_*` ditanam saat build.
+
+Alternatif: jika ingin seluruh aplikasi (frontend + API) dalam satu service, build client lalu
+jalankan `npm --prefix server start` di VPS/Render — Express otomatis menyajikan `client/dist`.
+
+---
+
+## 7. Yang berubah dari versi lama
 
 - Semua konten dipindahkan dari `client/src/data/*` ke tabel Supabase.
 - Form booking tidak lagi menulis langsung dari browser ke Supabase; sekarang melalui API

@@ -11,7 +11,7 @@
     "db:seed": "node db/setup.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   },
   "dependencies": {
     "cors": "^2.8.5",
