@@ -1,0 +1,24 @@
+{
+  "name": "canyoning-bali-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Node.js/Express API for Canyoning Bali backed by Supabase PostgreSQL",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js",
+    "db:setup": "node db/setup.js",
+    "db:seed": "node db/setup.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.13.1"
+  }
+}
