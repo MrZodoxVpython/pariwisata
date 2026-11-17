@@ -232,6 +232,19 @@ https://domain-vercel-anda.vercel.app/api/health
 
 Harus mengembalikan `{"status":"ok","database":"connected",...}`.
 
+### Troubleshooting
+
+| Gejala | Penyebab & solusi |
+| --- | --- |
+| `connect ECONNREFUSED 127.0.0.1:5432` | `DATABASE_URL` tidak terbaca saat runtime. Tambahkan env di Vercel, centang environment **Production** (dan **Preview** jika memakai preview URL), lalu **Redeploy**. |
+| `/api/health` → `database: "not_configured"` | Sama seperti di atas — env belum masuk ke deployment. Environment variable baru hanya berlaku setelah redeploy. |
+| `/api/health` → `database: "unavailable"` | URL ada tetapi koneksi gagal. Pastikan memakai host pooler IPv4, user `postgres.<project-ref>`, dan tanpa `?sslmode=require`. |
+| `/api/*` → 404 | Pastikan folder `api/[...path].js` ikut ter-push dan redeploy dari commit terbaru. |
+
+Server juga menerima env bawaan integrasi Supabase/Vercel (`POSTGRES_URL`, `POSTGRES_PRISMA_URL`,
+`SUPABASE_DB_URL`, atau kombinasi `POSTGRES_HOST`/`POSTGRES_USER`/`POSTGRES_PASSWORD`), tetapi
+`DATABASE_URL` tetap yang paling disarankan.
+
 Alternatif single-service di VPS/Render: build client lalu jalankan `npm --prefix server start`
 — Express otomatis menyajikan `client/dist`.
 

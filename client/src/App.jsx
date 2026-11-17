@@ -31,7 +31,9 @@ function Splash({ error, onRetry }) {
         </div>
         {error ? (
           <>
-            <h1 className="text-xl font-extrabold mb-2">Cannot reach the API</h1>
+            <h1 className="text-xl font-extrabold mb-2">
+              {/DATABASE_URL/i.test(error) ? 'Database belum dikonfigurasi' : 'Cannot reach the API'}
+            </h1>
             <p className="text-sm text-muted mb-6">{error}</p>
             <button type="button" className="btn-primary" onClick={onRetry}>
               Try again

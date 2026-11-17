@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { query } from './lib/db.js';
+import { query, isDatabaseConfigured, databaseUrlSource } from './lib/db.js';
 import contentRoutes from './routes/content.js';
 import bookingRoutes from './routes/bookings.js';
 import contactRoutes from './routes/contact.js';
@@ -40,16 +40,31 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '100kb' }));
 
 app.get('/api/health', async (req, res) => {
+  if (!isDatabaseConfigured) {
+    return res.status(503).json({
+      status: 'error',
+      service: 'canyoning-bali-api',
+      database: 'not_configured',
+      error:
+        'DATABASE_URL is not set. Add it in Vercel → Settings → Environment Variables, then redeploy.',
+    });
+  }
+
   try {
     const { rows } = await query('select now() as time');
     res.json({
       status: 'ok',
       service: 'canyoning-bali-api',
       database: 'connected',
+      source: databaseUrlSource,
       timestamp: rows[0].time,
     });
   } catch (error) {
-    res.status(503).json({ status: 'error', database: 'unavailable' });
+    res.status(503).json({
+      status: 'error',
+      database: 'unavailable',
+      error: error.message,
+    });
   }
 });
 
@@ -72,7 +87,8 @@ app.use((req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  const status = err.status || 500;
+  const isConfigError = /DATABASE_URL is not configured/.test(err.message || '');
+  const status = err.status || (isConfigError ? 503 : 500);
   if (status >= 500) console.error(err);
   res.status(status).json({
     error: err.message || 'Internal server error',
