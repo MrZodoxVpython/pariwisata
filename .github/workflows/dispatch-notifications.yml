@@ -1,0 +1,39 @@
+name: Dispatch notifications
+
+# Vercel Hobby hanya mengizinkan cron harian, jadi penjadwal 15 menit dijalankan
+# di sini (GitHub Actions, gratis) dan memukul endpoint dispatch yang sama.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  # Tombol "Run workflow" di tab Actions.
+  workflow_dispatch:
+
+# Batalkan run yang masih berjalan jika ada jadwal baru, supaya tidak menumpuk.
+concurrency:
+  group: dispatch-notifications
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger notification dispatch
+        env:
+          # Set APP_URL sebagai repository *variable* atau *secret*, contoh:
+          #   https://domain-vercel-anda.vercel.app  (tanpa slash di akhir)
+          APP_URL: ${{ vars.APP_URL || secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$APP_URL" ]; then
+            echo "::error::APP_URL belum di-set. Tambahkan sebagai repository variable/secret."
+            exit 1
+          fi
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET belum di-set. Tambahkan sebagai repository secret."
+            exit 1
+          fi
+          curl --fail --silent --show-error \
+            --retry 3 --retry-connrefused --retry-delay 5 \
+            --max-time 60 \
+            -X POST "${APP_URL%/}/api/admin/notifications/dispatch" \
+            -H "x-cron-secret: ${CRON_SECRET}"

@@ -12,7 +12,7 @@
   "crons": [
     {
       "path": "/api/admin/notifications/dispatch",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 3 * * *"
     }
   ]
 }
