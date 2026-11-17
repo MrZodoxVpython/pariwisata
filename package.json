@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Canyoning Bali — React frontend + Node.js/Express API + Supabase PostgreSQL",
   "scripts": {
-    "install:all": "npm --prefix server install && npm --prefix client install",
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
     "db:setup": "npm --prefix server run db:setup",
     "db:migrate": "npm --prefix server run db:migrate",
     "db:seed": "npm --prefix server run db:seed",
@@ -16,5 +16,17 @@
   },
   "engines": {
     "node": "26.x"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.0",
+    "pg": "^8.13.1",
+    "sanitize-html": "^2.18.2"
   }
 }
