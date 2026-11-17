@@ -347,19 +347,28 @@ Repo ini sudah menyertakan `vercel.json` di root agar Vercel:
 
 1. Meng-install dependency `server/` dan `client/`.
 2. Mem-build React dari `client/`.
-3. Menjalankan Express sebagai serverless function di `api/[...path].js`
+3. Menjalankan Express sebagai serverless function di `api/index.js`
    (semua request `/api/*` diteruskan ke Express).
 
 ```json
 {
-  "installCommand": "npm install && npm --prefix client install",
+  "installCommand": "npm --prefix server install && npm --prefix client install",
   "buildCommand": "npm --prefix client run build",
   "outputDirectory": "client/dist",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index" },
+    { "source": "/((?!api(?:/|$)).*)", "destination": "/index.html" }
+  ],
   "crons": [
     { "path": "/api/admin/notifications/dispatch", "schedule": "0 3 * * *" }
   ]
 }
 ```
+
+Rewrite pertama **wajib**: catch-all `api/[...path].js` bawaan Vercel hanya cocok satu
+segmen, sehingga tanpa rewrite ini route seperti `/api/admin/auth/login` dibalas 404 oleh
+Vercel dan tidak pernah sampai ke Express. Rewrite `/api/:path*` → `/api/index`
+meneruskan semua path API ke satu function `api/index.js`.
 
 Schedule di atas **harian**, karena plan Hobby Vercel tidak mengizinkan cron lebih dari
 sekali per hari. Untuk pengiriman notifikasi tiap 15 menit, pakai penjadwal gratis
@@ -411,7 +420,7 @@ Harus mengembalikan `{"status":"ok","database":"connected",...}`.
 | `connect ECONNREFUSED 127.0.0.1:5432` | `DATABASE_URL` tidak terbaca saat runtime. Tambahkan env di Vercel, centang environment **Production** (dan **Preview** jika memakai preview URL), lalu **Redeploy**. |
 | `/api/health` → `database: "not_configured"` | Sama seperti di atas — env belum masuk ke deployment. Environment variable baru hanya berlaku setelah redeploy. |
 | `/api/health` → `database: "unavailable"` | URL ada tetapi koneksi gagal. Pastikan memakai host pooler IPv4, user `postgres.<project-ref>`, dan tanpa `?sslmode=require`. |
-| `/api/*` → 404 | Pastikan folder `api/[...path].js` ikut ter-push dan redeploy dari commit terbaru. |
+| `/api/*` → 404 (`NOT_FOUND` dari Vercel, bukan JSON) | Route API dengan ≥2 segmen tidak sampai ke function. Vercel hanya memetakan catch-all `api/[...path].js` ke satu segmen, jadi `vercel.json` memakai rewrite `/api/:path*` → `/api/index` + file `api/index.js`. Jangan hapus rewrite tersebut. |
 | `/api/*` → 500 `FUNCTION_INVOCATION_FAILED` | Function crash saat load. Cek log function di Vercel; penyebab yang pernah terjadi di repo ini adalah `ERR_REQUIRE_ESM` dari `sanitize-html` (lihat catatan pin versi di atas). |
 | `/api/*` → 500 `API failed to start` | Pesan `message` pada response menunjukkan penyebab persisnya (mis. `Cannot find module 'x'` atau `ERR_REQUIRE_ESM`). Perbaiki dependency lalu redeploy. |
 
