@@ -188,34 +188,52 @@ client tidak bisa memanipulasi total.
 
 ---
 
-## 6. Deploy ke Vercel
+## 6. Deploy ke Vercel (full-stack)
 
-Repo ini sudah menyertakan `vercel.json` di root agar Vercel meng-install dependency di folder
-`client/` dan mem-build React dengan benar:
+Repo ini sudah menyertakan `vercel.json` di root agar Vercel:
+
+1. Meng-install dependency `server/` dan `client/`.
+2. Mem-build React dari `client/`.
+3. Menjalankan Express sebagai serverless function di `api/[...path].js`
+   (semua request `/api/*` diteruskan ke Express).
 
 ```json
 {
-  "installCommand": "npm --prefix client install",
+  "installCommand": "npm --prefix server install && npm --prefix client install",
   "buildCommand": "npm --prefix client run build",
   "outputDirectory": "client/dist"
 }
 ```
 
 Tanpa konfigurasi ini, Vercel hanya menjalankan `npm install` di root (yang tidak punya
-dependency), sehingga `vite: command not found`.
+dependency), sehingga muncul error `vite: command not found` dan `/api/*` menjadi 404.
 
-**Penting:** Vercel pada konfigurasi ini hanya menghosting frontend statis. Agar form booking,
-contact, dan konten dinamis berfungsi, deploy folder `server/` ke layanan Node.js (Railway,
-Render, Fly.io, VPS, dsb.), lalu set environment variable di Vercel:
+### Environment variables yang wajib di-set di Vercel
 
-```env
-VITE_API_BASE_URL=https://api-domain-anda.com/api
+Buka **Project → Settings → Environment Variables**, lalu tambahkan:
+
+| Name | Value |
+| --- | --- |
+| `DATABASE_URL` | `postgresql://postgres.genqdhimsibslhekxkja:PASSWORD@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres` |
+| `ADMIN_TOKEN` | token rahasia admin (bebas, string panjang) |
+| `CORS_ORIGIN` | `https://domain-vercel-anda.vercel.app` (opsional) |
+
+Nilai `DATABASE_URL` harus memakai **pooler IPv4** (host `aws-1-ap-northeast-2.pooler.supabase.com`),
+bukan host `db.*.supabase.co` yang hanya IPv6. Jangan menambahkan `?sslmode=require`.
+
+Setelah menambah environment variable, lakukan **Redeploy**. Tidak perlu mengubah
+`VITE_API_BASE_URL`: frontend otomatis memanggil `/api` di domain yang sama.
+
+Cek setelah deploy:
+
+```
+https://domain-vercel-anda.vercel.app/api/health
 ```
 
-Setelah menambah/mengubah env di Vercel, lakukan **Redeploy** karena `VITE_*` ditanam saat build.
+Harus mengembalikan `{"status":"ok","database":"connected",...}`.
 
-Alternatif: jika ingin seluruh aplikasi (frontend + API) dalam satu service, build client lalu
-jalankan `npm --prefix server start` di VPS/Render — Express otomatis menyajikan `client/dist`.
+Alternatif single-service di VPS/Render: build client lalu jalankan `npm --prefix server start`
+— Express otomatis menyajikan `client/dist`.
 
 ---
 
