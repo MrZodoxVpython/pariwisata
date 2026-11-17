@@ -316,34 +316,28 @@ Endpoint menerima header `x-cron-secret: <CRON_SECRET>` **atau** `Authorization:
 #### Penjadwal 15 menit di plan Hobby
 
 Plan **Hobby Vercel hanya mengizinkan cron harian**, sehingga schedule `*/15 * * * *`
-ditolak saat deploy. Karena itu:
+ditolak saat deploy. Karena itu `vercel.json` memakai schedule harian (`0 3 * * *`)
+sebagai **cadangan**, sedangkan penjadwal tiap 15 menit dijalankan dari luar lewat
+layanan cron gratis [cron-job.org](https://cron-job.org).
 
-- `vercel.json` memakai schedule harian (`0 3 * * *`) sebagai **cadangan**.
-- Penjadwal tiap 15 menit dijalankan lewat salah satu opsi gratis berikut.
+Setup sekali saja:
 
-**Opsi A — GitHub Actions (disarankan).** Repo ini sudah memuat
-`.github/workflows/dispatch-notifications.yml` yang memukul endpoint dispatch tiap
-15 menit. Yang perlu disiapkan sekali saja di GitHub:
+1. Daftar gratis di [cron-job.org](https://cron-job.org) dan login.
+2. **Create cronjob**, isi:
+   - **Title**: `Dispatch notifications`
+   - **URL**: `https://domain-vercel-anda.vercel.app/api/admin/notifications/dispatch`
+   - **Schedule**: *Every 15 minutes* (atau ekspresi `*/15 * * * *`)
+   - **Request method**: `POST`
+   - **Headers** (bagian *Advanced*): tambah baris
+     `x-cron-secret` = `<nilai CRON_SECRET>` (harus sama dengan env di Vercel)
+3. Simpan, lalu klik **Run now** untuk menguji. Respons harus
+   `{"success":true,"processed":...,"sent":...,"failed":...}`.
 
-1. **Settings → Secrets and variables → Actions → Variables** → tambah
-   `APP_URL` = `https://domain-vercel-anda.vercel.app` (tanpa slash di akhir).
-2. **Secrets** → tambah `CRON_SECRET` dengan nilai yang sama seperti di Vercel.
-3. Uji lewat tab **Actions → Dispatch notifications → Run workflow**.
+Log eksekusi bisa dilihat di dashboard cron-job.org, sedangkan hasil dispatch
+(`processed`, `sent`, `failed`) juga tampil di halaman **Notifications** admin.
 
-> Catatan: GitHub menonaktifkan workflow terjadwal setelah repo tidak ada aktivitas
-> selama 60 hari (tinggal klik **Enable workflow** lagi), dan jadwal bisa tertunda
-> beberapa menit saat server GitHub sedang sibuk.
-
-**Opsi B — cron-job.org (tanpa GitHub).** Buat akun gratis di
-[cron-job.org](https://cron-job.org), lalu:
-
-- URL: `https://domain-vercel-anda.vercel.app/api/admin/notifications/dispatch`
-- Schedule: tiap 15 menit
-- Request method: `POST`
-- Header kustom: `x-cron-secret` = `<nilai CRON_SECRET>`
-
-Hitung-hitung akan muncul di log GitHub Actions / cron-job.org, dan hasil dispatch
-(`processed`, `sent`, `failed`) juga bisa dilihat di halaman **Notifications** admin.
+> Tip: aktifkan notifikasi email di cron-job.org agar Anda diberi tahu jika penjadwal
+> mulai gagal (mis. domain berubah atau `CRON_SECRET` diganti).
 
 ---
 
@@ -369,7 +363,7 @@ Repo ini sudah menyertakan `vercel.json` di root agar Vercel:
 
 Schedule di atas **harian**, karena plan Hobby Vercel tidak mengizinkan cron lebih dari
 sekali per hari. Untuk pengiriman notifikasi tiap 15 menit, pakai penjadwal gratis
-(GitHub Actions atau cron-job.org) — lihat bagian **Notifikasi** di atas.
+**cron-job.org** — lihat bagian **Notifikasi** di atas.
 
 Tanpa konfigurasi ini, Vercel hanya menjalankan `npm install` di root (yang tidak punya
 dependency), sehingga muncul error `vite: command not found` dan `/api/*` menjadi 404.
