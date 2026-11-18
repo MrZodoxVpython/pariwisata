@@ -68,7 +68,7 @@ const FALLBACK_REVIEWS = [
   { id: 'r2', name: 'Jonas K.', country: 'Germany', date: '1 month ago', tour: 'Maboya Canyon', rating: 5, source: 'Google', initials: 'JK', color: '#0093DD', quote: 'We booked as a couple with zero canyoning experience. Everything was explained clearly, the gear was in great condition, and the natural slides were unreal.' },
   { id: 'r3', name: 'Emma R.', country: 'United Kingdom', date: '1 month ago', tour: 'Samba Canyon', rating: 5, source: 'TripAdvisor', initials: 'ER', color: '#8a6f3d', quote: 'Samba is not for the faint-hearted — exactly what we wanted. The team checked water levels carefully and the whole day felt professional.' },
   { id: 'r4', name: 'Liam O.', country: 'Ireland', date: '2 months ago', tour: 'Egar Canyon', rating: 5, source: 'Google', initials: 'LO', color: '#4d6b8a', quote: 'Pickup from Ubud was on time, lunch was delicious, and the photos are amazing. Worth every rupiah.' },
-  { id: 'r5', name: 'Aiko T.', country: 'Japan', date: '2 months ago', tour: 'Maboya Canyon', rating: 5, source: 'Google', initials: 'AT', color: '#7a5a4a', quote: 'As a solo traveller I felt welcome immediately. Small group, great energy, and the canyon is stunning. I would book again in a heartbeat.' },
+  { id: 'r5', name: 'Aiko T.', country: 'Japan', date: '2 months ago', tour: 'Maboya Canyon', rating: 5, source: 'Google', initials: 'AT', color: '#7a5a4a', quote: 'As a solo traveller I felt welcome immediately. Great energy, and the canyon is stunning. I would book again in a heartbeat.' },
   { id: 'r6', name: 'Marco B.', country: 'Italy', date: '3 months ago', tour: 'Aling Canyon', rating: 5, source: 'TripAdvisor', initials: 'MB', color: '#006C9F', quote: 'Aling was a proper adventure. Big rappels, beautiful cave sections, and guides who clearly love what they do. Safety was never an afterthought.' },
 ];
 
@@ -196,7 +196,7 @@ export default function Home() {
         <div className="hero-shade" />
         <div className="wrap hero-inner">
           <div className="hero-copy">
-            <span className="eyebrow">North Bali · Small groups · Local guides</span>
+            <span className="eyebrow">North Bali · Local guides</span>
             <h1 id="heroTitle">Canyoning in Bali,<br />beyond the ordinary.</h1>
             <p>Rappel waterfalls, slide through jungle pools and explore hidden canyons with local guides who know every route. Beginner-friendly options, maximum 8 guests.</p>
             <div className="hero-actions">

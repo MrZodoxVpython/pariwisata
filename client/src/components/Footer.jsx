@@ -31,7 +31,7 @@ export default function Footer() {
             <Link className="brand" to="/" aria-label="Canyoning Bali home">
               <img className="brand-logo" src={LOGO} alt="Canyoning Bali logo" width="1417" height="1417" loading="lazy" decoding="async" />
             </Link>
-            <p>Small-group canyoning adventures in North Bali. Local guides, real canyons and unforgettable days.</p>
+            <p>Canyoning adventures in North Bali. Local guides, real canyons and unforgettable days.</p>
             <div className="footer-rating"><span className="stars" aria-hidden="true">★★★★★</span><span>4.9/5 · 312 guest reviews</span></div>
             <div className="socials">
               <a href={site.instagram || 'https://www.instagram.com/'} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Icon name="instagram" /></a>

@@ -1,0 +1,567 @@
+// -----------------------------------------------------------------------------
+// Lightweight English -> Indonesian dictionary for the public website UI.
+//
+// The public site is large and mixes static interface copy with content that
+// comes from the database. Rather than translate every JSX string by hand, the
+// <LanguageTranslator> component walks the rendered DOM and swaps any text node
+// (or placeholder / title / aria-label / alt attribute) whose trimmed value is
+// one of the keys below. Anything missing simply falls back to English, which
+// means the database-driven content is left untouched and this file can grow
+// over time without breaking the page.
+// -----------------------------------------------------------------------------
+
+export const ID_DICTIONARY = {
+  // ---- Global / accessibility ----
+  'Skip to content': 'Lewati ke konten',
+  'Canyoning Bali home': 'Beranda Canyoning Bali',
+  'Canyoning Bali logo': 'Logo Canyoning Bali',
+  'Main navigation': 'Navigasi utama',
+  'Mobile navigation': 'Navigasi seluler',
+  'Dismiss announcement': 'Tutup pengumuman',
+  'Toggle dark mode': 'Ubah mode gelap',
+  'Display currency': 'Mata uang tampilan',
+  'Switch to Indonesian': 'Ganti ke bahasa Indonesia',
+  'Switch to English': 'Ganti ke bahasa Inggris',
+  'Currency': 'Mata Uang',
+
+  // ---- Navbar ----
+  'Canyoning in North Bali · Guides since 2016': 'Canyoning di Bali Utara · Pemandu sejak 2016',
+  'Home': 'Beranda',
+  'Canyoning Tour': 'Tur Canyoning',
+  'About Us': 'Tentang Kami',
+  "FAQ's": 'FAQ',
+  'Contact Us': 'Hubungi Kami',
+  'Articles': 'Artikel',
+  'WhatsApp us': 'WhatsApp kami',
+  'Check availability': 'Cek ketersediaan',
+  'Book': 'Pesan',
+  '4.9 out of 5 from 312 reviews': '4.9 dari 5 dari 312 ulasan',
+  '(312 reviews)': '(312 ulasan)',
+
+  // ---- Bottom navigation ----
+  'Tours': 'Tur',
+  'About': 'Tentang',
+  'FAQ': 'FAQ',
+  'Contact': 'Kontak',
+
+  // ---- Footer ----
+  'Canyoning adventures in North Bali. Local guides, real canyons and unforgettable days.': 'Petualangan canyoning di Bali Utara. Pemandu lokal, canyon sungguhan, dan hari yang tak terlupakan.',
+  '4.9/5 · 312 guest reviews': '4.9/5 · 312 ulasan tamu',
+  'Explore': 'Jelajahi',
+  'Canyoning tour': 'Tur canyoning',
+  'About us': 'Tentang kami',
+  'Contact us': 'Hubungi kami',
+  'WhatsApp:': 'WhatsApp:',
+  'Good to know': 'Perlu diketahui',
+  'Cancellation & weather': 'Pembatalan & cuaca',
+  'Safety commitment': 'Komitmen keselamatan',
+  'Privacy policy': 'Kebijakan privasi',
+  'Terms & conditions': 'Syarat & ketentuan',
+  'Ask a question': 'Tanya sesuatu',
+  'Canyoning Bali. All rights reserved.': 'Canyoning Bali. Hak cipta dilindungi.',
+  'Demo build · Sample content · Simulated payments': 'Build demo · Konten contoh · Pembayaran simulasi',
+  'Prices in IDR · Converted amounts are approximate': 'Harga dalam IDR · Nominal konversi hanya perkiraan',
+
+  // ---- Cookie banner ----
+  'We use privacy-friendly analytics to improve this site. You can accept or continue with essential cookies only.': 'Kami memakai analitik yang ramah privasi untuk meningkatkan situs ini. Kamu bisa menerima atau lanjut dengan cookie esensial saja.',
+  'Privacy policy.': 'Kebijakan privasi.',
+  'Essential only': 'Hanya esensial',
+  'Accept analytics': 'Terima analitik',
+
+  // ---- Lightbox ----
+  'Close photo': 'Tutup foto',
+  'Previous photo': 'Foto sebelumnya',
+  'Next photo': 'Foto berikutnya',
+
+  // ---- Home / hero ----
+  'North Bali · Local guides': 'Bali Utara · Pemandu lokal',
+  'Canyoning in Bali,': 'Canyoning di Bali,',
+  'beyond the ordinary.': 'lebih dari biasa.',
+  'Rappel waterfalls, slide through jungle pools and explore hidden canyons with local guides who know every route. Beginner-friendly options, maximum 8 guests.': 'Turun air terjun dengan tali, meluncur di kolam hutan, dan jelajahi canyon tersembunyi bersama pemandu lokal yang hafal setiap rute. Cocok untuk pemula, maksimal 8 tamu.',
+  'Explore canyons': 'Jelajahi canyon',
+  '4.9/5 · 312 reviews': '4.9/5 · 312 ulasan',
+  'Free cancellation 48h': 'Pembatalan gratis 48 jam',
+  'Max 8 guests': 'Maks 8 tamu',
+  'Hotel pickup': 'Antar-jemput hotel',
+  'Quick availability check': 'Cek ketersediaan cepat',
+  'Plan your day': 'Rencanakan harimu',
+  'Deposit or pay in full. Demo checkout.': 'Bayar DP atau lunas. Checkout demo.',
+  'Canyon': 'Canyon',
+  'Date': 'Tanggal',
+  'Guests': 'Tamu',
+  'guest': 'tamu',
+  'guests': 'tamu',
+  'From': 'Dari',
+  '/ person': '/ orang',
+
+  // ---- Trust strip ----
+  'Local canyon guides': 'Pemandu canyon lokal',
+  '10+ years exploring North Bali': '10+ tahun menjelajah Bali Utara',
+  'Safety comes first': 'Keselamatan utama',
+  'Briefing, checked gear & water checks': 'Briefing, cek alat & cek kondisi air',
+  'Wild Bali nature': 'Alam Bali yang liar',
+  'Waterfalls, slides & hidden valleys': 'Air terjun, slide & lembah tersembunyi',
+  'Photos included': 'Foto sudah termasuk',
+  'Edited memories of your day': 'Kenangan harimu yang sudah diedit',
+
+  // ---- Adventures ----
+  'Choose your canyon': 'Pilih canyonmu',
+  'Four canyons. One unforgettable day.': 'Empat canyon. Satu hari tak terlupakan.',
+  'From your first rappel to a full-day technical descent, choose the route that matches your confidence and experience.': 'Dari rappel pertamamu hingga turun teknis seharian, pilih rute yang sesuai dengan kepercayaan diri dan pengalamanmu.',
+  'Find my canyon': 'Temukan canyonku',
+  'Filter canyons by level': 'Filter canyon berdasarkan level',
+  'All canyons': 'Semua canyon',
+  'Beginner': 'Pemula',
+  'Intermediate': 'Menengah',
+  'Min age': 'Usia min',
+  'Swim:': 'Renang:',
+  'From / person': 'Dari / orang',
+  'Details': 'Detail',
+  'Traveling with a group of 6–10?': 'Bepergian dengan grup 6–10 orang?',
+  'We can arrange a private canyon day around your group.': 'Kami bisa menyiapkan hari canyon privat sesuai grupmu.',
+  'Ask for a private quote': 'Minta penawaran privat',
+  'Compare at a glance': 'Bandingkan sekilas',
+  'Which canyon is right for you?': 'Canyon mana yang cocok untukmu?',
+  'Swipe to compare on mobile →': 'Geser untuk membandingkan di ponsel →',
+  'Comparison of Egar, Maboya, Samba and Aling canyoning tours': 'Perbandingan tur canyoning Egar, Maboya, Samba, dan Aling',
+  'Level': 'Level',
+  'Duration': 'Durasi',
+  'Minimum age': 'Usia minimum',
+  'Swimming': 'Renang',
+  'Jumps': 'Lompatan',
+  'Natural slides': 'Slide alami',
+  'Group size': 'Ukuran grup',
+  'Best for': 'Cocok untuk',
+  'Price / person': 'Harga / orang',
+  'Check availability →': 'Cek ketersediaan →',
+
+  // ---- Why us ----
+  'More than a tour': 'Lebih dari sekadar tur',
+  'Real adventure.': 'Petualangan nyata.',
+  'Thoughtfully guided.': 'Dipandu dengan matang.',
+  'A great canyoning day is about more than the descent. It is about feeling prepared, supported and free to enjoy the wild world around you.': 'Hari canyoning yang hebat bukan cuma soal turunnya. Ini soal merasa siap, didukung, dan bebas menikmati alam liar di sekitarmu.',
+  'Local knowledge': 'Pengetahuan lokal',
+  'Guides who grew up around these canyons, know the water and read the conditions before every descent.': 'Pemandu yang tumbuh besar di sekitar canyon ini, mengenal air, dan membaca kondisi sebelum setiap penurunan.',
+  'Guidance at every step': 'Panduan di setiap langkah',
+  'Clear briefing, patient instruction and a guide close by from the first rappel to the last slide.': 'Briefing jelas, arahan sabar, dan pemandu selalu dekat dari rappel pertama hingga slide terakhir.',
+  'Adventure for your level': 'Petualangan sesuai levelmu',
+  'Beginner-friendly routes, optional jumps and more challenging canyons for confident adventurers.': 'Rute ramah pemula, lompatan opsional, dan canyon yang lebih menantang untuk petualang percaya diri.',
+  '1:4 guide ratio': 'Rasio pemandu 1:4',
+  'No hidden fees': 'Tanpa biaya tersembunyi',
+  'Our safety approach': 'Pendekatan keselamatan kami',
+  'from 312 guest reviews': 'dari 312 ulasan tamu',
+  'The people behind the ropes': 'Orang-orang di balik tali',
+  'Meet your guides.': 'Kenali pemandumu.',
+  'Local knowledge, calm instruction and a genuine love for the canyon.': 'Pengetahuan lokal, arahan tenang, dan kecintaan tulus pada canyon.',
+
+  // ---- How it works ----
+  'Simple from start to finish': 'Sederhana dari awal sampai akhir',
+  'Your adventure, in 3 steps.': 'Petualanganmu, dalam 3 langkah.',
+  'Know what happens next before you book. No confusing process and no hidden steps.': 'Ketahui langkah berikutnya sebelum memesan. Tanpa proses membingungkan dan tanpa langkah tersembunyi.',
+  'Compare difficulty, duration and inclusions. Use our 30-second quiz if you are not sure which route fits.': 'Bandingkan tingkat kesulitan, durasi, dan fasilitas. Pakai kuis 30 detik kami kalau bingung memilih rute.',
+  '2 minutes': '2 menit',
+  'Send your date and group size. We reply within 15 minutes during business hours, 08:00–20:00 WITA.': 'Kirim tanggal dan jumlah orang. Kami membalas dalam 15 menit pada jam kerja, 08.00–20.00 WITA.',
+  '15-minute reply': 'Balasan 15 menit',
+  'Confirm & go': 'Konfirmasi & berangkat',
+  'Review your trip, then secure it with a 25% deposit or pay in full. Card, bank transfer and QRIS are available in the demo checkout.': 'Tinjau perjalananmu, lalu amankan dengan DP 25% atau bayar lunas. Kartu, transfer bank, dan QRIS tersedia di checkout demo.',
+  'Demo payment gateway': 'Gateway pembayaran demo',
+
+  // ---- Learn more ----
+  'Learn more about our canyoning Bali tour.': 'Pelajari lebih lanjut tentang tur canyoning Bali kami.',
+  'New to canyoning? Here is everything you need to know about the day, who can join and what is included.': 'Baru mengenal canyoning? Berikut semua yang perlu kamu tahu tentang harinya, siapa yang bisa ikut, dan apa saja yang termasuk.',
+  'Still have questions about the tour?': 'Masih ada pertanyaan tentang tur ini?',
+  'We usually reply within 15 minutes during opening hours, 08:00–20:00 WITA.': 'Kami biasanya membalas dalam 15 menit pada jam buka, 08.00–20.00 WITA.',
+  'Ask on WhatsApp': 'Tanya via WhatsApp',
+  'What is canyoning': 'Apa itu canyoning',
+  'A canyon is a natural environment, and there are many ways to move through it: walking, rappelling (abseiling), jumping, swimming, scrambling and sliding.': 'Canyon adalah lingkungan alami, dan ada banyak cara untuk melewatinya: berjalan, rappelling (abseiling), melompat, berenang, merangkak, dan meluncur.',
+  'Canyoning level': 'Level canyoning',
+  'We offer tours for every level, from beginner to advanced. No experience is required in beginner canyons — all we ask for is a reasonable level of fitness.': 'Kami menyediakan tur untuk semua level, dari pemula hingga mahir. Tidak perlu pengalaman di canyon pemula — yang kami minta hanya kebugaran yang wajar.',
+  'Children': 'Anak-anak',
+  'We are happy to take children as young as 8 years old into Egar Canyon. Children aged 12+ can join any beginner canyon, all season. As for a maximum age — you are only as old as you feel!': 'Kami senang menerima anak berusia 8 tahun ke Canyon Egar. Anak usia 12+ bisa ikut canyon pemula mana pun, sepanjang musim. Soal usia maksimal — kamu setua yang kamu rasakan!',
+  'Free footage': 'Dokumentasi gratis',
+  'Your safety always comes first, but when the moment is right we capture photos and video of your descent — and they are included. Bring your own storage to copy the files, and tag us in your stories: @canyoningbali.': 'Keselamatanmu selalu utama, tapi saat momennya tepat kami mengabadikan foto dan video penurunanmu — dan itu termasuk. Bawa penyimpanan sendiri untuk menyalin file, dan tag kami di story-mu: @canyoningbali.',
+  'Round-trip transfer': 'Transfer pulang-pergi',
+  'Every trip includes round-trip transfer from your accommodation anywhere in Bali.': 'Setiap perjalanan termasuk transfer pulang-pergi dari akomodasimu di mana pun di Bali.',
+  'Two people minimum': 'Minimal dua orang',
+  'Canyoning trips run with a minimum of two people. Travelling solo? Book onto a trip that others are already on, or give us a call and we will help you check availability.': 'Perjalanan canyoning berjalan dengan minimal dua orang. Bepergian sendiri? Ikut ke perjalanan yang sudah ada pesertanya, atau hubungi kami dan kami bantu cek ketersediaannya.',
+  'Professional guide': 'Pemandu profesional',
+  'Canyoning is not our side job — it is our main focus. Our professional guides create a fun, safe environment in the canyon.': 'Canyoning bukan pekerjaan sampingan kami — ini fokus utama kami. Pemandu profesional kami menciptakan suasana yang seru dan aman di canyon.',
+  'Equipment': 'Peralatan',
+  'We have hand-picked the best canyoning equipment in the world, so you can rest assured you will wear the most comfortable, well-adapted and safe gear on your tour.': 'Kami memilih peralatan canyoning terbaik di dunia, jadi kamu bisa tenang memakai perlengkapan paling nyaman, sesuai, dan aman selama tur.',
+  'Can’t swim? No worries — you can join any beginner canyon, where no swimming is required. Intermediate and advanced canyons do require you to be able to swim.': 'Belum bisa berenang? Tenang — kamu bisa ikut canyon pemula mana pun, di sana tidak wajib berenang. Canyon menengah dan mahir memang mengharuskan kamu bisa berenang.',
+
+  // ---- Safety ----
+  'Adventure with confidence': 'Berpetualang dengan percaya diri',
+  'Good adventures start with good preparation.': 'Petualangan yang baik dimulai dari persiapan yang baik.',
+  'Canyoning is an outdoor adventure activity. The right route, suitable conditions, proper equipment and qualified guidance matter. Tell us about your experience, health and comfort in water before you book.': 'Canyoning adalah aktivitas petualangan alam terbuka. Rute yang tepat, kondisi yang sesuai, perlengkapan yang benar, dan pemanduan yang mumpuni itu penting. Ceritakan pengalaman, kesehatan, dan kenyamananmu di air sebelum memesan.',
+  'Receive a safety briefing and follow your guide\'s instructions.': 'Terima briefing keselamatan dan ikuti instruksi pemandumu.',
+  'Use the required canyoning equipment and check the fit.': 'Gunakan perlengkapan canyoning yang diwajibkan dan pastikan ukurannya pas.',
+  'Tell us about relevant medical conditions or concerns.': 'Beri tahu kami kondisi medis atau kekhawatiran yang relevan.',
+  'Confirm swimming requirements, age limits and fitness level.': 'Pastikan syarat renang, batas usia, dan tingkat kebugaran.',
+  'Understand weather-related changes and cancellation arrangements.': 'Pahami perubahan terkait cuaca dan ketentuan pembatalan.',
+  'Read our safety commitment': 'Baca komitmen keselamatan kami',
+  'Before you head into the canyon': 'Sebelum masuk ke canyon',
+  'Safety briefing before every descent.': 'Briefing keselamatan sebelum setiap penurunan.',
+  'Harness, helmet and wetsuit fitted and checked.': 'Harness, helm, dan wetsuit dipasang dan diperiksa.',
+  'Water levels and weather assessed daily.': 'Level air dan cuaca dinilai setiap hari.',
+  'Routes adjusted or cancelled if conditions are unsafe.': 'Rute disesuaikan atau dibatalkan bila kondisi tidak aman.',
+  'Emergency action plan and local rescue contacts.': 'Rencana aksi darurat dan kontak penyelamat lokal.',
+  'Travel insurance is recommended for all adventure activities. Ask us for our full safety and insurance details before booking.': 'Asuransi perjalanan dianjurkan untuk semua aktivitas petualangan. Minta detail keselamatan dan asuransi lengkap kami sebelum memesan.',
+  'guide-to-guest ratio': 'rasio pemandu-tamu',
+  'guests max per group': 'tamu maks per grup',
+  'Daily': 'Harian',
+  'equipment checks': 'pengecekan alat',
+  '24/7': '24/7',
+  'emergency contact': 'kontak darurat',
+
+  // ---- Reviews ----
+  'Stories from the canyon': 'Cerita dari canyon',
+  'Memories worth sharing.': 'Kenangan yang layak dibagikan.',
+  'Real words from guests who trusted us with their Bali adventure.': 'Kata jujur dari tamu yang mempercayakan petualangan Bali mereka kepada kami.',
+  '98% of guests would recommend us': '98% tamu akan merekomendasikan kami',
+  'Read all reviews': 'Baca semua ulasan',
+
+  // ---- Gallery ----
+  'Postcards from the canyon': 'Kartu pos dari canyon',
+  'This is what you came for.': 'Inilah yang kamu cari.',
+  'Waterfalls, jungle pools, rope work and the faces of a very good day out.': 'Air terjun, kolam hutan, kerja tali, dan wajah-wajah dari hari yang sangat menyenangkan.',
+  'Follow @canyoningbali': 'Ikuti @canyoningbali',
+  'Into the canyon': 'Masuk ke canyon',
+  'Waterfall rappel': 'Rappel air terjun',
+  'Jungle pools': 'Kolam hutan',
+  'Cave sections': 'Bagian gua',
+  'Rope work': 'Kerja tali',
+  'The descent': 'Penurunan',
+
+  // ---- Articles ----
+  'Stories & guides': 'Cerita & panduan',
+  'Read before you descend.': 'Baca sebelum turun.',
+  'Practical guides, canyon comparisons and honest advice from the people who run these routes every week.': 'Panduan praktis, perbandingan canyon, dan saran jujur dari orang-orang yang menjalani rute ini setiap minggu.',
+  'The journal': 'Jurnal',
+  'Every story from the canyon.': 'Semua cerita dari canyon.',
+  'Search articles': 'Cari artikel',
+  'Search by topic or title...': 'Cari berdasarkan topik atau judul...',
+  'Read article': 'Baca artikel',
+  'No articles found': 'Artikel tidak ditemukan',
+  'Try a different keyword, or browse every story below.': 'Coba kata kunci lain, atau telusuri semua cerita di bawah.',
+  'Clear search': 'Hapus pencarian',
+  'Article not found': 'Artikel tidak ditemukan',
+  'The story you are looking for does not exist or has moved.': 'Cerita yang kamu cari tidak ada atau sudah dipindahkan.',
+  'Back to articles': 'Kembali ke artikel',
+  'Explore the canyons': 'Jelajahi canyon',
+  'All articles': 'Semua artikel',
+  'Keep reading': 'Lanjut membaca',
+  'More from the journal.': 'Lainnya dari jurnal.',
+  'View all': 'Lihat semua',
+
+  // ---- FAQ ----
+  'Questions, answered.': 'Pertanyaan, terjawab.',
+  'Everything you need to know before your canyoning day. Still unsure? We are one message away.': 'Semua yang perlu kamu tahu sebelum hari canyoning-mu. Masih ragu? Kami hanya sejauh satu pesan.',
+  'Ask us on WhatsApp': 'Tanya kami di WhatsApp',
+  'Reply time': 'Waktu balas',
+  'Within 15 minutes, 08:00–20:00 WITA.': 'Dalam 15 menit, 08.00–20.00 WITA.',
+
+  // ---- Contact ----
+  'Talk to a real guide.': 'Bicara dengan pemandu sungguhan.',
+  'Questions about water levels, private groups, pickup or which canyon fits your family? Message us — we usually reply within 15 minutes during opening hours.': 'Ada pertanyaan soal level air, grup privat, antar-jemput, atau canyon yang cocok untuk keluargamu? Kirim pesan — kami biasanya membalas dalam 15 menit pada jam buka.',
+  'Send an email': 'Kirim email',
+  'Reach the basecamp': 'Hubungi basecamp',
+  'We are one message away.': 'Kami hanya sejauh satu pesan.',
+  'Message us with your date, group size and the canyon you have in mind. A local guide — not a call centre — will answer.': 'Kirim pesan dengan tanggal, jumlah orang, dan canyon yang kamu incar. Pemandu lokal — bukan call center — yang akan menjawab.',
+  'Basecamp': 'Basecamp',
+  'Opening hours': 'Jam operasional',
+  'Popular questions': 'Pertanyaan populer',
+  'Send a quick message': 'Kirim pesan singkat',
+  'Tell us your date, group size and what you would like to know. This form opens WhatsApp with your message ready to send.': 'Beri tahu tanggal, jumlah orang, dan hal yang ingin kamu ketahui. Form ini membuka WhatsApp dengan pesanmu siap dikirim.',
+  'Your name': 'Nama kamu',
+  'Message': 'Pesan',
+  'Full name': 'Nama lengkap',
+  'Hi, we are 2 adults looking at Egar Canyon around...': 'Halo, kami 2 orang dewasa yang berminat ke Canyon Egar sekitar...',
+  'Send via WhatsApp': 'Kirim via WhatsApp',
+  'Demo contact form — no message is stored on this website. Prefer email? Write to': 'Form kontak demo — tidak ada pesan yang disimpan di situs ini. Lebih suka email? Tulis ke',
+  'Email': 'Email',
+
+  // ---- Final CTA ----
+  'Your next story starts here': 'Ceritamu berikutnya dimulai di sini',
+  'Ready to discover another side of Bali?': 'Siap menemukan sisi lain Bali?',
+  'Tell us your date and which canyon caught your eye. We will take care of the rest.': 'Beri tahu tanggalmu dan canyon yang menarik perhatianmu. Sisanya kami urus.',
+  'Deposit or pay in full · Reply within 15 min': 'Bayar DP atau lunas · Balas dalam 15 menit',
+
+  // ---- Packages page ----
+  'Canyoning tours': 'Tur canyoning',
+  'Billed in IDR': 'Ditagih dalam IDR',
+
+  // ---- Package detail ----
+  'Canyons': 'Canyon',
+  'Canyon not found': 'Canyon tidak ditemukan',
+  'That canyon does not exist or is no longer available.': 'Canyon itu tidak ada atau sudah tidak tersedia.',
+  'Browse all canyons': 'Lihat semua canyon',
+  'Slides': 'Slide',
+  'Group': 'Grup',
+  'Your day, step by step': 'Harimu, langkah demi langkah',
+  "What's included": 'Yang termasuk',
+  'Not included': 'Tidak termasuk',
+  'Requirements': 'Persyaratan',
+  'What to bring': 'Yang perlu dibawa',
+  'per person · pickup available': 'per orang · tersedia antar-jemput',
+  'Deposit or pay in full · Free cancellation 48h': 'Bayar DP atau lunas · Pembatalan gratis 48 jam',
+
+  // ---- About ----
+  'About Canyoning Bali': 'Tentang Canyoning Bali',
+  'Talk to a guide': 'Hubungi pemandu',
+  'Local guides who know every route.': 'Pemandu lokal yang hafal setiap rute.',
+  'Canyoning Bali is a small team of local guides based in North Bali. We have been exploring these canyons since 2016 and we keep groups small — a maximum of eight guests — so every descent feels personal and safe.': 'Canyoning Bali adalah tim kecil pemandu lokal yang berbasis di Bali Utara. Kami menjelajahi canyon-canyon ini sejak 2016 dan menjaga grup tetap kecil — maksimal delapan tamu — agar setiap penurunan terasa personal dan aman.',
+
+  // ---- 404 ----
+  'This trail does not exist.': 'Jejak ini tidak ada.',
+  "The page you are looking for may have moved, or the link is wrong. Let's get you back to solid ground.": 'Halaman yang kamu cari mungkin sudah dipindahkan, atau tautannya salah. Ayo kembali ke jalur yang aman.',
+  'Back to home': 'Kembali ke beranda',
+  'Browse canyons': 'Lihat canyon',
+
+  // ---- Policy pages / dialog ----
+  'Policies': 'Kebijakan',
+  'Clear, honest terms so you know exactly where you stand before your canyoning day.': 'Ketentuan yang jelas dan jujur agar kamu tahu persis posisimu sebelum hari canyoning-mu.',
+  'Policy': 'Kebijakan',
+  'Cancellation policy': 'Kebijakan pembatalan',
+  'Still have questions?': 'Masih ada pertanyaan?',
+  'This policy is not available yet': 'Kebijakan ini belum tersedia',
+  'Message us and we will send the details straight away.': 'Kirim pesan kepada kami dan kami akan langsung mengirimkan detailnya.',
+  'Read the privacy policy': 'Baca kebijakan privasi',
+  'Last updated: November 2026 · Questions? Email hello@canyoningbali.com': 'Terakhir diperbarui: November 2026 · Ada pertanyaan? Email hello@canyoningbali.com',
+
+  // ---- Booking dialog ----
+  'Book your adventure': 'Pesan petualanganmu',
+  'Demo checkout: card, bank transfer or QRIS. No real charge is made.': 'Checkout demo: kartu, transfer bank, atau QRIS. Tidak ada tagihan sungguhan.',
+  'Booking steps': 'Langkah pemesanan',
+  'Trip': 'Perjalanan',
+  'Payment': 'Pembayaran',
+  'Trip details': 'Detail perjalanan',
+  'Your details': 'Data dirimu',
+  'Review and payment': 'Tinjau dan bayar',
+  'Step': 'Langkah',
+  'of 3:': 'dari 3:',
+  'Tell us about your trip': 'Ceritakan tentang perjalananmu',
+  'Choose a canyon, date and group size. You can adjust everything before sending.': 'Pilih canyon, tanggal, dan jumlah orang. Kamu bisa menyesuaikan semuanya sebelum mengirim.',
+  'Preferred date': 'Tanggal pilihan',
+  'We confirm the exact start time by WhatsApp.': 'Kami konfirmasi jam mulai pasti via WhatsApp.',
+  'Pickup area': 'Area penjemputan',
+  'Pickup fees are per group and confirmed in your quote.': 'Biaya antar-jemput dihitung per grup dan dikonfirmasi dalam penawaranmu.',
+  'Pickup ·': 'Antar-jemput ·',
+  'Total': 'Total',
+  '25% deposit:': 'DP 25%:',
+  'Prices in IDR; converted amounts are approximate.': 'Harga dalam IDR; nominal konversi hanya perkiraan.',
+  'Continue': 'Lanjut',
+  'We use these details only to confirm your booking and arrange pickup.': 'Kami memakai data ini hanya untuk mengonfirmasi pesanan dan mengatur antar-jemput.',
+  'WhatsApp number': 'Nomor WhatsApp',
+  'Country': 'Negara',
+  'Anything we should know?': 'Ada yang perlu kami tahu?',
+  'Swimming ability, experience, dietary needs, pickup address...': 'Kemampuan berenang, pengalaman, kebutuhan makanan, alamat penjemputan...',
+  'I agree to the': 'Saya setuju dengan',
+  'terms': 'syarat',
+  'and': 'dan',
+  'privacy policy': 'kebijakan privasi',
+  'Back': 'Kembali',
+  'Review booking': 'Tinjau pesanan',
+  'Review & payment': 'Tinjau & bayar',
+  'Check your trip, choose how much to pay, then complete the demo checkout.': 'Periksa perjalananmu, pilih jumlah pembayaran, lalu selesaikan checkout demo.',
+  '1. Payment amount': '1. Jumlah pembayaran',
+  'Demo gateway': 'Gateway demo',
+  '25% deposit': 'DP 25%',
+  'Pay in full': 'Bayar lunas',
+  '2. Payment method': '2. Metode pembayaran',
+  'Charged in IDR': 'Ditagih dalam IDR',
+  'Credit / debit card': 'Kartu kredit / debit',
+  'Card number': 'Nomor kartu',
+  'Use demo card': 'Pakai kartu demo',
+  'Demo only — never enter a real card. Try 4242 4242 4242 4242.': 'Hanya demo — jangan pernah masukkan kartu asli. Coba 4242 4242 4242 4242.',
+  'Name on card': 'Nama di kartu',
+  'Expiry (MM/YY)': 'Kedaluwarsa (BB/TT)',
+  'CVV': 'CVV',
+  'Bank Bersama · Virtual account': 'Bank Bersama · Akun virtual',
+  'Account name': 'Nama akun',
+  'Amount': 'Jumlah',
+  'Reference': 'Referensi',
+  'Copy': 'Salin',
+  'Simulated virtual account. In production the number would be issued by the payment provider and expire after a set time.': 'Akun virtual simulasi. Di produksi, nomor ini akan diterbitkan penyedia pembayaran dan kedaluwarsa setelah waktu tertentu.',
+  'Scan with any QRIS app': 'Pindai dengan aplikasi QRIS apa pun',
+  'Open your bank or e-wallet app, scan this demo QR and confirm. Nothing is charged.': 'Buka aplikasi bank atau e-wallet-mu, pindai QR demo ini, dan konfirmasi. Tidak ada tagihan.',
+  'QRIS · Demo': 'QRIS · Demo',
+  'Pay now': 'Bayar sekarang',
+  'Secure demo checkout': 'Checkout demo yang aman',
+  'Demonstration gateway only. No real payment is processed. Card details stay in this browser and are never stored or sent.': 'Hanya gateway demonstrasi. Tidak ada pembayaran sungguhan yang diproses. Data kartu tetap di peramban ini dan tidak pernah disimpan atau dikirim.',
+  'I understand the': 'Saya memahami',
+  'cancellation and weather policy': 'kebijakan pembatalan dan cuaca',
+  'Processing demo payment...': 'Memproses pembayaran demo...',
+  'After the simulated payment you will receive a demo reference and the option to send your booking details by WhatsApp or email.': 'Setelah pembayaran simulasi, kamu akan menerima referensi demo dan opsi mengirim detail pesanan lewat WhatsApp atau email.',
+  'Booking confirmed': 'Pesanan dikonfirmasi',
+  '(demo)': '(demo)',
+  'Demo payment approved. Your reference is': 'Pembayaran demo disetujui. Referensimu adalah',
+  '. Send your confirmation by WhatsApp or email so the team can lock in the date and pickup time.': '. Kirim konfirmasimu lewat WhatsApp atau email agar tim bisa mengunci tanggal dan jam penjemputan.',
+  'Paid (demo)': 'Dibayar (demo)',
+  'Send on WhatsApp': 'Kirim via WhatsApp',
+  'Send by email': 'Kirim via email',
+  'Add to calendar': 'Tambahkan ke kalender',
+  'This was a simulated payment — no money was charged. If WhatsApp does not open, email us at': 'Ini pembayaran simulasi — tidak ada uang yang ditagih. Jika WhatsApp tidak terbuka, email kami di',
+  'Demo payment approved. Booking request sent.': 'Pembayaran demo disetujui. Permintaan pesanan terkirim.',
+  'Virtual account number copied.': 'Nomor akun virtual disalin.',
+  'Pay deposit (demo)': 'Bayar DP (demo)',
+  'Pay in full (demo)': 'Bayar lunas (demo)',
+  'Close booking form': 'Tutup form pemesanan',
+  'Payment amount': 'Jumlah pembayaran',
+  'Payment method': 'Metode pembayaran',
+
+  // Booking validation messages
+  'Choose a canyon.': 'Pilih canyon.',
+  'Choose your preferred date.': 'Pilih tanggal pilihanmu.',
+  'Choose a date from today onwards.': 'Pilih tanggal mulai hari ini.',
+  'Choose between 1 and 8 guests.': 'Pilih antara 1 sampai 8 tamu.',
+  'Choose a pickup area.': 'Pilih area penjemputan.',
+  'Enter your full name.': 'Masukkan nama lengkapmu.',
+  'Enter a valid email.': 'Masukkan email yang valid.',
+  'Enter a valid WhatsApp number.': 'Masukkan nomor WhatsApp yang valid.',
+  'Please accept the terms and privacy policy.': 'Mohon setujui syarat dan kebijakan privasi.',
+  'Enter a demo card number.': 'Masukkan nomor kartu demo.',
+  'Enter the name on the card.': 'Masukkan nama di kartu.',
+  'Use MM/YY.': 'Gunakan BB/TT.',
+  'Enter a valid CVV.': 'Masukkan CVV yang valid.',
+  'Please accept the cancellation policy.': 'Mohon setujui kebijakan pembatalan.',
+  'Could not send your booking request.': 'Tidak dapat mengirim permintaan pesananmu.',
+
+  // ---- Tour dialog ----
+  'Canyon photo gallery': 'Galeri foto canyon',
+  'Watch the canyon': 'Tonton canyon',
+  'Canyoning Bali canyon tour video': 'Video tur canyon Canyoning Bali',
+  'A look at a real canyoning day with our guides. Video plays from YouTube.': 'Sekilas hari canyoning sungguhan bersama pemandu kami. Video diputar dari YouTube.',
+  'Close canyon details': 'Tutup detail canyon',
+
+  // ---- Article dialog ----
+  'Article': 'Artikel',
+  'Close': 'Tutup',
+  'Close article': 'Tutup artikel',
+
+  // ---- Quiz dialog ----
+  '30-second quiz': 'Kuis 30 detik',
+  'Find your canyon.': 'Temukan canyonmu.',
+  'Your best match': 'Pilihan terbaikmu',
+  'See full details': 'Lihat detail lengkap',
+  'Retake the quiz': 'Ulangi kuis',
+  'Question': 'Pertanyaan',
+  'of': 'dari',
+  'Close canyon quiz': 'Tutup kuis canyon',
+  'How much adventure do you want?': 'Seberapa besar petualangan yang kamu inginkan?',
+  'A gentle introduction': 'Perkenalan yang lembut',
+  'Rappels, slides and plenty of time to enjoy the scenery.': 'Rappel, slide, dan banyak waktu menikmati pemandangan.',
+  'A good challenge': 'Tantangan yang pas',
+  'Bigger drops, more action, still guided every step.': 'Penurunan lebih tinggi, lebih banyak aksi, tetap dipandu setiap langkah.',
+  'Full-on adventure': 'Petualangan penuh',
+  'Technical descents, big rappels and a full day out.': 'Penurunan teknis, rappel besar, dan seharian penuh.',
+  'How comfortable are you in water?': 'Seberapa nyaman kamu di air?',
+  'Confident swimmer': 'Perenang percaya diri',
+  'I am happy swimming in deep water.': 'Saya nyaman berenang di air dalam.',
+  'I can swim, but not far': 'Saya bisa berenang, tapi tidak jauh',
+  'I prefer to know where the exit is.': 'Saya lebih suka tahu di mana jalan keluarnya.',
+  'Not confident': 'Kurang percaya diri',
+  'I would rather keep swimming optional.': 'Saya lebih suka berenang bersifat opsional.',
+  'Who are you coming with?': 'Dengan siapa kamu datang?',
+  'Solo or a couple': 'Sendiri atau berdua',
+  'A shared adventure for two.': 'Petualangan berdua.',
+  'Family with teens': 'Keluarga dengan remaja',
+  'Fun, but safety and comfort first.': 'Seru, tapi keselamatan dan kenyamanan utama.',
+  'Friends / private group': 'Teman / grup privat',
+  'We want our own crew and a private guide.': 'Kami ingin rombongan sendiri dan pemandu privat.',
+
+  // ---- Splash ----
+  'Cannot reach the API': 'Tidak dapat menghubungi API',
+  'Try again': 'Coba lagi',
+  'Loading canyons, guides and stories...': 'Memuat canyon, pemandu, dan cerita...',
+
+  // ---- Contact / misc UI ----
+  'Questions about water levels, private groups, pickup or which canyon fits your family? We usually reply within 15 minutes during opening hours.': 'Ada pertanyaan soal level air, grup privat, antar-jemput, atau canyon yang cocok untuk keluargamu? Kami biasanya membalas dalam 15 menit pada jam buka.',
+  'Tell us your date, group size and what you would like to know. This demo form opens WhatsApp with your message ready to send.': 'Beri tahu tanggal, jumlah orang, dan hal yang ingin kamu ketahui. Form demo ini membuka WhatsApp dengan pesanmu siap dikirim.',
+  '· Prices in IDR; converted amounts are approximate.': '· Harga dalam IDR; nominal konversi hanya perkiraan.',
+  'Pickup': 'Penjemputan',
+  'Cookie consent': 'Persetujuan cookie',
+  'Close policy': 'Tutup kebijakan',
+  'Demo Guest': 'Tamu Demo',
+  'Google reviews': 'Ulasan Google',
+  'Cancellation & weather policy': 'Kebijakan pembatalan & cuaca',
+  'Read the full story from the Canyoning Bali team.': 'Baca cerita lengkapnya dari tim Canyoning Bali.',
+  'Canyon day': 'Hari canyon',
+  'Lead canyon guide': 'Pemandu canyon utama',
+  'Safety lead': 'Penanggung jawab keselamatan',
+  'Adventure guide & photographer': 'Pemandu petualangan & fotografer',
+  'Beginner guide': 'Panduan pemula',
+  'Canyon comparison': 'Perbandingan canyon',
+  'Gear & prep': 'Peralatan & persiapan',
+  'A canyoning guide rappelling down a tall jungle waterfall in Bali': 'Pemandu canyoning menuruni air terjun tinggi di hutan Bali',
+  'A canyoning guide rappelling beside a waterfall': 'Pemandu canyoning menuruni tebing di samping air terjun',
+
+  // ---- Policy fallback content ----
+  'What we collect': 'Data yang kami kumpulkan',
+  'When you send a booking request, we collect your name, email address, WhatsApp number, preferred date, group size, pickup area and any notes you choose to share.': 'Saat kamu mengirim permintaan pemesanan, kami mengumpulkan nama, alamat email, nomor WhatsApp, tanggal pilihan, jumlah orang, area penjemputan, dan catatan apa pun yang ingin kamu bagikan.',
+  'Why we collect it': 'Mengapa kami mengumpulkannya',
+  'We use your details to respond to your enquiry, confirm availability, arrange pickup, prepare safety information and manage your booking. We do not sell your personal data.': 'Kami memakai datamu untuk membalas pertanyaan, mengonfirmasi ketersediaan, mengatur antar-jemput, menyiapkan informasi keselamatan, dan mengelola pesananmu. Kami tidak menjual data pribadimu.',
+  'Your rights': 'Hakmu',
+  'You can ask us to access, correct or delete your personal data by emailing': 'Kamu bisa meminta akses, koreksi, atau penghapusan data pribadimu dengan mengirim email ke',
+  'Booking requests': 'Permintaan pemesanan',
+  'A booking request is not a confirmed booking. We confirm availability by WhatsApp or email, then send payment and pickup details. Prices are in Indonesian rupiah (IDR); converted amounts on this website are approximate.': 'Permintaan pemesanan bukan pesanan yang terkonfirmasi. Kami mengonfirmasi ketersediaan lewat WhatsApp atau email, lalu mengirim detail pembayaran dan penjemputan. Harga dalam rupiah Indonesia (IDR); nominal konversi di situs ini hanya perkiraan.',
+  'Safety & suitability': 'Keselamatan & kesesuaian',
+  "Canyoning is an outdoor adventure activity with inherent risks. You must follow your guide's instructions, disclose relevant medical conditions and meet the age, fitness, swimming and weight requirements for your chosen canyon.": 'Canyoning adalah aktivitas petualangan alam terbuka dengan risiko bawaan. Kamu harus mengikuti instruksi pemandumu, mengungkapkan kondisi medis yang relevan, dan memenuhi syarat usia, kebugaran, kemampuan renang, serta berat badan untuk canyon pilihanmu.',
+  'Free cancellation': 'Pembatalan gratis',
+  'Cancel free of charge up to 48 hours before your scheduled departure. We will refund any deposit paid or help you move your date.': 'Batalkan gratis hingga 48 jam sebelum keberangkatan terjadwal. Kami akan mengembalikan DP yang sudah dibayar atau membantu memindahkan tanggalmu.',
+  'Within 48 hours': 'Dalam 48 jam',
+  'Cancellations made 24–48 hours before departure may incur a 50% charge. Cancellations within 24 hours and no-shows are charged in full.': 'Pembatalan 24–48 jam sebelum keberangkatan dapat dikenai biaya 50%. Pembatalan dalam 24 jam dan tidak hadir ditagih penuh.',
+  'Weather & water levels': 'Cuaca & level air',
+  'If we decide that conditions are unsafe, you can reschedule to another date or receive a full refund.': 'Jika kami menilai kondisi tidak aman, kamu bisa menjadwal ulang ke tanggal lain atau menerima pengembalian dana penuh.',
+  'Our safety commitment': 'Komitmen keselamatan kami',
+  'Before every trip': 'Sebelum setiap perjalanan',
+  'We check weather forecasts, rainfall and water levels.': 'Kami memeriksa prakiraan cuaca, curah hujan, dan level air.',
+  'We inspect harnesses, helmets, ropes and wetsuits.': 'Kami memeriksa harness, helm, tali, dan wetsuit.',
+  'We brief every guest on what to expect and how to move safely.': 'Kami memberi briefing kepada setiap tamu tentang apa yang akan dihadapi dan cara bergerak dengan aman.',
+  'We ask about medical conditions, swimming ability and experience.': 'Kami menanyakan kondisi medis, kemampuan berenang, dan pengalaman.',
+  'In the canyon': 'Di dalam canyon',
+  'Your guide sets the pace and makes the final call on jumps and slides.': 'Pemandumu menentukan tempo dan mengambil keputusan akhir soal lompatan dan slide.',
+  'Optional obstacles can be bypassed; you never have to do a jump you are not comfortable with.': 'Rintangan opsional bisa dilewati; kamu tidak pernah harus melakukan lompatan yang tidak kamu nyaman.',
+  'Guides carry communication and emergency equipment.': 'Pemandu membawa peralatan komunikasi dan darurat.',
+  'We keep group sizes small so every guest gets attention.': 'Kami menjaga ukuran grup tetap kecil agar setiap tamu mendapat perhatian.',
+  'If conditions are unsafe, we reroute, reschedule or cancel the trip. This decision is made by the guide and is not negotiable. Your safety is more important than completing the route.': 'Jika kondisi tidak aman, kami mengubah rute, menjadwal ulang, atau membatalkan perjalanan. Keputusan ini diambil pemandu dan tidak bisa ditawar. Keselamatanmu lebih penting daripada menyelesaikan rute.',
+  'Insurance & emergency': 'Asuransi & darurat',
+  'Travel insurance is recommended. We maintain an emergency action plan and local rescue contacts. Tell your guide immediately if you feel unwell, injured or unsure.': 'Asuransi perjalanan dianjurkan. Kami memiliki rencana aksi darurat dan kontak penyelamat lokal. Segera beri tahu pemandumu jika merasa tidak enak badan, cedera, atau ragu.',
+};
+
+// Labels that get concatenated with a value into a single text node.
+const ID_PREFIXES = [
+  ['Min age ', 'Usia min '],
+  ['Swim: ', 'Renang: '],
+];
+
+// Returns a translator bound to the given language code.
+export function createTranslator(lang) {
+  const dict = lang === 'id' ? ID_DICTIONARY : null;
+  return function translate(text) {
+    if (!dict || !text) return text;
+    const key = text.trim();
+    if (!key) return text;
+    let hit = dict[key];
+    if (!hit) {
+      const guests = /^(\d+) guests?$/.exec(key);
+      if (guests) hit = `${guests[1]} tamu`;
+    }
+    if (!hit) {
+      const step = /^Step (\d+) of 3: (.+)$/.exec(key);
+      if (step) hit = `Langkah ${step[1]} dari 3: ${dict[step[2]] || step[2]}`;
+    }
+    if (!hit) {
+      for (const [from, to] of ID_PREFIXES) {
+        if (key.startsWith(from)) {
+          hit = to + key.slice(from.length);
+          break;
+        }
+      }
+    }
+    if (!hit) return text;
+    const leading = text.slice(0, text.length - text.trimStart().length);
+    const trailing = text.slice(text.trimEnd().length);
+    return leading + hit + trailing;
+  };
+}

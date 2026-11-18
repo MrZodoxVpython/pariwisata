@@ -43,6 +43,10 @@ export function AppProvider({ children }) {
     const saved = readStored('cb_currency', 'IDR');
     return RATES[saved] ? saved : 'IDR';
   });
+  const [language, setLanguageState] = useState(() => {
+    const saved = readStored('cb_lang', 'en');
+    return saved === 'id' ? 'id' : 'en';
+  });
 
   const loadContent = useCallback(async () => {
     setLoading(true);
@@ -80,6 +84,32 @@ export function AppProvider({ children }) {
       /* ignore */
     }
   }, []);
+
+  const setLanguage = useCallback((next) => {
+    const value = next === 'id' ? 'id' : 'en';
+    setLanguageState(value);
+    try {
+      localStorage.setItem('cb_lang', value);
+    } catch (err) {
+      /* ignore */
+    }
+  }, []);
+
+  const toggleLanguage = useCallback(() => {
+    setLanguageState((current) => {
+      const value = current === 'id' ? 'en' : 'id';
+      try {
+        localStorage.setItem('cb_lang', value);
+      } catch (err) {
+        /* ignore */
+      }
+      return value;
+    });
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('lang', language);
+  }, [language]);
 
   const openBooking = useCallback((tourId = '', prefill = null) => {
     setBookingPrefill(prefill);
@@ -129,6 +159,9 @@ export function AppProvider({ children }) {
       notify,
       currency,
       setCurrency,
+      language,
+      setLanguage,
+      toggleLanguage,
     }),
     [
       content,
@@ -158,6 +191,9 @@ export function AppProvider({ children }) {
       notify,
       currency,
       setCurrency,
+      language,
+      setLanguage,
+      toggleLanguage,
     ]
   );
 

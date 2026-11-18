@@ -21,6 +21,7 @@ import TourDialog from './components/TourDialog';
 import LightboxDialog from './components/LightboxDialog';
 import Toast from './components/Toast';
 import CookieBanner from './components/CookieBanner';
+import LanguageTranslator from './components/LanguageTranslator';
 import { IconSprite } from './components/Icon';
 import { AppProvider, useApp } from './context/AppContext';
 import AdminApp from './admin/AdminApp';
@@ -151,6 +152,7 @@ function AppShell() {
       <LightboxDialog />
       <Toast />
       <CookieBanner />
+      <LanguageTranslator />
     </>
   );
 }
