@@ -711,6 +711,19 @@
     .step small{display:inline-flex;align-items:center;gap:5px;margin-top:13px;color:var(--brand-dark);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
     .step small::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand-ink)}
 
+    /* Learn more about the tour */
+    .learn-section{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .learn-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .learn-card{background:var(--bg-white);border:1px solid var(--line);border-radius:20px;padding:24px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;min-width:0}
+    .learn-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm);border-color:var(--border-light)}
+    .learn-icon{width:44px;height:44px;border-radius:13px;background:var(--bg-qa);color:var(--brand-dark);display:grid;place-items:center;margin-bottom:16px}
+    .learn-icon .icon{width:21px;height:21px}
+    .learn-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-dark);margin-bottom:8px}
+    .learn-card p{font-size:12.5px;color:var(--muted);line-height:1.6}
+    .learn-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;background:var(--bg-gradient-light);border:1px solid var(--private-banner-border);border-radius:18px;padding:18px 22px;margin-top:28px;font-size:13px;color:var(--private-banner-text)}
+    .learn-foot b{color:var(--ink)}
+    .learn-foot .learn-foot-actions{display:flex;flex-wrap:wrap;gap:9px;flex:none}
+
     /* Safety */
     .safety{background:var(--bg-qa);border-top:1px solid #DEEAF1;border-bottom:1px solid #DEEAF1}
     .safety-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
@@ -914,7 +927,7 @@
     .tour-card{padding:0;overflow:auto}
     .tour-card .dialog-close{background:var(--tour-dialog-close-bg);top:14px;right:14px}
     .tour-hero{position:relative;min-height:330px;background:var(--tour-hero-bg);overflow:hidden;border-radius:24px 24px 0 0}
-    .tour-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .tour-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity .5s ease}
     .tour-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,26,38,.88),rgba(6,26,38,.12) 70%)}
     .tour-hero-copy{position:relative;z-index:1;padding:140px 30px 24px;color:var(--hero-text)}
     .tour-hero-copy h2{font-size:clamp(32px,5vw,48px);margin:8px 0 5px}
@@ -948,6 +961,11 @@
     .tour-aside small{display:block;font-size:9.5px;color:var(--muted);margin-bottom:13px}
     .tour-aside .btn{width:100%;margin-top:7px;min-height:42px;font-size:11.5px}
     .tour-aside-note{font-size:9px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.4}
+    .tour-video{margin-bottom:4px}
+    .tour-video h3{margin-top:0}
+    .tour-video-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--tour-hero-bg);border:1px solid var(--line)}
+    .tour-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+    .tour-video-note{font-size:10px;color:var(--muted);margin-top:8px;line-height:1.5}
 
     /* Quiz */
     .quiz-dialog{width:min(620px,calc(100% - 24px))}
@@ -1135,6 +1153,7 @@
       .media-stack{max-width:620px;margin:auto}
       .why-copy .lead{max-width:none}
       .guide-grid{grid-template-columns:1fr 1fr}
+      .learn-grid{grid-template-columns:1fr 1fr}
       .review-grid{grid-template-columns:1fr 1fr}
       .review-summary{grid-template-columns:1fr 1fr;gap:18px}
       .rating-cta{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
@@ -1206,6 +1225,9 @@
       .stat-float{left:-2px;top:14px;padding:11px 14px}
       .stat-float strong{font-size:21px}
       .guide-grid{grid-template-columns:1fr}
+      .learn-grid{grid-template-columns:1fr}
+      .learn-foot{display:grid;gap:14px;padding:16px}
+      .learn-foot-actions .btn{width:100%;justify-content:center}
       .steps{grid-template-columns:1fr}
       .steps::before{display:none}
       .safety-stats{grid-template-columns:1fr 1fr}
@@ -1525,6 +1547,71 @@
           <article class="step"><div class="step-no">01</div><h3>Choose your canyon</h3><p>Compare difficulty, duration and inclusions. Use our 30-second quiz if you are not sure which route fits.</p><small>2 minutes</small></article>
           <article class="step"><div class="step-no">02</div><h3>Check availability</h3><p>Send your date and group size. We reply within 15 minutes during business hours, 08:00–20:00 WITA.</p><small>15-minute reply</small></article>
           <article class="step"><div class="step-no">03</div><h3>Confirm &amp; go</h3><p>Review your trip, then secure it with a 25% deposit or pay in full. Card, bank transfer and QRIS are available in the demo checkout.</p><small>Demo payment gateway</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section learn-section" id="learn-more" aria-labelledby="learnTitle">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <div><span class="kicker">Good to know</span><h2 id="learnTitle">Learn more about our canyoning Bali tour.</h2></div>
+          <div class="head-side">
+            <p>New to canyoning? Here is everything you need to know about the day, who can join and what is included.</p>
+            <button class="btn btn-ghost btn-sm" type="button" data-book>Check availability <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+        <div class="learn-grid" data-reveal>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg></span>
+            <h3>What is canyoning</h3>
+            <p>A canyon is a natural environment, and there are many ways to move through it: walking, rappelling (abseiling), jumping, swimming, scrambling and sliding.</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-mountain"/></svg></span>
+            <h3>Canyoning level</h3>
+            <p>We offer tours for every level, from beginner to advanced. No experience is required in beginner canyons — all we ask for is a reasonable level of fitness.</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
+            <h3>Children</h3>
+            <p>We are happy to take children as young as 8 years old into Egar Canyon. Children aged 12+ can join any beginner canyon, all season. As for a maximum age — you are only as old as you feel!</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg></span>
+            <h3>Free footage</h3>
+            <p>Your safety always comes first, but when the moment is right we capture photos and video of your descent — and they are included. Bring your own storage to copy the files, and tag us in your stories: @canyoningbali.</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
+            <h3>Round-trip transfer</h3>
+            <p>Every trip includes round-trip transfer from your accommodation anywhere in Bali.</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+            <h3>Two people minimum</h3>
+            <p>Canyoning trips run with a minimum of two people. Travelling solo? Book onto a trip that others are already on, or give us a call and we will help you check availability.</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
+            <h3>Professional guide</h3>
+            <p>Canyoning is not our side job — it is our main focus. Our professional guides create a fun, safe environment in the canyon.</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg></span>
+            <h3>Equipment</h3>
+            <p>We have hand-picked the best canyoning equipment in the world, so you can rest assured you will wear the most comfortable, well-adapted and safe gear on your tour.</p>
+          </article>
+          <article class="learn-card">
+            <span class="learn-icon"><svg class="icon" aria-hidden="true"><use href="#i-water"/></svg></span>
+            <h3>Swimming</h3>
+            <p>Can&rsquo;t swim? No worries — you can join any beginner canyon, where no swimming is required. Intermediate and advanced canyons do require you to be able to swim.</p>
+          </article>
+        </div>
+        <div class="learn-foot" data-reveal>
+          <span><b>Still have questions about the tour?</b> We usually reply within 15 minutes during opening hours, 08:00&ndash;20:00 WITA.</span>
+          <div class="learn-foot-actions">
+            <a class="btn btn-outline btn-sm" href="https://wa.me/6281339578001" target="_blank" rel="noopener" data-wa-link>Ask on WhatsApp <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg></a>
+          </div>
         </div>
       </div>
     </section>
@@ -2085,6 +2172,13 @@
       <div class="tour-body">
         <div>
           <div class="tour-quick" id="tourQuick"></div>
+          <div class="tour-video">
+            <h3>Watch the canyon</h3>
+            <div class="tour-video-frame">
+              <iframe id="tourVideoIframe" title="Canyoning Bali canyon tour video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <p class="tour-video-note">A look at a real canyoning day with our guides. Video plays from YouTube.</p>
+          </div>
           <h3>Your day, step by step</h3>
           <ol class="timeline" id="tourItinerary"></ol>
           <div class="tour-cols">
@@ -2609,7 +2703,8 @@
           ref: ''
         },
         quiz: { index: 0, answers: {} },
-        galleryIndex: 0
+        galleryIndex: 0,
+        tourSlideIndex: 0
       };
 
       /* ============================================================
@@ -3295,8 +3390,9 @@
       function openTour(id) {
         const t = getTour(id);
         state.activeTour = t;
+        state.tourSlideIndex = 0;
         const hero = $('#tourHeroImg');
-        if (hero) { hero.src = t.image || px(t.imageId, 1400); hero.alt = `${t.name} canyoning in Bali`; }
+        if (hero) { hero.src = t.image || px(t.imageId, 1400); hero.alt = `${t.name} canyoning in Bali`; hero.style.opacity = '1'; }
         const badge = $('#tourBadge');
         if (badge) { badge.textContent = t.badge; badge.className = `badge ${t.badgeClass}`; }
         const title = $('#tourDialogTitle');
@@ -3306,7 +3402,7 @@
         const thumbs = $('#tourThumbs');
         if (thumbs) {
           thumbs.innerHTML = t.galleryIds.map((gid, index) => `
-            <button type="button" class="${index === 0 ? 'active' : ''}" data-tour-thumb="${escapeHtml(String(gid))}" aria-label="View photo ${index + 1} of ${t.name}">
+            <button type="button" class="${index === 0 ? 'active' : ''}" data-tour-thumb="${escapeHtml(String(gid))}" aria-label="View photo ${index + 1} of ${t.name}"${index === 0 ? ' aria-current="true"' : ''}>
               <img src="${escapeHtml(photoUrl(gid, 240))}" alt="" width="54" height="40" loading="lazy">
             </button>`).join('');
         }
@@ -3338,8 +3434,96 @@
         if (wa) wa.href = waLink(`Hi ${SITE.name}, I have a question about ${t.name} (${t.level}, ${t.duration}). Could you tell me more?`);
         const bookBtn = $('#tourBookBtn');
         if (bookBtn) bookBtn.dataset.bookTour = t.id;
+        loadTourVideo();
         openDialog($('#tourDialog'));
+        startTourSlideshow();
         track('view_item', { tour_id: t.id, tour_name: t.name, value: t.price, currency: 'IDR' });
+      }
+
+      /* ============================================================
+         Tour dialog: auto-advancing photo slideshow + video
+         ============================================================ */
+      const TOUR_SLIDE_MS = 4500;
+      const TOUR_VIDEO_ID = 'wmbrnuGDoWg';
+      let tourSlideTimer = null;
+      let tourHeroToken = 0;
+
+      const prefersReducedMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+      function loadTourVideo() {
+        const frame = $('#tourVideoIframe');
+        if (!frame) return;
+        const src = `https://www.youtube-nocookie.com/embed/${TOUR_VIDEO_ID}?rel=0&modestbranding=1&playsinline=1`;
+        if (frame.getAttribute('src') !== src) frame.setAttribute('src', src);
+      }
+
+      function unloadTourVideo() {
+        const frame = $('#tourVideoIframe');
+        if (frame) frame.removeAttribute('src');
+      }
+
+      /* Show one gallery photo in the tour hero and highlight its thumbnail. */
+      function showTourImage(index, instant) {
+        const t = state.activeTour;
+        if (!t || !Array.isArray(t.galleryIds) || !t.galleryIds.length) return;
+        const total = t.galleryIds.length;
+        const i = ((index % total) + total) % total;
+        state.tourSlideIndex = i;
+
+        const hero = $('#tourHeroImg');
+        if (hero) {
+          const url = photoUrl(t.galleryIds[i], 1400);
+          const alt = `${t.name} canyoning in Bali`;
+          if (instant || prefersReducedMotion()) {
+            hero.src = url;
+            hero.alt = alt;
+            hero.style.opacity = '1';
+          } else {
+            const token = ++tourHeroToken;
+            hero.style.opacity = '0';
+            setTimeout(() => {
+              if (token !== tourHeroToken) return;
+              hero.src = url;
+              hero.alt = alt;
+              const reveal = () => {
+                if (token !== tourHeroToken) return;
+                hero.style.opacity = '1';
+                hero.removeEventListener('load', reveal);
+              };
+              if (hero.complete && hero.naturalWidth) reveal();
+              else hero.addEventListener('load', reveal);
+              /* Safety net in case 'load' never fires (e.g. cached blank). */
+              setTimeout(reveal, 900);
+            }, 220);
+          }
+        }
+
+        $$('#tourThumbs button').forEach((button, idx) => {
+          const on = idx === i;
+          button.classList.toggle('active', on);
+          if (on) button.setAttribute('aria-current', 'true');
+          else button.removeAttribute('aria-current');
+        });
+      }
+
+      function stopTourSlideshow() {
+        if (tourSlideTimer) {
+          clearInterval(tourSlideTimer);
+          tourSlideTimer = null;
+        }
+      }
+
+      function startTourSlideshow() {
+        stopTourSlideshow();
+        const t = state.activeTour;
+        if (!t || !Array.isArray(t.galleryIds) || t.galleryIds.length < 2) return;
+        if (prefersReducedMotion()) return;
+        tourSlideTimer = setInterval(() => {
+          const dialog = $('#tourDialog');
+          if (!dialog || !dialog.open) { stopTourSlideshow(); return; }
+          if (document.hidden) return; /* don't advance while the tab is in the background */
+          showTourImage(state.tourSlideIndex + 1);
+        }, TOUR_SLIDE_MS);
       }
 
       /* ============================================================
@@ -3676,12 +3860,10 @@
         const thumb = target.closest('[data-tour-thumb]');
         if (thumb) {
           event.preventDefault();
-          const hero = $('#tourHeroImg');
-          if (hero) {
-            hero.src = photoUrl(thumb.dataset.tourThumb, 1400);
-            hero.alt = `${state.activeTour.name} canyoning in Bali`;
-          }
-          $$('#tourThumbs button').forEach((button) => button.classList.toggle('active', button === thumb));
+          const buttons = $$('#tourThumbs button');
+          const index = buttons.indexOf(thumb);
+          showTourImage(index >= 0 ? index : 0);
+          startTourSlideshow(); /* restart the timer after a manual pick */
           return;
         }
 
@@ -3923,6 +4105,14 @@
           });
           dialog.addEventListener('close', syncModalClass);
         });
+
+        const tourDialogEl = $('#tourDialog');
+        if (tourDialogEl) {
+          tourDialogEl.addEventListener('close', () => {
+            stopTourSlideshow();
+            unloadTourVideo();
+          });
+        }
 
         const header = $('#siteHeader');
         if (header) {

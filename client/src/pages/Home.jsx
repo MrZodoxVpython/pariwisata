@@ -32,6 +32,18 @@ const HERO_SLIDES = [
   },
 ];
 
+const LEARN_CARDS = [
+  { icon: 'leaf', title: 'What is canyoning', body: 'A canyon is a natural environment, and there are many ways to move through it: walking, rappelling (abseiling), jumping, swimming, scrambling and sliding.' },
+  { icon: 'mountain', title: 'Canyoning level', body: 'We offer tours for every level, from beginner to advanced. No experience is required in beginner canyons — all we ask for is a reasonable level of fitness.' },
+  { icon: 'users', title: 'Children', body: 'We are happy to take children as young as 8 years old into Egar Canyon. Children aged 12+ can join any beginner canyon, all season. As for a maximum age — you are only as old as you feel!' },
+  { icon: 'camera', title: 'Free footage', body: 'Your safety always comes first, but when the moment is right we capture photos and video of your descent — and they are included. Bring your own storage to copy the files, and tag us in your stories: @canyoningbali.' },
+  { icon: 'home', title: 'Round-trip transfer', body: 'Every trip includes round-trip transfer from your accommodation anywhere in Bali.' },
+  { icon: 'calendar', title: 'Two people minimum', body: 'Canyoning trips run with a minimum of two people. Travelling solo? Book onto a trip that others are already on, or give us a call and we will help you check availability.' },
+  { icon: 'shield', title: 'Professional guide', body: 'Canyoning is not our side job — it is our main focus. Our professional guides create a fun, safe environment in the canyon.' },
+  { icon: 'lock', title: 'Equipment', body: 'We have hand-picked the best canyoning equipment in the world, so you can rest assured you will wear the most comfortable, well-adapted and safe gear on your tour.' },
+  { icon: 'water', title: 'Swimming', body: 'Can’t swim? No worries — you can join any beginner canyon, where no swimming is required. Intermediate and advanced canyons do require you to be able to swim.' },
+];
+
 const FAQ_FALLBACK = [
   ['Do I need canyoning experience to join?', 'No. Egar and Maboya are beginner-friendly and include a full safety briefing. Samba and Aling are better suited to guests with some outdoor experience and comfortable swimming ability.'],
   ['Is canyoning safe?', 'Canyoning is an adventure activity with inherent risks. We use checked equipment, trained local guides, safety briefings and water-level checks. We adjust or cancel routes when conditions are unsafe. Tell us about relevant medical conditions before booking.'],
@@ -401,6 +413,34 @@ export default function Home() {
             <article className="step"><div className="step-no">01</div><h3>Choose your canyon</h3><p>Compare difficulty, duration and inclusions. Use our 30-second quiz if you are not sure which route fits.</p><small>2 minutes</small></article>
             <article className="step"><div className="step-no">02</div><h3>Check availability</h3><p>Send your date and group size. We reply within 15 minutes during business hours, 08:00–20:00 WITA.</p><small>15-minute reply</small></article>
             <article className="step"><div className="step-no">03</div><h3>Confirm &amp; go</h3><p>Review your trip, then secure it with a 25% deposit or pay in full. Card, bank transfer and QRIS are available in the demo checkout.</p><small>Demo payment gateway</small></article>
+          </div>
+        </div>
+      </section>
+
+      {/* LEARN MORE */}
+      <section className="section learn-section" id="learn-more" aria-labelledby="learnTitle">
+        <div className="wrap">
+          <div className="section-head" data-reveal>
+            <div><span className="kicker">Good to know</span><h2 id="learnTitle">Learn more about our canyoning Bali tour.</h2></div>
+            <div className="head-side">
+              <p>New to canyoning? Here is everything you need to know about the day, who can join and what is included.</p>
+              <button className="btn btn-ghost btn-sm" type="button" onClick={() => openBooking()}>Check availability <Icon name="arrow" /></button>
+            </div>
+          </div>
+          <div className="learn-grid" data-reveal>
+            {LEARN_CARDS.map((card) => (
+              <article className="learn-card" key={card.title}>
+                <span className="learn-icon"><Icon name={card.icon} /></span>
+                <h3>{card.title}</h3>
+                <p>{card.body}</p>
+              </article>
+            ))}
+          </div>
+          <div className="learn-foot" data-reveal>
+            <span><b>Still have questions about the tour?</b> We usually reply within 15 minutes during opening hours, 08:00–20:00 WITA.</span>
+            <div className="learn-foot-actions">
+              <a className="btn btn-outline btn-sm" href={site.whatsapp || `https://wa.me/${site.phoneHref}`} target="_blank" rel="noopener noreferrer">Ask on WhatsApp <Icon name="wa" /></a>
+            </div>
           </div>
         </div>
       </section>

@@ -1,41 +1,89 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Dialog from './Dialog';
 import Icon from './Icon';
 import { useApp, useSite } from '../context/AppContext';
 import { formatMoney, photoUrl } from '../lib/format';
+
+const TOUR_VIDEO_ID = 'wmbrnuGDoWg';
+const SLIDE_MS = 4500;
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function TourDialog() {
   const { tourDetailId, closeTourDetail, content, currency, openBooking } = useApp();
   const site = useSite();
   const tour = content.tours.find((item) => item.id === tourDetailId);
   const open = Boolean(tourDetailId && tour);
-  const [heroImage, setHeroImage] = useState('');
+  const [slideIndex, setSlideIndex] = useState(0);
 
+  const gallery = useMemo(
+    () => (tour?.galleryIds || []).map((id) => photoUrl(id, 1400)),
+    [tour]
+  );
+
+  const thumbs = useMemo(
+    () => (tour?.galleryIds || []).map((id) => photoUrl(id, 240)),
+    [tour]
+  );
+
+  // Start from the first photo whenever a different canyon is opened.
   useEffect(() => {
-    if (!tour) return;
-    setHeroImage(photoUrl(tour.image || tour.galleryIds?.[0], 1200));
-  }, [tour]);
+    setSlideIndex(0);
+  }, [tourDetailId]);
+
+  // Auto-advance the hero photo while the dialog is open.
+  // Including slideIndex restarts the 4.5s timer after every change,
+  // so a manual thumbnail click also gets a full interval.
+  useEffect(() => {
+    if (!open || gallery.length < 2 || prefersReducedMotion()) return undefined;
+    const timer = setInterval(() => {
+      if (document.hidden) return;
+      setSlideIndex((current) => (current + 1) % gallery.length);
+    }, SLIDE_MS);
+    return () => clearInterval(timer);
+  }, [open, gallery.length, slideIndex]);
 
   if (!tour) {
     return <Dialog open={false} onClose={closeTourDetail} className="tour-dialog" labelledBy="tourDialogTitle"><div /></Dialog>;
   }
 
-  const gallery = (tour.galleryIds || []).map((id) => photoUrl(id, 1200));
   const whatsappHref = `${site.whatsapp || `https://wa.me/${site.phoneHref}`}?text=${encodeURIComponent(`Hi, I have a question about ${tour.name}.`)}`;
+  const videoSrc = `https://www.youtube-nocookie.com/embed/${TOUR_VIDEO_ID}?rel=0&modestbranding=1&playsinline=1`;
 
   return (
     <Dialog open={open} onClose={closeTourDetail} className="tour-dialog" labelledBy="tourDialogTitle">
       <div className="dialog-card tour-card">
         <button className="dialog-close" type="button" onClick={closeTourDetail} aria-label="Close canyon details"><Icon name="close" /></button>
         <div className="tour-hero">
-          <img id="tourHeroImg" src={heroImage} alt="" width="1200" height="800" />
+          {gallery.map((src, index) => (
+            <img
+              key={src + index}
+              className={`tour-slide${index === slideIndex ? ' current' : ''}`}
+              src={src}
+              alt=""
+              width="1200"
+              height="800"
+              loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          ))}
           <div className="tour-hero-copy">
             <span className="badge lime" id="tourBadge">{tour.level}</span>
             <h2 id="tourDialogTitle">{tour.name}</h2>
             <p id="tourSub">{tour.short}</p>
             <div className="tour-thumbs" id="tourThumbs" aria-label="Canyon photo gallery">
-              {gallery.map((src, index) => (
-                <button key={src + index} type="button" className={heroImage === src ? 'active' : ''} onClick={() => setHeroImage(src)} aria-label={`${tour.name} photo ${index + 1}`}>
+              {thumbs.map((src, index) => (
+                <button
+                  key={src + index}
+                  type="button"
+                  className={index === slideIndex ? 'active' : ''}
+                  onClick={() => setSlideIndex(index)}
+                  aria-label={`${tour.name} photo ${index + 1}`}
+                  aria-current={index === slideIndex ? 'true' : undefined}
+                >
                   <img src={src} alt="" loading="lazy" />
                 </button>
               ))}
@@ -51,6 +99,19 @@ export default function TourDialog() {
               <div><small>Jumps</small><b>{tour.jumps}</b></div>
               <div><small>Slides</small><b>{tour.slides}</b></div>
               <div><small>Group</small><b>{tour.group}</b></div>
+            </div>
+            <div className="tour-video">
+              <h3>Watch the canyon</h3>
+              <div className="tour-video-frame">
+                <iframe
+                  src={videoSrc}
+                  title="Canyoning Bali canyon tour video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              </div>
+              <p className="tour-video-note">A look at a real canyoning day with our guides. Video plays from YouTube.</p>
             </div>
             <h3>Your day, step by step</h3>
             <ol className="timeline" id="tourItinerary">

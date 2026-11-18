@@ -489,6 +489,19 @@
     .step small{display:inline-flex;align-items:center;gap:5px;margin-top:13px;color:var(--brand-dark);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
     .step small::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand-ink)}
 
+    /* Learn more about the tour */
+    .learn-section{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .learn-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .learn-card{background:var(--bg-white);border:1px solid var(--line);border-radius:20px;padding:24px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;min-width:0}
+    .learn-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm);border-color:var(--border-light)}
+    .learn-icon{width:44px;height:44px;border-radius:13px;background:var(--bg-qa);color:var(--brand-dark);display:grid;place-items:center;margin-bottom:16px}
+    .learn-icon .icon{width:21px;height:21px}
+    .learn-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-dark);margin-bottom:8px}
+    .learn-card p{font-size:12.5px;color:var(--muted);line-height:1.6}
+    .learn-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;background:var(--bg-gradient-light);border:1px solid var(--private-banner-border);border-radius:18px;padding:18px 22px;margin-top:28px;font-size:13px;color:var(--private-banner-text)}
+    .learn-foot b{color:var(--ink)}
+    .learn-foot .learn-foot-actions{display:flex;flex-wrap:wrap;gap:9px;flex:none}
+
     /* Safety */
     .safety{background:var(--bg-qa);border-top:1px solid #DEEAF1;border-bottom:1px solid #DEEAF1}
     .safety-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
@@ -693,6 +706,8 @@
     .tour-card .dialog-close{background:var(--tour-dialog-close-bg);top:14px;right:14px}
     .tour-hero{position:relative;min-height:330px;background:var(--tour-hero-bg);overflow:hidden;border-radius:24px 24px 0 0}
     .tour-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .tour-hero .tour-slide{opacity:0;transition:opacity .6s ease}
+    .tour-hero .tour-slide.current{opacity:1}
     .tour-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,26,38,.88),rgba(6,26,38,.12) 70%)}
     .tour-hero-copy{position:relative;z-index:1;padding:140px 30px 24px;color:var(--hero-text)}
     .tour-hero-copy h2{font-size:clamp(32px,5vw,48px);margin:8px 0 5px}
@@ -726,6 +741,11 @@
     .tour-aside small{display:block;font-size:9.5px;color:var(--muted);margin-bottom:13px}
     .tour-aside .btn{width:100%;margin-top:7px;min-height:42px;font-size:11.5px}
     .tour-aside-note{font-size:9px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.4}
+    .tour-video{margin-bottom:4px}
+    .tour-video h3{margin-top:0}
+    .tour-video-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--tour-hero-bg);border:1px solid var(--line)}
+    .tour-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+    .tour-video-note{font-size:10px;color:var(--muted);margin-top:8px;line-height:1.5}
 
     /* Quiz */
     .quiz-dialog{width:min(620px,calc(100% - 24px))}
@@ -913,6 +933,7 @@
       .media-stack{max-width:620px;margin:auto}
       .why-copy .lead{max-width:none}
       .guide-grid{grid-template-columns:1fr 1fr}
+      .learn-grid{grid-template-columns:1fr 1fr}
       .review-grid{grid-template-columns:1fr 1fr}
       .review-summary{grid-template-columns:1fr 1fr;gap:18px}
       .rating-cta{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
@@ -984,6 +1005,9 @@
       .stat-float{left:-2px;top:14px;padding:11px 14px}
       .stat-float strong{font-size:21px}
       .guide-grid{grid-template-columns:1fr}
+      .learn-grid{grid-template-columns:1fr}
+      .learn-foot{display:grid;gap:14px;padding:16px}
+      .learn-foot-actions .btn{width:100%;justify-content:center}
       .steps{grid-template-columns:1fr}
       .steps::before{display:none}
       .safety-stats{grid-template-columns:1fr 1fr}
